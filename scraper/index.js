@@ -602,7 +602,6 @@ function tierSetLookup(pclass, spec, name, cell, slot) {
 
 async function wowheadLookup(pclass, spec, name, cell, slot) {
   var result = [];
-
   try {
     const response = await fetch(
       `https://tbc.wowhead.com/search/suggestions-template?q=${name}`
@@ -616,6 +615,8 @@ async function wowheadLookup(pclass, spec, name, cell, slot) {
   } catch (error) {
     debugger;
   }
+
+  console.log("fetched: " + name + " result: " + result);
   return result;
 }
 
@@ -639,7 +640,7 @@ async function predicateItemId(row, slot) {
   var content = row[columnIndexes[slot]].value;
 
   if (content == null || content == "NA") return [];
-
+  
   var names = content.startsWith("http")
     ? [content.trim()]
     : content
@@ -724,6 +725,7 @@ async function main() {
       variant: row[columnIndexes["variant"]].value,
       items: {
         head: await predicateItemId(row, "head"),
+        neck: await predicateItemId(row, "neck"),
         shoulders: await predicateItemId(row, "shoulders"),
         back: await predicateItemId(row, "back"),
         chest: await predicateItemId(row, "chest"),
