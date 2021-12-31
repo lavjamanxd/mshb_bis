@@ -74,8 +74,9 @@ end
 
 function MSHB:append_spec(tooltip, class, spec, role)
     if spec == "all" then
-        tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. "      " .. MSHB:to_pascal_case(class) ..
-                            " - " .. MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
+        tooltip:AddLine(
+            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. "      " .. MSHB:to_pascal_case(class) .. " - " ..
+                MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
         return
     end
 
