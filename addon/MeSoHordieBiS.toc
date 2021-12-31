@@ -2,7 +2,7 @@
 ## Title: Me So Hordie BiS
 ## Author: Beckeeh
 ## Version: 1.0
-## SavedVariablesPerCharacter: MSHBDB
+## SavedVariablesPerCharacter: MeSoHordieAddonDB
 
 main.lua
 bis_list.lua

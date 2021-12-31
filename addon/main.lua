@@ -73,6 +73,12 @@ function MSHB:player_is_master_looter()
 end
 
 function MSHB:append_spec(tooltip, class, spec, role)
+    if spec == "all" then
+        tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. "      " .. MSHB:to_pascal_case(class) ..
+                            " - " .. MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
+        return
+    end
+
     tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
                         MSHB.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
                         MSHB:to_pascal_case(class) .. " - " .. MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
@@ -94,47 +100,108 @@ function MSHB:append_tooltip(tooltip)
     local class, spec = MSHB:predict_player();
     local bisClass = msh_bis_list["phase" .. MSHB.currentPhase][class:lower()];
     local r, g, b = GetClassColor(class);
-    local lootMaster = MSHB:player_is_master_looter();
-    local masterlootMode = ""
-    if lootMaster then
-        masterlootMode = "(MasterLoot Mode)"
-    end
-    tooltip:AddLine("Me So Hordie BiS - Phase " .. MSHB.currentPhase .. " " .. masterlootMode)
+    local isPlayerLootMaster = MSHB:player_is_master_looter();
+    local currentMode = ""
 
-    if lootMaster then
+    local lines = {}
+
+    if MeSoHordieAddon.db.char.mode == 'spec' then
+        currentMode = "(Spec mode)"
+        for i, v in ipairs(bisClass) do
+            if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
+                if MSHB:has_value(v["items"], itemId) then
+                    lines[#lines + 1] = {class, v["spec"], v["role"]}
+                end
+            end
+        end
+    end
+
+    if MeSoHordieAddon.db.char.mode == 'class' then
+        currentMode = "(Class mode)"
+        for i, v in ipairs(bisClass) do
+            if MSHB:has_value(v["items"], itemId) then
+                lines[#lines + 1] = {class, v["spec"], v["role"]}
+            end
+        end
+    end
+
+    if MeSoHordieAddon.db.char.mode == 'all' or isPlayerLootMaster then
+        currentMode = "(All mode)"
         for i, c in pairs(msh_bis_list["phase" .. MSHB.currentPhase]) do
             for j, s in ipairs(c) do
                 if MSHB:has_value(s["items"], itemId) then
-                    MSHB:append_spec(tooltip, i:upper(), s["spec"], s["role"])
+                    lines[#lines + 1] = {i:upper(), s["spec"], s["role"]}
                 end
             end
         end
-    else
-        for i, v in ipairs(bisClass) do
-            if v["spec"] == spec:lower() then
-                if MSHB:has_value(v["items"], itemId) then
-                    MSHB:append_spec(tooltip, class, v["spec"], v["role"])
-                end
-                -- MSHB:append_spec(tooltip, class, spec, v["role"])
-            end
+    end
+
+    if next(lines) ~= nil then
+        tooltip:AddLine("Me So Hordie BiS - Phase " .. MSHB.currentPhase .. " " .. currentMode)
+        for i, v in ipairs(lines) do
+            MSHB:append_spec(tooltip, v[1], v[2], v[3])
         end
+    end
+end
+
+function MSHB:string_split(s, delimiter)
+    result = {};
+    for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
+        table.insert(result, match);
+    end
+    return result;
+end
+
+function MSHB:change_mode(mode)
+    if (mode == nil) then
+        print("Available modes: spec, class, all")
+        return
+    end
+
+    if mode == "spec" or mode == "class" or mode == "all" then
+        MeSoHordieAddon.db.char.mode = mode
+        return
+    end
+
+    print("Invalid mode specified" .. mode)
+end
+
+function MeSoHordieAddon:MSHBInputProcessorFunc(input)
+    if input == "" then
+        print("Me So Hordie BiS commands:")
+        print("/mshb mode <mode>")
+        return
+    end
+
+    local split = MSHB:string_split(input, " ")
+
+    if (split[1] == "mode") then
+        MSHB:change_mode(split[2])
     end
 end
 
 function MeSoHordieAddon:OnInitialize()
-    GameTooltip:HookScript("OnTooltipSetItem", function(t)
-        MSHB:append_tooltip(t)
-    end)
-    ItemRefTooltip:HookScript("OnTooltipSetItem", function(t)
-        MSHB:append_tooltip(t)
-    end)
+    local guildName, _, _ = GetGuildInfo("player")
+    local realmName = GetRealmName()
+
+    if guildName == "Me So Hordie" and realmName == "Nethergarde Keep" then
+        self.db = LibStub("AceDB-3.0"):New("MeSoHordieAddonDB", {
+            char = {
+                mode = 'spec'
+            }
+        })
+
+        GameTooltip:HookScript("OnTooltipSetItem", function(t)
+            MSHB:append_tooltip(t)
+        end)
+        ItemRefTooltip:HookScript("OnTooltipSetItem", function(t)
+            MSHB:append_tooltip(t)
+        end)
+
+        MeSoHordieAddon:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")
+    end
 end
 
 function MeSoHordieAddon:OnEnable()
-    if not MSHBDB then
-        MSHBDB = {
-            overridePhase = 2,
-            overrideSpec = -1
-        }
-    end
+
 end
