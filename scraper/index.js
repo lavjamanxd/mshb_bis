@@ -9,7 +9,7 @@ var { Liquid } = require("liquidjs");
 var engine = new Liquid();
 
 const doc = new GoogleSpreadsheet(
-  "1-jjplimw69CTh7ghIXn8EdOWE5XnxsJc2STsuEVlYxI"
+  process.env.MSHB_SPREADSHEET_ID
 );
 
 doc.useApiKey(process.env.GOOGLE_API_KEY);
