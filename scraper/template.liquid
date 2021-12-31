@@ -1,0 +1,21 @@
+msh_bis_list = {
+    ["phase2"] = {
+        {% for classGroup in bisList -%}
+            ["{{ classGroup.class  | downcase }}"] = {
+                {% for spec in classGroup.specs -%}
+                {
+                ["spec"] = "{{ spec.spec | downcase }}",
+                ["role"] = "{{ spec.role }}",
+                ["items"] = {
+                    {%- for itemIds in spec.items -%}
+                        {%- for itemId in itemIds[1] -%}
+                            "{{ itemId }}",
+                        {%- endfor -%}
+                    {%- endfor -%}
+                }
+                },
+                {%- endfor -%}
+            },
+        {%- endfor -%}
+    }
+}
