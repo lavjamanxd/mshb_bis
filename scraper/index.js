@@ -746,17 +746,19 @@ async function main() {
 
   var grouped = {};
 
-  scrapedList.forEach(bis => {
-    if (grouped[bis.class]==undefined){
-        grouped[bis.class]={class: bis.class, specs:[]}
+  scrapedList.forEach((bis) => {
+    if (grouped[bis.class] == undefined) {
+      grouped[bis.class] = { class: bis.class, specs: [] };
     }
     grouped[bis.class].specs.push(bis);
   });
 
   let template = fs.readFileSync(join(appDir, "./template.liquid"), "utf8");
-  engine.parseAndRender(template, { bisList: Object.values(grouped)}).then((render) => {
+  engine
+    .parseAndRender(template, { bisList: Object.values(grouped) })
+    .then((render) => {
       fs.writeFileSync(join(appDir, "..", "addon", "bis_list.lua"), render);
-  });
+    });
   debugger;
 }
 

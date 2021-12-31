@@ -74,11 +74,11 @@ end
 
 function MSHB:append_spec(tooltip, class, spec, role)
     tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
-    MSHB.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-    MSHB:to_pascal_case(class) .. " - " .. MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
+                        MSHB.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
+                        MSHB:to_pascal_case(class) .. " - " .. MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
 end
 
-function MSHB:has_value (tab, val)
+function MSHB:has_value(tab, val)
     for index, value in ipairs(tab) do
         if value == val then
             return true
@@ -94,14 +94,13 @@ function MSHB:append_tooltip(tooltip)
     local class, spec = MSHB:predict_player();
     local bisClass = msh_bis_list["phase" .. MSHB.currentPhase][class:lower()];
     local r, g, b = GetClassColor(class);
-    -- local lootMaster = MSHB:player_is_master_looter();
-    local lootMaster = true
+    local lootMaster = MSHB:player_is_master_looter();
     local masterlootMode = ""
     if lootMaster then
-        masterlootMode= "(MasterLoot Mode)"
+        masterlootMode = "(MasterLoot Mode)"
     end
     tooltip:AddLine("Me So Hordie BiS - Phase " .. MSHB.currentPhase .. " " .. masterlootMode)
-    
+
     if lootMaster then
         for i, c in pairs(msh_bis_list["phase" .. MSHB.currentPhase]) do
             for j, s in ipairs(c) do
