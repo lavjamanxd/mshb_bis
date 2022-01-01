@@ -106,7 +106,7 @@ function MSHB:append_tooltip(tooltip)
 
     local lines = {}
 
-    if MeSoHordieAddon.db.char.mode == 'spec' then
+    if MeSoHordieAddon.db.char.mode == 'spec' and not isPlayerLootMaster then
         currentMode = "(Spec mode)"
         for i, v in ipairs(bisClass) do
             if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
@@ -117,7 +117,7 @@ function MSHB:append_tooltip(tooltip)
         end
     end
 
-    if MeSoHordieAddon.db.char.mode == 'class' then
+    if MeSoHordieAddon.db.char.mode == 'class' and not isPlayerLootMaster then
         currentMode = "(Class mode)"
         for i, v in ipairs(bisClass) do
             if MSHB:has_value(v["items"], itemId) then
