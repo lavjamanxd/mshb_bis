@@ -97,6 +97,11 @@ end
 
 function MSHB:append_tooltip(tooltip)
     local _, itemLink = tooltip:GetItem()
+
+    if itemLink == nil then
+        return
+    end
+
     local itemId = select(3, strfind(itemLink, "item:(%d+)"))
     local class, spec = MSHB:predict_player();
     local bisClass = msh_bis_list["phase" .. MSHB.currentPhase][class:lower()];
