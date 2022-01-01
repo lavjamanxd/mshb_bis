@@ -60,16 +60,11 @@ end
 
 function MSHB:player_is_master_looter()
     lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
-    if masterlooterPartyID ~= nil then
-        name, _, _, _, _, _, _, _, _, _, isML = GetRaidRosterInfo(masterlooterRaidID);
-        if not isML then
-            return false
-        end
-        local playerName, realm = UnitName("player");
-        if name == playerName then
-            return true
-        end
+    if lootmethod == "master" and (masterlooterPartyID == 0 or masterlooterRaidID == 0) then
+        return true
     end
+
+    return false
 end
 
 function MSHB:append_spec(tooltip, class, spec, role)
