@@ -161,6 +161,7 @@ function MSHB:change_mode(mode)
 
     if mode == "spec" or mode == "class" or mode == "all" then
         MeSoHordieAddon.db.char.mode = mode
+        print("Mode changed to ".. mode .. " mode!")
         return
     end
 
