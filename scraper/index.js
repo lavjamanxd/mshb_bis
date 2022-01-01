@@ -761,7 +761,6 @@ async function main() {
     .then((render) => {
       fs.writeFileSync(join(appDir, "..", "addon", "bis_list.lua"), render);
     });
-  debugger;
 }
 
 main();
