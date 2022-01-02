@@ -91,6 +91,13 @@ function MSHB:has_value(tab, val)
 end
 
 function MSHB:append_tooltip(tooltip)
+    local guildName, _, _ = GetGuildInfo("player")
+    local realmName = GetRealmName()
+
+    if guildName ~= "Me So Hordie" and realmName ~= "Nethergarde Keep" then
+        return
+    end
+
     local _, itemLink = tooltip:GetItem()
 
     if itemLink == nil then
@@ -183,10 +190,7 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
 end
 
 function MeSoHordieAddon:OnInitialize()
-    local guildName, _, _ = GetGuildInfo("player")
-    local realmName = GetRealmName()
 
-    if guildName == "Me So Hordie" and realmName == "Nethergarde Keep" then
         self.db = LibStub("AceDB-3.0"):New("MeSoHordieAddonDB", {
             char = {
                 mode = 'spec'
@@ -201,7 +205,6 @@ function MeSoHordieAddon:OnInitialize()
         end)
 
         MeSoHordieAddon:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")
-    end
 end
 
 function MeSoHordieAddon:OnEnable()
