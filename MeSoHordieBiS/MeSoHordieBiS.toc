@@ -1,7 +1,7 @@
 ## Interface: 20502
 ## Title: Me So Hordie BiS
 ## Author: Beckeeh
-## Version: 1.0.2
+## Version: 1.0.3
 ## SavedVariablesPerCharacter: MeSoHordieAddonDB
 
 main.lua
