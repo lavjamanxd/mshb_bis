@@ -1,21 +1,26 @@
-msh_bis_list = {
-    ["phase2"] = {
-        {% for classGroup in bisList -%}
-            ["{{ classGroup.class  | downcase }}"] = {
-                {% for spec in classGroup.specs -%}
+msh_bis_addon_data = {
+    ["version"] = "{{ bisAddonData.version }}",
+    ["phases"] = {
+        {%- for phase in bisAddonData.phases %}
+        ["phase{{ phase[0] }}"]= {
+        {%- for classGroup in phase[1] %}
+            ["{{ classGroup[0]  | downcase }}"] = {
+            {%- for spec in classGroup[1].specs %}
                 {
-                ["spec"] = "{{ spec.spec | downcase }}",
-                ["role"] = "{{ spec.role }}",
-                ["items"] = {
+                    ["spec"] = "{{ spec.spec | downcase }}",
+                    ["role"] = "{{ spec.role }}",
+                    ["items"] = {
                     {%- for itemIds in spec.items -%}
                         {%- for itemId in itemIds[1] -%}
                             "{{ itemId }}",
                         {%- endfor -%}
                     {%- endfor -%}
-                }
+                    }
                 },
-                {%- endfor -%}
+               {%- endfor %}
             },
-        {%- endfor -%}
+        {%- endfor %}
+        },
+        {%- endfor %}
     }
 }

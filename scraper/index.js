@@ -8,9 +8,7 @@ const appDir = dirname(require.main.filename);
 var { Liquid } = require("liquidjs");
 var engine = new Liquid();
 
-const doc = new GoogleSpreadsheet(
-  process.env.MSHB_SPREADSHEET_ID
-);
+const doc = new GoogleSpreadsheet(process.env.MSHB_SPREADSHEET_ID);
 
 doc.useApiKey(process.env.GOOGLE_API_KEY);
 
@@ -43,6 +41,79 @@ const t4Tokens = [
       head: 29760,
       shoulders: 29763,
       chest: 29754,
+    },
+  },
+];
+const t5Tokens = [
+  {
+    class: ["hunter", "mage", "warlock"],
+    tokens: {
+      hands: 30241,
+      legs: 30246,
+      head: 30244,
+      shoulders: 30250,
+      chest: 30238,
+    },
+  },
+  {
+    class: ["druid", "priest", "warrior"],
+    tokens: {
+      hands: 30240,
+      legs: 30246,
+      head: 30243,
+      shoulders: 30249,
+      chest: 30237,
+    },
+  },
+  {
+    class: ["paladin", "rogue", "shaman"],
+    tokens: {
+      hands: 30239,
+      legs: 30245,
+      head: 30242,
+      shoulders: 30248,
+      chest: 30236,
+    },
+  },
+];
+const t6Tokens = [
+  {
+    class: ["paladin", "priest", "warlock"],
+    tokens: {
+      hands: 31092,
+      legs: 31098,
+      head: 31097,
+      shoulders: 31101,
+      chest: 31089,
+      wrists: 34848,
+      belt: 34853,
+      feet: 34856,
+    },
+  },
+  {
+    class: ["druid", "mage", "rogue"],
+    tokens: {
+      hands: 31093,
+      legs: 31099,
+      head: 31096,
+      shoulders: 31102,
+      chest: 31090,
+      wrists: 34852,
+      belt: 34855,
+      feet: 34858,
+    },
+  },
+  {
+    class: ["hunter", "shaman", "warrior"],
+    tokens: {
+      hands: 31094,
+      legs: 31100,
+      head: 31095,
+      shoulders: 31103,
+      chest: 31091,
+      wrists: 34851,
+      belt: 34854,
+      feet: 34857,
     },
   },
 ];
@@ -281,7 +352,6 @@ const t4sets = [
     ],
   },
 ];
-
 const t5sets = [
   {
     class: "druid",
@@ -516,50 +586,302 @@ const t5sets = [
     ],
   },
 ];
-
-const t5Tokens = [
+const t6sets = [
   {
-    class: ["hunter", "mage", "warlock"],
-    tokens: {
-      hands: 30241,
-      legs: 30246,
-      head: 30244,
-      shoulders: 30250,
-      chest: 30238,
-    },
+    class: "druid",
+    sets: [
+      {
+        spec: ["balance"],
+        set: "Thunderheart Regalia",
+        items: {
+          head: 31040,
+          legs: 31046,
+          chest: 31043,
+          hands: 31035,
+          shoulders: 31049,
+          belt: 34555,
+          wrists: 34446,
+          boots: 34572
+        },
+      },
+      {
+        spec: ["feral"],
+        set: "Thunderheart Harness",
+        items: {
+          head: 31039,
+          legs: 31044,
+          chest: 31042,
+          hands: 31034,
+          shoulders: 31048,
+          belt: 34556,
+          wrists: 34444,
+          boots: 34573
+        },
+      },
+      {
+        spec: ["restoration"],
+        set: "Thunderheart Raiment",
+        items: {
+          head: 31037,
+          legs: 31045,
+          chest: 31041,
+          hands: 31032,
+          shoulders: 31047,
+          belt: 34554,
+          wrists: 34445,
+          boots: 34571
+        },
+      },
+    ],
   },
   {
-    class: ["druid", "priest", "warrior"],
-    tokens: {
-      hands: 30240,
-      legs: 30246,
-      head: 30243,
-      shoulders: 30249,
-      chest: 30237,
-    },
+    class: "hunter",
+    sets: [
+      {
+        spec: ["beast mastery", "marksmanship", "survival"],
+        set: "Gronnstalker's Armor",
+        items: {
+          head: 31003,
+          legs: 31005,
+          chest: 31004,
+          hands: 31001,
+          shoulders: 31006,
+          belt: 34549,
+          wrists: 34443,
+          boots: 34570
+        },
+      },
+    ],
   },
   {
-    class: ["paladin", "rogue", "shaman"],
-    tokens: {
-      hands: 30239,
-      legs: 30245,
-      head: 30242,
-      shoulders: 30248,
-      chest: 30236,
-    },
+    class: "mage",
+    sets: [
+      {
+        spec: ["arcane", "fire", "frost"],
+        set: "Tempest Regalia",
+        items: {
+          head: 31056,
+          legs: 31058,
+          chest: 31057,
+          hands: 31055,
+          shoulders: 31059,
+          belt: 34557,
+          wrists: 34447,
+          boots: 34574
+        },
+      },
+    ],
+  },
+  {
+    class: "paladin",
+    sets: [
+      {
+        spec: ["holy"],
+        set: "Lightbringer Raiment",
+        items: {
+          head: 30988,
+          legs: 30994,
+          chest: 30992,
+          hands: 30983,
+          shoulders: 30996,
+          belt: 34487,
+          wrists: 34432,
+          boots: 34559
+        },
+      },
+      {
+        spec: ["protection"],
+        set: "Lightbringer Armor",
+        items: {
+          head: 30987,
+          legs: 30995,
+          chest: 30991,
+          hands: 30985,
+          shoulders: 30998,
+          belt: 34488,
+          wrists: 34433,
+          boots: 34560
+        },
+      },
+      {
+        spec: ["retribution"],
+        set: "Lightbringer Battlegear",
+        items: {
+          head: 30989,
+          legs: 30993,
+          chest: 30990,
+          hands: 30982,
+          shoulders: 30997,
+          belt: 34485,
+          wrists: 34431,
+          boots: 34561
+        },
+      },
+    ],
+  },
+  {
+    class: "priest",
+    sets: [
+      {
+        spec: ["discipline", "holy"],
+        set: "Vestments of Absolution",
+        items: {
+          head: 31063,
+          legs: 31068,
+          chest: 31066,
+          hands: 31060,
+          shoulders: 31069,
+          belt: 34527,
+          wrists: 34435,
+          boots: 34562
+        },
+      },
+      {
+        spec: ["shadow"],
+        set: "Absolution Regalia",
+        items: {
+          head: 31064,
+          legs: 31067,
+          chest: 31065,
+          hands: 31061,
+          shoulders: 31070,
+          belt: 34528,
+          wrists: 34434,
+          boots: 34563
+        },
+      },
+    ],
+  },
+  {
+    class: "rogue",
+    sets: [
+      {
+        spec: ["assasination", "combat", "subtlety"],
+        set: "Slayer's Armor",
+        items: {
+          head: 31027,
+          legs: 31029,
+          chest: 31028,
+          hands: 31026,
+          shoulders: 31030,
+          belt: 34558,
+          wrists: 34448,
+          boots: 34575
+        },
+      },
+    ],
+  },
+  {
+    class: "shaman",
+    sets: [
+      {
+        spec: ["elemental"],
+        set: "Skyshatter Regalia",
+        items: {
+          head: 31014,
+          legs: 31020,
+          chest: 31017,
+          hands: 31008,
+          shoulders: 31023,
+          belt: 34542,
+          wrists: 34437,
+          boots: 34566
+        },
+      },
+      {
+        spec: ["enhancement"],
+        set: "Skyshatter Harness",
+        items: {
+          head: 31015,
+          legs: 31021,
+          chest: 31018,
+          hands: 31011,
+          shoulders: 31024,
+          belt: 34545,
+          wrists: 34439,
+          boots: 34567
+        },
+      },
+      {
+        spec: ["restoration"],
+        set: "Skyshatter Raiment",
+        items: {
+          head: 31012,
+          legs: 31019,
+          chest: 31016,
+          hands: 31007,
+          shoulders: 31022,
+          belt: 34543,
+          wrists: 34438,
+          boots: 34565
+        },
+      },
+    ],
+  },
+  {
+    class: "warlock",
+    sets: [
+      {
+        spec: ["affliction", "demonology", "destruction"],
+        set: "Malefic Raiment",
+        items: {
+          head: 31051,
+          legs: 31053,
+          chest: 31052,
+          hands: 31050,
+          shoulders: 31054,
+          belt: 34541,
+          wrists: 34436,
+          boots: 34564
+        },
+      },
+    ],
+  },
+  {
+    class: "warrior",
+    sets: [
+      {
+        spec: ["arms", "fury"],
+        set: "Onslaught Battlegear",
+        items: {
+          head: 30972,
+          legs: 30977,
+          chest: 30975,
+          hands: 30969,
+          shoulders: 30979,
+          belt: 34546,
+          wrists: 34441,
+          boots: 34569
+        },
+      },
+      {
+        spec: ["protection"],
+        set: "Onslaught Armor",
+        items: {
+          head: 30974,
+          legs: 30978,
+          chest: 30976,
+          hands: 30970,
+          shoulders: 30980,
+          belt: 34547,
+          wrists: 34442,
+          boots: 34568
+        },
+      },
+    ],
   },
 ];
 
 const tierSets = {
   4: t4sets,
   5: t5sets,
-  6: undefined,
+  6: t6sets,
 };
 
 const tierTokens = {
   4: t4Tokens,
   5: t5Tokens,
-  6: undefined,
+  6: t6Tokens,
 };
 
 function linkLookup(pclass, spec, name, cell, slot) {
@@ -639,8 +961,8 @@ async function predicateItemId(row, slot) {
   var predictions = [];
   var content = row[columnIndexes[slot]].value;
 
-  if (content == null || content == "NA") return [];
-  
+  if (content == null || content == "NA" || content == "N/A") return [];
+
   var names = content.startsWith("http")
     ? [content.trim()]
     : content
@@ -701,16 +1023,10 @@ const columnIndexes = {
   ranged: 21,
 };
 
-async function main() {
-  await doc.loadInfo();
-
-  var sheet = doc.sheetsByIndex[2];
+async function scrapPhase(sheet) {
   const rows = await sheet.getRows();
   var scrapedList = [];
   await sheet.loadCells();
-
-  var a = sheet.getCell(0, 25);
-
   for (var rowIndex = 1; rowIndex < rows.length; rowIndex++) {
     var row = Array.from(Array(22).keys()).map((colIndex) =>
       sheet.getCell(rowIndex, colIndex)
@@ -755,11 +1071,39 @@ async function main() {
     grouped[bis.class].specs.push(bis);
   });
 
+  return grouped;
+}
+
+async function main() {
+  await doc.loadInfo();
+  var now = new Date();  
+  var bisAddonData = {
+    version: `${now.getFullYear()}${now.getMonth()+1}${now.getDate()}${now.getHours()}${now.getMinutes()}`,
+    phases: {},
+  };
+
+  for (sheetIndex = 0; sheetIndex < doc.sheetCount; sheetIndex++) {
+    var currentSheet = doc.sheetsByIndex[sheetIndex];
+    var phaseMatches = currentSheet.title.match(/Phase (\d+)/);
+
+    if (phaseMatches == undefined) {
+      continue;
+    }
+
+    var phase = +phaseMatches[1];
+
+    var phaseResult = await scrapPhase(currentSheet);
+
+    bisAddonData.phases[phase] = phaseResult;
+  }
+
+  fs.writeFileSync(join(appDir, "cached.json"), JSON.stringify(bisAddonData));
+
   let template = fs.readFileSync(join(appDir, "./template.liquid"), "utf8");
   engine
-    .parseAndRender(template, { bisList: Object.values(grouped) })
+    .parseAndRender(template, { bisAddonData: bisAddonData })
     .then((render) => {
-      fs.writeFileSync(join(appDir, "..", "addon", "bis_list.lua"), render);
+      fs.writeFileSync(join(appDir, "..", "MeSoHordieBiS", "bis_list.lua"), render);
     });
 }
 

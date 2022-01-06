@@ -2,7 +2,7 @@ MeSoHordieAddon = LibStub("AceAddon-3.0"):NewAddon("MyAddon", "AceConsole-3.0", 
 
 MSHB = {}
 
-MSHB.currentPhase = 2;
+MSHB.currentPhase = "2";
 
 MSHB.spec_icon_table = {
     ["DRUID_balance"] = 'interface/icons/spell_nature_starfall.blp',
@@ -106,7 +106,7 @@ function MSHB:append_tooltip(tooltip)
 
     local itemId = select(3, strfind(itemLink, "item:(%d+)"))
     local class, spec = MSHB:predict_player();
-    local bisClass = msh_bis_list["phase" .. MSHB.currentPhase][class:lower()];
+    local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
     local r, g, b = GetClassColor(class);
     local isPlayerLootMaster = MSHB:player_is_master_looter();
     local currentMode = ""
@@ -135,7 +135,7 @@ function MSHB:append_tooltip(tooltip)
 
     if MeSoHordieAddon.db.char.mode == 'all' or isPlayerLootMaster then
         currentMode = "(All mode)"
-        for i, c in pairs(msh_bis_list["phase" .. MSHB.currentPhase]) do
+        for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
             for j, s in ipairs(c) do
                 if MSHB:has_value(s["items"], itemId) then
                     lines[#lines + 1] = {i:upper(), s["spec"], s["role"]}
@@ -145,7 +145,7 @@ function MSHB:append_tooltip(tooltip)
     end
 
     if next(lines) ~= nil then
-        tooltip:AddLine("Me So Hordie BiS - Phase " .. MSHB.currentPhase .. " " .. currentMode)
+        tooltip:AddLine("Me So Hordie BiS - Phase " .. MeSoHordieAddon.db.char.phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
             MSHB:append_spec(tooltip, v[1], v[2], v[3])
         end
@@ -160,6 +160,21 @@ function MSHB:string_split(s, delimiter)
     return result;
 end
 
+function MSHB:change_phase(phase)
+    if (phase == nil) then
+        print("Supported phases: 1, 2, 3")
+        return
+    end
+
+    if phase == "1" or phase == "2" or phase == "3" then
+        MeSoHordieAddon.db.char.phase = phase
+        print("Phase changed to ".. phase)
+        return
+    end
+
+    print("Unsupported phase specified: " .. phase)
+end
+
 function MSHB:change_mode(mode)
     if (mode == nil) then
         print("Available modes: spec, class, all")
@@ -172,13 +187,15 @@ function MSHB:change_mode(mode)
         return
     end
 
-    print("Invalid mode specified" .. mode)
+    print("Invalid mode specified: " .. mode)
 end
 
 function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     if input == "" then
-        print("Me So Hordie BiS commands:")
+        print("Me So Hordie BiS (data: " .. msh_bis_addon_data["version"] .. ")")
+        print("Commands:")
         print("/mshb mode <mode>")
+        print("/mshb phase <number>")
         return
     end
 
@@ -187,15 +204,24 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     if (split[1] == "mode") then
         MSHB:change_mode(split[2])
     end
+
+    if (split[1] == "phase") then
+        MSHB:change_phase(split[2])
+    end
 end
 
 function MeSoHordieAddon:OnInitialize()
 
         self.db = LibStub("AceDB-3.0"):New("MeSoHordieAddonDB", {
             char = {
-                mode = 'spec'
+                mode = 'spec',
+                phase = MSHB.currentPhase;
             }
         })
+
+        if self.db.char.phase == nil then
+            self.db.char.phase = MSHB.currentPhase
+        end
 
         GameTooltip:HookScript("OnTooltipSetItem", function(t)
             MSHB:append_tooltip(t)
