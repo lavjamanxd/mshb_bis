@@ -601,7 +601,7 @@ const t6sets = [
           shoulders: 31049,
           belt: 34555,
           wrists: 34446,
-          boots: 34572
+          boots: 34572,
         },
       },
       {
@@ -615,7 +615,7 @@ const t6sets = [
           shoulders: 31048,
           belt: 34556,
           wrists: 34444,
-          boots: 34573
+          boots: 34573,
         },
       },
       {
@@ -629,7 +629,7 @@ const t6sets = [
           shoulders: 31047,
           belt: 34554,
           wrists: 34445,
-          boots: 34571
+          boots: 34571,
         },
       },
     ],
@@ -648,7 +648,7 @@ const t6sets = [
           shoulders: 31006,
           belt: 34549,
           wrists: 34443,
-          boots: 34570
+          boots: 34570,
         },
       },
     ],
@@ -667,7 +667,7 @@ const t6sets = [
           shoulders: 31059,
           belt: 34557,
           wrists: 34447,
-          boots: 34574
+          boots: 34574,
         },
       },
     ],
@@ -686,7 +686,7 @@ const t6sets = [
           shoulders: 30996,
           belt: 34487,
           wrists: 34432,
-          boots: 34559
+          boots: 34559,
         },
       },
       {
@@ -700,7 +700,7 @@ const t6sets = [
           shoulders: 30998,
           belt: 34488,
           wrists: 34433,
-          boots: 34560
+          boots: 34560,
         },
       },
       {
@@ -714,7 +714,7 @@ const t6sets = [
           shoulders: 30997,
           belt: 34485,
           wrists: 34431,
-          boots: 34561
+          boots: 34561,
         },
       },
     ],
@@ -733,7 +733,7 @@ const t6sets = [
           shoulders: 31069,
           belt: 34527,
           wrists: 34435,
-          boots: 34562
+          boots: 34562,
         },
       },
       {
@@ -747,7 +747,7 @@ const t6sets = [
           shoulders: 31070,
           belt: 34528,
           wrists: 34434,
-          boots: 34563
+          boots: 34563,
         },
       },
     ],
@@ -766,7 +766,7 @@ const t6sets = [
           shoulders: 31030,
           belt: 34558,
           wrists: 34448,
-          boots: 34575
+          boots: 34575,
         },
       },
     ],
@@ -785,7 +785,7 @@ const t6sets = [
           shoulders: 31023,
           belt: 34542,
           wrists: 34437,
-          boots: 34566
+          boots: 34566,
         },
       },
       {
@@ -799,7 +799,7 @@ const t6sets = [
           shoulders: 31024,
           belt: 34545,
           wrists: 34439,
-          boots: 34567
+          boots: 34567,
         },
       },
       {
@@ -813,7 +813,7 @@ const t6sets = [
           shoulders: 31022,
           belt: 34543,
           wrists: 34438,
-          boots: 34565
+          boots: 34565,
         },
       },
     ],
@@ -832,7 +832,7 @@ const t6sets = [
           shoulders: 31054,
           belt: 34541,
           wrists: 34436,
-          boots: 34564
+          boots: 34564,
         },
       },
     ],
@@ -851,7 +851,7 @@ const t6sets = [
           shoulders: 30979,
           belt: 34546,
           wrists: 34441,
-          boots: 34569
+          boots: 34569,
         },
       },
       {
@@ -865,7 +865,7 @@ const t6sets = [
           shoulders: 30980,
           belt: 34547,
           wrists: 34442,
-          boots: 34568
+          boots: 34568,
         },
       },
     ],
@@ -916,7 +916,7 @@ function tierSetLookup(pclass, spec, name, cell, slot) {
       debugger;
     }
 
-    return [classTokenSet.tokens[slot], specSet.items[slot]];
+    return result;
   }
 
   return undefined;
@@ -961,7 +961,7 @@ async function predicateItemId(row, slot) {
   var predictions = [];
   var content = row[columnIndexes[slot]].value;
 
-  if (content == null || content == "NA" || content == "N/A") return [];
+  if (content == null || content == "NA" || content == "N/A" || content == "n/a" || content == "na") return [];
 
   var names = content.startsWith("http")
     ? [content.trim()]
@@ -971,8 +971,8 @@ async function predicateItemId(row, slot) {
         .map((n) => n.trim());
 
   for (const name of names) {
-    try {
-      for (const strategy of itemLookupStrategies) {
+    for (const strategy of itemLookupStrategies) {
+      try {
         var result = await strategy(
           row[columnIndexes.class].value.toLowerCase(),
           row[columnIndexes.spec].value.toLowerCase(),
@@ -981,9 +981,9 @@ async function predicateItemId(row, slot) {
           slot
         );
         if (result != undefined) predictions.push(result);
+      } catch (e) {
+        debugger;
       }
-    } catch (e) {
-      debugger;
     }
   }
   var flattenedPredictions = predictions
@@ -992,7 +992,7 @@ async function predicateItemId(row, slot) {
 
   if (flattenedPredictions.length == 0) {
     console.log(row[columnIndexes[slot]].value);
-    debugger;
+     debugger;
   }
 
   return flattenedPredictions;
@@ -1076,9 +1076,11 @@ async function scrapPhase(sheet) {
 
 async function main() {
   await doc.loadInfo();
-  var now = new Date();  
+  var now = new Date();
   var bisAddonData = {
-    version: `${now.getFullYear()}${now.getMonth()+1}${now.getDate()}${now.getHours()}${now.getMinutes()}`,
+    version: `${now.getFullYear()}${
+      now.getMonth() + 1
+    }${now.getDate()}${now.getHours()}${now.getMinutes()}`,
     phases: {},
   };
 
@@ -1103,7 +1105,10 @@ async function main() {
   engine
     .parseAndRender(template, { bisAddonData: bisAddonData })
     .then((render) => {
-      fs.writeFileSync(join(appDir, "..", "MeSoHordieBiS", "bis_list.lua"), render);
+      fs.writeFileSync(
+        join(appDir, "..", "MeSoHordieBiS", "bis_list.lua"),
+        render
+      );
     });
 }
 
