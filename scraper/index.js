@@ -134,7 +134,7 @@ const t4sets = [
         },
       },
       {
-        spec: ["feral"],
+        spec: ["feral combat"],
         set: "Malorne Harness",
         items: {
           head: 29098,
@@ -368,7 +368,7 @@ const t5sets = [
         },
       },
       {
-        spec: ["feral"],
+        spec: ["feral combat"],
         set: "Nordrassil Harness",
         items: {
           head: 30228,
@@ -605,7 +605,7 @@ const t6sets = [
         },
       },
       {
-        spec: ["feral"],
+        spec: ["feral combat"],
         set: "Thunderheart Harness",
         items: {
           head: 31039,

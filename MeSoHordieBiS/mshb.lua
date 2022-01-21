@@ -83,7 +83,7 @@ function MSHB:getSupportedModesDescription()
 end
 
 function MSHB:getCurrentPhase()
-    local phaseResult = 1
+    local phaseResult = 0
     local now = time()
     for i, v in pairs(self.supportedPhases) do
         if v["start"] < time() then
@@ -262,8 +262,6 @@ function MSHB:UpdateButton(button, target)
         return
     end
 
-    local key = target == "player" and "character" or "inspect"
-
     local slotID = button:GetID()
 
     self:AddIndicatorToButtonIfNeeded(button)
@@ -277,12 +275,14 @@ function MSHB:UpdateButton(button, target)
             return item:ContinueOnItemLoad(function()
                 local id = item:GetItemID()
                 if id then
-                    self:ShowIndicatorIfBiS(button, id);
+                    self:ShowIndicatorIfBiS(button, id, "player", false);
                 end
             end)
         else
-            local itemId = GetInventoryItemID(target, invSlot);
+            local itemId = GetInventoryItemID(target, slotID);
             if itemId then
+                self:ShowIndicatorIfBiS(button, itemId, "target", true);
+                return button.mshbIndicator
             end
         end
     end
@@ -300,12 +300,12 @@ function MSHB:AddIndicatorToButtonIfNeeded(button)
     button.mshbIndicator = overlayFrame:CreateTexture(nil, "OVERLAY")
     button.mshbIndicator:SetSize(14, 14)
     button.mshbIndicator:SetPoint('TOPRIGHT', 4, 0)
-    button.mshbIndicator:SetAtlas("groupfinder-icon-greencheckmark")
+    button.mshbIndicator:SetAtlas("worldquest-tracker-checkmark")
     button.mshbIndicator:Hide()
 end
 
-function MSHB:ShowIndicatorIfBiS(button, itemId)
-    local class, spec = self:predict_player("player", false);
+function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
+    local class, spec = self:predict_player(unit, inspect);
     local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
     for i, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then

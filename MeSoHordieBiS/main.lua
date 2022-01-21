@@ -104,7 +104,7 @@ function MeSoHordieAddon:ChangeModeCommand(mode)
     local modeSupported = MSHB:has_key(MSHB.supportedModes, mode)
 
     if modeSupported then
-        self:SetCurrentMode(nil, modeSupported)
+        self:SetCurrentMode(nil, mode)
         print("Mode changed to " .. mode .. " mode!")
         return
     end
@@ -152,10 +152,10 @@ function MeSoHordieAddon:UpdateTooltip(frame)
     MSHB:append_tooltip(frame)
 end
 
-function MeSoHordieAddon:OnAddonLoaded(event, param)
+function MeSoHordieAddon:OnAddonLoaded(event, addon)
     if self.lazyHooks[addon] then
-        self.lazyHookshooks[addon]()
-        self.lazyHookshooks[addon] = nil
+        self.lazyHooks[addon]()
+        self.lazyHooks[addon] = nil
     end
 end
 
@@ -168,6 +168,8 @@ function MeSoHordieAddon:LazyHook(addon, hookFunc)
 end
 
 function MeSoHordieAddon:OnInitialize()
+    self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded");
+
     LibStub("AceConfig-3.0"):RegisterOptionsTable("MeSoHordieAddon", self.options)
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("MeSoHordieAddon", "MeSoHordieAddon")
 
@@ -185,7 +187,6 @@ function MeSoHordieAddon:OnInitialize()
         self.db.char.showBisIndicator = true
     end
 
-    self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded");
     self:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")
 
     self:HookScript(GameTooltip, "OnTooltipSetItem", "UpdateTooltip")
