@@ -16,7 +16,7 @@ MeSoHordieAddon.options = {
             set = "SetCurrentPhase",
             style = "dropdown",
             width = "double",
-            order = 0,
+            order = 0
         },
         mode = {
             type = "select",
@@ -27,12 +27,12 @@ MeSoHordieAddon.options = {
             set = "SetCurrentMode",
             style = "dropdown",
             width = "double",
-            order = 10,
+            order = 10
         },
-        modeDescription ={
+        modeDescription = {
             type = "description",
             name = MSHB:getSupportedModesDescription(),
-            order = 11,
+            order = 11
         },
         showBiSIndicator = {
             type = "toggle",
@@ -41,7 +41,7 @@ MeSoHordieAddon.options = {
             get = "GetShowBiSIndicator",
             set = "SetShowBiSIndicator",
             order = 20,
-            width = "full",
+            width = "full"
         }
     }
 }
@@ -136,7 +136,7 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
 
     if (split[1] == "indicator") then
         self:SetShowBiSIndicator(nil, not self:GetShowBiSIndicator(nil))
-        print("Indicator set to ".. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
+        print("Indicator set to " .. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
     end
 end
 

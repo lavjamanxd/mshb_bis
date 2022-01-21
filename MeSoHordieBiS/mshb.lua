@@ -77,7 +77,7 @@ function MSHB:getSupportedModesDescription()
     local n = 1
     for i, v in pairs(self.supportedModes) do
         result[n] = v["name"] .. " - " .. v["description"]
-        n= n+1
+        n = n + 1
     end
     return table.concat(result, "\n")
 end
