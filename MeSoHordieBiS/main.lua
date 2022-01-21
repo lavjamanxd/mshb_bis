@@ -1,189 +1,111 @@
-MeSoHordieAddon = LibStub("AceAddon-3.0"):NewAddon("MyAddon", "AceConsole-3.0", "AceHook-3.0")
+MeSoHordieAddon = LibStub("AceAddon-3.0"):NewAddon("MyAddon", "AceConsole-3.0", "AceHook-3.0", "AceEvent-3.0")
 
-MSHB = {}
+MeSoHordieAddon.lazyHooks = {}
 
-MSHB.currentPhase = "2";
-
-MSHB.spec_icon_table = {
-    ["DRUID_balance"] = 'interface/icons/spell_nature_starfall.blp',
-    ["DRUID_feral"] = 'interface/icons/ability_racial_bearform.blp',
-    ["DRUID_restoration"] = 'interface/icons/spell_nature_healingtouch.blp',
-    ["HUNTER_beast mastery"] = 'interface/icons/ability_hunter_beasttaming.blp',
-    ["HUNTER_marksmanship"] = 'interface/icons/ability_marksmanship.blp',
-    ["HUNTER_survival"] = 'interface/icons/ability_hunter_swiftstrike.blp',
-    ["MAGE_arcane"] = 'interface/icons/spell_holy_magicalsentry.blp',
-    ["MAGE_fire"] = 'interface/icons/spell_fire_firebolt02.blp',
-    ["MAGE_frost"] = 'interface/icons/spell_frost_frostbolt02.blp',
-    ["PALADIN_protection"] = 'interface/icons/spell_holy_devotionaura.blp',
-    ["PALADIN_retribution"] = 'interface/icons/spell_holy_auraoflight.blp',
-    ["PALADIN_holy"] = 'interface/icons/spell_holy_holybolt.blp',
-    ["PRIEST_shadow"] = 'interface/icons/spell_shadow_shadowwordpain.blp',
-    ["PRIEST_holy"] = 'interface/icons/spell_holy_holybolt.blp',
-    ["PRIEST_discipline"] = 'interface/icons/spell_holy_wordfortitude.blp',
-    ["ROGUE_combat"] = 'interface/icons/ability_backstab.blp',
-    ["ROGUE_assasination"] = 'interface/icons/ability_rogue_eviscerate.blp',
-    ["ROGUE_subtlety"] = 'interface/icons/ability_stealth.blp',
-    ["SHAMAN_elemental"] = 'interface/icons/spell_nature_lightning.blp',
-    ["SHAMAN_enhancement"] = 'interface/icons/spell_nature_lightningshield.blp',
-    ["SHAMAN_restoration"] = 'interface/icons/spell_nature_magicimmunity.blp',
-    ["WARLOCK_affliction"] = 'interface/icons/spell_shadow_deathcoil.blp',
-    ["WARLOCK_demonology"] = 'interface/icons/spell_shadow_metamorphosis.blp',
-    ["WARLOCK_destruction"] = 'interface/icons/spell_shadow_rainoffire.blp',
-    ["WARRIOR_protection"] = 'interface/icons/inv_shield_06.blp',
-    ["WARRIOR_arms"] = 'interface/icons/ability_rogue_eviscerate.blp',
-    ["WARRIOR_fury"] = 'interface/icons/ability_warrior_innerrage.blp'
+MeSoHordieAddon.options = {
+    name = "Me So Hordie BiS",
+    handler = MeSoHordieAddon,
+    type = "group",
+    args = {
+        currentPhase = {
+            type = "select",
+            name = "Selected Phase",
+            desc = "Change BiS data from specific phase",
+            values = MSHB:generateSelectFromTable(MSHB.supportedPhases, "name"),
+            get = "GetCurrentPhase",
+            set = "SetCurrentPhase",
+            style = "dropdown",
+            width = "double",
+            order = 0,
+        },
+        mode = {
+            type = "select",
+            name = "Selected Mode",
+            desc = "Sets which items are getting shown on item tooltips",
+            values = MSHB:generateSelectFromTable(MSHB.supportedModes, "name"),
+            get = "GetCurrentMode",
+            set = "SetCurrentMode",
+            style = "dropdown",
+            width = "double",
+            order = 10,
+        },
+        modeDescription ={
+            type = "description",
+            name = MSHB:getSupportedModesDescription(),
+            order = 11,
+        },
+        showBiSIndicator = {
+            type = "toggle",
+            name = "Show BiS indicator",
+            desc = "Adds checkmarks to your/inspected character window if that item is BiS for your character in the selected phase",
+            get = "GetShowBiSIndicator",
+            set = "SetShowBiSIndicator",
+            order = 20,
+            width = "full",
+        }
+    }
 }
 
-function MSHB:to_pascal_case(input)
-    local result = input:sub(1, 1):upper() .. input:sub(2):lower();
-    return result
+function MeSoHordieAddon:RefreshCharacterFrame()
+    ToggleCharacter("PaperDollFrame")
+    ToggleCharacter("PaperDollFrame")
 end
 
-function MSHB:get_class_color(class)
-    local colors = RAID_CLASS_COLORS[class]
-    return colors.r, colors.g, colors.b
+function MeSoHordieAddon:GetShowBiSIndicator(info)
+    return self.db.char.showBisIndicator
 end
 
-function MSHB:predict_player()
-    local _, englishClass, classIndex = UnitClass("player")
-    local predictedSpec = ""
-    local predictedSpecSpentPoints = -1
-    for i = 1, GetNumTalentTabs() do
-        local name, texture, pointsSpent, fileName = GetTalentTabInfo(i);
-        if predictedSpecSpentPoints < pointsSpent then
-            predictedSpec = name
-            predictedSpecSpentPoints = pointsSpent
-        end
-    end
-    return englishClass, predictedSpec
+function MeSoHordieAddon:SetShowBiSIndicator(info, value)
+    self.db.char.showBisIndicator = value
+    self:RefreshCharacterFrame();
 end
 
-function MSHB:player_is_master_looter()
-    lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
-    if lootmethod == "master" and (masterlooterPartyID == 0 or masterlooterRaidID == 0) then
-        return true
-    end
-
-    return false
+function MeSoHordieAddon:GetCurrentPhase(info)
+    return self.db.char.phase
 end
 
-function MSHB:append_spec(tooltip, class, spec, role)
-    if spec == "all" then
-        tooltip:AddLine(
-            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. "      " .. MSHB:to_pascal_case(class) .. " - " ..
-                MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
-        return
-    end
-
-    tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
-                        MSHB.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-                        MSHB:to_pascal_case(class) .. " - " .. MSHB:to_pascal_case(spec) .. " - " .. role, r, g, b)
+function MeSoHordieAddon:SetCurrentPhase(info, value)
+    self.db.char.phase = value
+    self:RefreshCharacterFrame();
 end
 
-function MSHB:has_value(tab, val)
-    for index, value in ipairs(tab) do
-        if value == val then
-            return true
-        end
-    end
-
-    return false
+function MeSoHordieAddon:GetCurrentMode(info)
+    return self.db.char.mode
 end
 
-function MSHB:append_tooltip(tooltip)
-    local guildName, _, _ = GetGuildInfo("player")
-    local realmName = GetRealmName()
-
-    if guildName ~= "Me So Hordie" and realmName ~= "Nethergarde Keep" then
-        return
-    end
-
-    local _, itemLink = tooltip:GetItem()
-
-    if itemLink == nil then
-        return
-    end
-
-    local itemId = select(3, strfind(itemLink, "item:(%d+)"))
-    local class, spec = MSHB:predict_player();
-    local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
-    local r, g, b = GetClassColor(class);
-    local isPlayerLootMaster = MSHB:player_is_master_looter();
-    local currentMode = ""
-
-    local lines = {}
-
-    if MeSoHordieAddon.db.char.mode == 'spec' and not isPlayerLootMaster then
-        currentMode = "(Spec mode)"
-        for i, v in ipairs(bisClass) do
-            if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
-                if MSHB:has_value(v["items"], itemId) then
-                    lines[#lines + 1] = {class, v["spec"], v["role"]}
-                end
-            end
-        end
-    end
-
-    if MeSoHordieAddon.db.char.mode == 'class' and not isPlayerLootMaster then
-        currentMode = "(Class mode)"
-        for i, v in ipairs(bisClass) do
-            if MSHB:has_value(v["items"], itemId) then
-                lines[#lines + 1] = {class, v["spec"], v["role"]}
-            end
-        end
-    end
-
-    if MeSoHordieAddon.db.char.mode == 'all' or isPlayerLootMaster then
-        currentMode = "(All mode)"
-        for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
-            for j, s in ipairs(c) do
-                if MSHB:has_value(s["items"], itemId) then
-                    lines[#lines + 1] = {i:upper(), s["spec"], s["role"]}
-                end
-            end
-        end
-    end
-
-    if next(lines) ~= nil then
-        tooltip:AddLine("Me So Hordie BiS - Phase " .. MeSoHordieAddon.db.char.phase .. " " .. currentMode)
-        for i, v in ipairs(lines) do
-            MSHB:append_spec(tooltip, v[1], v[2], v[3])
-        end
-    end
+function MeSoHordieAddon:SetCurrentMode(info, value)
+    self.db.char.mode = value
 end
 
-function MSHB:string_split(s, delimiter)
-    result = {};
-    for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
-        table.insert(result, match);
-    end
-    return result;
-end
-
-function MSHB:change_phase(phase)
+function MeSoHordieAddon:ChangePhaseCommand(phase)
     if (phase == nil) then
-        print("Supported phases: 1, 2, 3")
+        print("Supported phases: " .. MSHB:pconcat(MSHB.supportedPhases, ", "))
         return
     end
 
-    if phase == "1" or phase == "2" or phase == "3" then
-        MeSoHordieAddon.db.char.phase = phase
-        print("Phase changed to ".. phase)
+    local phaseNumber = tonumber(phase)
+    local phaseSupported = MSHB:has_key(MSHB.supportedPhases, phaseNumber);
+
+    if phaseSupported then
+        self:SetCurrentPhase(nil, phaseNumber)
+        print("Phase changed to " .. phase)
         return
     end
 
     print("Unsupported phase specified: " .. phase)
 end
 
-function MSHB:change_mode(mode)
+function MeSoHordieAddon:ChangeModeCommand(mode)
     if (mode == nil) then
-        print("Available modes: spec, class, all")
+        print("Available modes: " .. MSHB:pconcat(MSHB.supportedModes, ", "))
         return
     end
 
-    if mode == "spec" or mode == "class" or mode == "all" then
-        MeSoHordieAddon.db.char.mode = mode
-        print("Mode changed to ".. mode .. " mode!")
+    local modeSupported = MSHB:has_key(MSHB.supportedModes, mode)
+
+    if modeSupported then
+        self:SetCurrentMode(nil, modeSupported)
+        print("Mode changed to " .. mode .. " mode!")
         return
     end
 
@@ -192,45 +114,87 @@ end
 
 function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     if input == "" then
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
         print("Me So Hordie BiS (data: " .. msh_bis_addon_data["version"] .. ")")
         print("Commands:")
         print("/mshb mode <mode>")
         print("/mshb phase <number>")
+        print("/mshb indicator")
         return
     end
 
     local split = MSHB:string_split(input, " ")
 
     if (split[1] == "mode") then
-        MSHB:change_mode(split[2])
+        self:ChangeModeCommand(split[2])
     end
 
     if (split[1] == "phase") then
-        MSHB:change_phase(split[2])
+        self:ChangePhaseCommand(split[2])
+    end
+
+    if (split[1] == "indicator") then
+        self:SetShowBiSIndicator(nil, not self:GetShowBiSIndicator(nil))
+        print("Indicator set to ".. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
+    end
+end
+
+function MeSoHordieAddon:PaperDollItemSlotButton_Update(button)
+    MSHB:UpdateButton(button, "player")
+end
+
+function MeSoHordieAddon:InspectPaperDollItemSlotButton_Update(button)
+    MSHB:UpdateButton(button, "target")
+end
+
+function MeSoHordieAddon:UpdateTooltip(frame)
+    MSHB:append_tooltip(frame)
+end
+
+function MeSoHordieAddon:OnAddonLoaded(event, param)
+    if self.lazyHooks[addon] then
+        self.lazyHookshooks[addon]()
+        self.lazyHookshooks[addon] = nil
+    end
+end
+
+function MeSoHordieAddon:LazyHook(addon, hookFunc)
+    if IsAddOnLoaded(addon) then
+        hookFunc()
+    else
+        self.lazyHooks[addon] = hookFunc
     end
 end
 
 function MeSoHordieAddon:OnInitialize()
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("MeSoHordieAddon", self.options)
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("MeSoHordieAddon", "MeSoHordieAddon")
 
-        self.db = LibStub("AceDB-3.0"):New("MeSoHordieAddonDB", {
-            char = {
-                mode = 'spec',
-                phase = MSHB.currentPhase;
-            }
-        })
+    self.db = LibStub("AceDB-3.0"):New("MeSoHordieAddonDB", {
+        char = {
+            mode = 'spec',
+            phase = MSHB:getCurrentPhase(),
+            showBisIndicator = true
+        }
+    })
 
-        if self.db.char.phase == nil then
-            self.db.char.phase = MSHB.currentPhase
-        end
+    self.db.char.phase = MSHB:getCurrentPhase()
 
-        GameTooltip:HookScript("OnTooltipSetItem", function(t)
-            MSHB:append_tooltip(t)
-        end)
-        ItemRefTooltip:HookScript("OnTooltipSetItem", function(t)
-            MSHB:append_tooltip(t)
-        end)
+    if self.db.char.showBisIndicator == nil then
+        self.db.char.showBisIndicator = true
+    end
 
-        MeSoHordieAddon:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")
+    self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded");
+    self:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")
+
+    self:HookScript(GameTooltip, "OnTooltipSetItem", "UpdateTooltip")
+    self:HookScript(ItemRefTooltip, "OnTooltipSetItem", "UpdateTooltip")
+    self:SecureHook("PaperDollItemSlotButton_Update");
+    self:LazyHook("Blizzard_InspectUI", function()
+        self:SecureHook("InspectPaperDollItemSlotButton_Update");
+    end)
+
 end
 
 function MeSoHordieAddon:OnEnable()
