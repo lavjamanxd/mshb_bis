@@ -44,7 +44,7 @@ MSHB.supportedModes = {
 
 MSHB.spec_icon_table = {
     ["DRUID_balance"] = 'interface/icons/spell_nature_starfall.blp',
-    ["DRUID_feral"] = 'interface/icons/ability_racial_bearform.blp',
+    ["DRUID_feral combat"] = 'interface/icons/ability_racial_bearform.blp',
     ["DRUID_restoration"] = 'interface/icons/spell_nature_healingtouch.blp',
     ["HUNTER_beast mastery"] = 'interface/icons/ability_hunter_beasttaming.blp',
     ["HUNTER_marksmanship"] = 'interface/icons/ability_marksmanship.blp',
