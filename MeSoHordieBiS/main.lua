@@ -1,5 +1,7 @@
 MeSoHordieAddon = LibStub("AceAddon-3.0"):NewAddon("MyAddon", "AceConsole-3.0", "AceHook-3.0", "AceEvent-3.0")
 
+MeSoHordieAddon.addonVersion = GetAddOnMetadata("MeSoHordieBiS", "Version")
+
 MeSoHordieAddon.lazyHooks = {}
 
 MeSoHordieAddon.options = {
@@ -112,15 +114,26 @@ function MeSoHordieAddon:ChangeModeCommand(mode)
     print("Invalid mode specified: " .. mode)
 end
 
+function MeSoHordieAddon:ToggleIndicatorCommand()
+    self:SetShowBiSIndicator(nil, not self:GetShowBiSIndicator(nil))
+    print("Indicator set to " .. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
+end
+
+function MeSoHordieAddon:PrintVersion()
+    print("Addon version: " .. MeSoHordieAddon.addonVersion)
+    print("Data version: " .. msh_bis_addon_data["version"])
+end
+
 function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     if input == "" then
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        print("Me So Hordie BiS (data: " .. msh_bis_addon_data["version"] .. ")")
+        print("Me So Hordie BiS")
         print("Commands:")
         print("/mshb mode <mode>")
         print("/mshb phase <number>")
         print("/mshb indicator")
+        print("/mshb version")
         return
     end
 
@@ -135,8 +148,11 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     end
 
     if (split[1] == "indicator") then
-        self:SetShowBiSIndicator(nil, not self:GetShowBiSIndicator(nil))
-        print("Indicator set to " .. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
+        self:ToggleIndicatorCommand()
+    end
+
+    if (split[1] == "version") then
+        self:PrintVersion()
     end
 end
 
