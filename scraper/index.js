@@ -982,11 +982,12 @@ async function predicateItemId(row, slot) {
   var names = content.startsWith("http")
     ? [content.trim()]
     : content
-        .replace(/\(.*\)/, "")
+        .replace(/\(.*?\)/g, "")
         .split("/")
         .map((n) => n.trim());
 
   for (const name of names) {
+    var innerPredictions = [];
     for (const strategy of itemLookupStrategies) {
       try {
         var result = await strategy(
@@ -996,12 +997,22 @@ async function predicateItemId(row, slot) {
           row[columnIndexes[slot]],
           slot
         );
-        if (result != undefined) predictions.push(result);
+        if (result != undefined) innerPredictions.push(result);
       } catch (e) {
         debugger;
       }
     }
+
+    var flattenedInnerPredictions = innerPredictions.flat();
+
+    if (flattenedInnerPredictions.length == 0) {
+      console.log(row[columnIndexes[slot]].value);
+      debugger;
+    }
+
+    predictions.push(flattenedInnerPredictions);
   }
+
   var flattenedPredictions = predictions
     .flat()
     .filter((x, i, a) => a.indexOf(x) == i);
