@@ -15,6 +15,7 @@ doc.useApiKey(process.env.GOOGLE_API_KEY);
 const t4Tokens = [
   {
     class: ["hunter", "mage", "warlock"],
+    name: "of the Fallen Hero",
     tokens: {
       hands: 29756,
       legs: 29765,
@@ -25,6 +26,7 @@ const t4Tokens = [
   },
   {
     class: ["druid", "priest", "warrior"],
+    name: "of the Fallen Defender",
     tokens: {
       hands: 29758,
       legs: 29767,
@@ -35,6 +37,7 @@ const t4Tokens = [
   },
   {
     class: ["paladin", "rogue", "shaman"],
+    name: "of the Fallen Champion",
     tokens: {
       hands: 29757,
       legs: 29766,
@@ -47,6 +50,7 @@ const t4Tokens = [
 const t5Tokens = [
   {
     class: ["hunter", "mage", "warlock"],
+    name: "of the Vanquished Hero",
     tokens: {
       hands: 30241,
       legs: 30247,
@@ -57,6 +61,7 @@ const t5Tokens = [
   },
   {
     class: ["druid", "priest", "warrior"],
+    name: "of the Vanquished Defender",
     tokens: {
       hands: 30240,
       legs: 30246,
@@ -67,6 +72,7 @@ const t5Tokens = [
   },
   {
     class: ["paladin", "rogue", "shaman"],
+    name: "of the Vanquished Champion",
     tokens: {
       hands: 30239,
       legs: 30245,
@@ -79,6 +85,7 @@ const t5Tokens = [
 const t6Tokens = [
   {
     class: ["paladin", "priest", "warlock"],
+    name: "of the Forgotten Conqueror",
     tokens: {
       hands: 31092,
       legs: 31098,
@@ -92,6 +99,7 @@ const t6Tokens = [
   },
   {
     class: ["druid", "mage", "rogue"],
+    name: "of the Forgotten Vanquisher",
     tokens: {
       hands: 31093,
       legs: 31099,
@@ -105,6 +113,7 @@ const t6Tokens = [
   },
   {
     class: ["hunter", "shaman", "warrior"],
+    name: "of the Forgotten Protector",
     tokens: {
       hands: 31094,
       legs: 31100,
@@ -961,7 +970,14 @@ async function predicateItemId(row, slot) {
   var predictions = [];
   var content = row[columnIndexes[slot]].value;
 
-  if (content == null || content == "NA" || content == "N/A" || content == "n/a" || content == "na") return [];
+  if (
+    content == null ||
+    content == "NA" ||
+    content == "N/A" ||
+    content == "n/a" ||
+    content == "na"
+  )
+    return [];
 
   var names = content.startsWith("http")
     ? [content.trim()]
@@ -992,7 +1008,7 @@ async function predicateItemId(row, slot) {
 
   if (flattenedPredictions.length == 0) {
     console.log(row[columnIndexes[slot]].value);
-     debugger;
+    debugger;
   }
 
   return flattenedPredictions;
@@ -1072,6 +1088,64 @@ async function scrapPhase(sheet) {
   });
 
   return grouped;
+}
+
+async function validateTokens() {
+  for (const tierToken of Object.keys(tierTokens)) {
+    console.log(`Tier ${tierToken}`);
+    for (const token of tierTokens[+tierToken]) {
+      console.log(` ${token.class.join(", ")}`);
+      for (const tokenPiece of Object.keys(token.tokens)) {
+        try {
+          const response = await fetch(
+            `https://tbc.wowhead.com/item=${token.tokens[tokenPiece]}`
+          );
+          var responseText = await response.text();
+          var titleMatches = responseText.match(/<title>(.*) -.*-.*<\/title>/);
+
+          if (titleMatches == undefined) {
+            debugger;
+          }
+
+          console.log(`   - ${titleMatches[1]}`);
+
+          if (!titleMatches[1].endsWith(token.name)) debugger;
+        } catch (e) {
+          debugger;
+        }
+      }
+    }
+  }
+
+  for (const tierSetNumber of Object.keys(tierSets)) {
+    console.log(`Tier ${tierSetNumber}`);
+    for (const tierSet of tierSets[+tierSetNumber]) {
+      console.log(` ${tierSet.class}`);
+      for (const sets of tierSet.sets) {
+        console.log(`   ${sets.spec.join(", ")}`);
+        console.log(`   ${sets.set}`);
+        for (const slot of Object.keys(sets.items)) {
+          try {
+            const response = await fetch(
+              `https://tbc.wowhead.com/item=${sets.items[slot]}`
+            );
+            var responseText = await response.text();
+            var titleMatches = responseText.match(
+              /<title>(.*) -.*-.*<\/title>/
+            );
+
+            if (titleMatches == undefined) {
+              debugger;
+            }
+
+            console.log(`    - ${titleMatches[1]}`);
+          } catch (e) {
+            debugger;
+          }
+        }
+      }
+    }
+  }
 }
 
 async function main() {
