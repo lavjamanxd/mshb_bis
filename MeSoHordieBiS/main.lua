@@ -44,6 +44,15 @@ MeSoHordieAddon.options = {
             set = "SetShowBiSIndicator",
             order = 20,
             width = "full"
+        },
+        ignoreGuildCheck = {
+            type = "toggle",
+            name = "Ignore guild/realm check",
+            desc = "Shows information for non-guildies",
+            get = "GetIgnoreGuildCheck",
+            set = "SetIgnoreGuildCheck",
+            order = 30,
+            width = "full"
         }
     }
 }
@@ -77,6 +86,15 @@ end
 
 function MeSoHordieAddon:SetCurrentMode(info, value)
     self.db.char.mode = value
+end
+
+function MeSoHordieAddon:GetIgnoreGuildCheck(info)
+    return self.db.char.ignoreGuildCheck
+end
+
+function MeSoHordieAddon:SetIgnoreGuildCheck(info, value)
+    self.db.char.ignoreGuildCheck = value
+    self:RefreshCharacterFrame();
 end
 
 function MeSoHordieAddon:ChangePhaseCommand(phase)
@@ -119,6 +137,11 @@ function MeSoHordieAddon:ToggleIndicatorCommand()
     print("Indicator set to " .. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
 end
 
+function MeSoHordieAddon:ToggleGuildCheckCommand()
+    self:SetIgnoreGuildCheck(nil, not self:GetIgnoreGuildCheck(nil))
+    print("Ignore guild check is set to " .. (self:GetIgnoreGuildCheck(nil) and "yes" or "no"))
+end
+
 function MeSoHordieAddon:PrintVersion()
     print("Addon version: " .. MeSoHordieAddon.addonVersion)
     print("Data version: " .. msh_bis_addon_data["version"])
@@ -133,6 +156,7 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
         print("/mshb mode <mode>")
         print("/mshb phase <number>")
         print("/mshb indicator")
+        print("/mshb ignoreguildcheck")
         print("/mshb version")
         return
     end
@@ -149,6 +173,10 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
 
     if (split[1] == "indicator") then
         self:ToggleIndicatorCommand()
+    end
+
+    if (split[1] == "ignoreguildcheck") then
+        self:ToggleGuildCheckCommand()
     end
 
     if (split[1] == "version") then

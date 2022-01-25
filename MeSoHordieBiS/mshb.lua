@@ -174,13 +174,17 @@ function MSHB:has_value(tab, val)
 end
 
 function MSHB:guild_member()
+    if MeSoHordieAddon.db.char.ignoreGuildCheck then
+        return true
+    end
+
     local guildName, _, _ = GetGuildInfo("player")
     local realmName = GetRealmName()
 
-    if guildName ~= "Me So Hordie" and realmName ~= "Nethergarde Keep" then
-        return false
+    if guildName == "Me So Hordie" and realmName == "Nethergarde Keep" then
+        return true
     end
-    return true
+    return false
 end
 
 function MSHB:append_tooltip(tooltip)
@@ -250,12 +254,12 @@ function MSHB:string_split(s, delimiter)
 end
 
 function MSHB:UpdateButton(button, target)
-    if not self:guild_member() then
-        return
-    end
-
     if button.mshbIndicator then
         button.mshbIndicator:Hide()
+    end
+
+    if not self:guild_member() then
+        return
     end
 
     if not MeSoHordieAddon.db.char.showBisIndicator then
