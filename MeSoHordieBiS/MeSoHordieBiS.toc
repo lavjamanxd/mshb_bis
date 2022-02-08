@@ -4,7 +4,8 @@
 ## Version: 1.1.4
 ## SavedVariablesPerCharacter: MeSoHordieAddonDB
 
+embeds.xml
+
 bis_list.lua
 mshb.lua
 main.lua
-embeds.xml
