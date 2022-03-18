@@ -3,6 +3,8 @@ const { GoogleSpreadsheet } = require("google-spreadsheet");
 const fetch = require("node-fetch");
 const fs = require("fs");
 const { dirname, join } = require("path");
+const luamin = require("luamin");
+
 const appDir = dirname(require.main.filename);
 
 var { Liquid } = require("liquidjs");
@@ -1186,13 +1188,15 @@ async function main() {
 
   fs.writeFileSync(join(appDir, "cached.json"), JSON.stringify(bisAddonData));
 
+  // var bisAddonData = JSON.parse(fs.readFileSync(join(appDir, "cached.json")));
+
   let template = fs.readFileSync(join(appDir, "./template.liquid"), "utf8");
   engine
     .parseAndRender(template, { bisAddonData: bisAddonData })
     .then((render) => {
       fs.writeFileSync(
         join(appDir, "..", "MeSoHordieBiS", "bis_list.lua"),
-        render
+        luamin.minify(render)
       );
     });
 }
