@@ -2,7 +2,7 @@ MSHB = {}
 
 MSHB.supportedPhases = {
     [1] = {
-        name = "Phase 1",
+        name = "Phase 1 - KARA/G/M",
         start = time {
             year = 2021,
             month = 6,
@@ -10,7 +10,7 @@ MSHB.supportedPhases = {
         }
     },
     [2] = {
-        name = "Phase 2",
+        name = "Phase 2 - SSC/TK",
         start = time {
             year = 2021,
             month = 9,
@@ -18,11 +18,27 @@ MSHB.supportedPhases = {
         }
     },
     [3] = {
-        name = "Phase 3",
+        name = "Phase 3 - MH/BT",
         start = time {
             year = 2022,
             month = 1,
             day = 28
+        }
+    },
+    [4] = {
+        name = "Phase 4 - ZA",
+        start = time {
+            year = 2022,
+            month = 3,
+            day = 22
+        }
+    },
+    [5] = {
+        name = "Phase 5 - SW",
+        start = time {
+            year = 2022,
+            month = 12,
+            day = 31
         }
     }
 }
@@ -139,18 +155,26 @@ function MSHB:player_is_master_looter()
     return false
 end
 
-function MSHB:append_spec(tooltip, class, spec, role)
+function MSHB:render_multiphase(multi)
+    local result = ""
+    for i = 1, multi do
+        result = result .. "+"
+    end
+    return result
+end
+
+function MSHB:append_spec(tooltip, class, spec, role, multi)
     if spec == "all" then
         tooltip:AddLine(
             "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|Tinterface/icons/classicon_" .. class ..
-                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role,
+                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. " " .. self:render_multiphase(multi),
             r, g, b)
         return
     end
 
     tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
                         self.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role, r, g, b)
+                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. " " .. self:render_multiphase(multi), r, g, b)
 end
 
 function MSHB:has_key(tab, val)
@@ -187,6 +211,29 @@ function MSHB:guild_member()
     return false
 end
 
+function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
+    local result = 0;
+    for i, v in pairs(self.supportedPhases) do
+        if i > phase then
+            local futurePhaseSpecBis = msh_bis_addon_data["phases"]["phase" .. i][class];
+            local oldAmount = result;
+            for i, v in ipairs(futurePhaseSpecBis) do
+                if v["spec"] == spec then
+                    if self:has_value(v["items"], itemId) then
+                        result=result+1;
+                    end
+                end
+            end
+
+            if oldAmount == result then
+                return result
+            end
+        end
+    end
+
+    return result
+end
+
 function MSHB:append_tooltip(tooltip)
     if not self:guild_member() then
         return
@@ -200,7 +247,7 @@ function MSHB:append_tooltip(tooltip)
 
     local itemId = select(3, strfind(itemLink, "item:(%d+)"))
     local class, spec = self:predict_player("player", false);
-    local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
+    local currentPhaseBiSClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
     local isPlayerLootMaster = self:player_is_master_looter();
     local currentMode = ""
 
@@ -208,10 +255,11 @@ function MSHB:append_tooltip(tooltip)
 
     if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster then
         currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-        for i, v in ipairs(bisClass) do
+        for i, v in ipairs(currentPhaseBiSClass) do
             if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
                 if self:has_value(v["items"], itemId) then
-                    lines[#lines + 1] = {class, v["spec"], v["role"]}
+                    local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                    lines[#lines + 1] = {class, v["spec"], v["role"], multi}
                 end
             end
         end
@@ -219,9 +267,10 @@ function MSHB:append_tooltip(tooltip)
 
     if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster then
         currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-        for i, v in ipairs(bisClass) do
+        for i, v in ipairs(currentPhaseBiSClass) do
             if self:has_value(v["items"], itemId) then
-                lines[#lines + 1] = {class, v["spec"], v["role"]}
+                local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                lines[#lines + 1] = {class, v["spec"], v["role"], multi}
             end
         end
     end
@@ -231,7 +280,8 @@ function MSHB:append_tooltip(tooltip)
         for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
             for j, s in ipairs(c) do
                 if self:has_value(s["items"], itemId) then
-                    lines[#lines + 1] = {i:upper(), s["spec"], s["role"]}
+                    local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                    lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi}
                 end
             end
         end
@@ -240,7 +290,7 @@ function MSHB:append_tooltip(tooltip)
     if next(lines) ~= nil then
         tooltip:AddLine("Me So Hordie BiS - Phase " .. MeSoHordieAddon.db.char.phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
-            self:append_spec(tooltip, v[1], v[2], v[3])
+            self:append_spec(tooltip, v[1], v[2], v[3], v[4])
         end
     end
 end
