@@ -156,25 +156,29 @@ function MSHB:player_is_master_looter()
 end
 
 function MSHB:render_multiphase(multi)
-    local result = ""
-    for i = 1, multi do
-        result = result .. "+"
+    local current = MeSoHordieAddon.db.char.phase
+    if multi == 0 then
+        return ""
     end
-    return result
+    local lastBiSPhase = current + multi;
+    if lastBiSPhase == 5 then
+        return " (<End)"
+    end
+    return " (<P" .. lastBiSPhase ..")"
 end
 
 function MSHB:append_spec(tooltip, class, spec, role, multi)
     if spec == "all" then
         tooltip:AddLine(
             "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|Tinterface/icons/classicon_" .. class ..
-                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. " " .. self:render_multiphase(multi),
+                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. self:render_multiphase(multi),
             r, g, b)
         return
     end
 
     tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
                         self.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. " " .. self:render_multiphase(multi), r, g, b)
+                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. self:render_multiphase(multi), r, g, b)
 end
 
 function MSHB:has_key(tab, val)
@@ -212,6 +216,10 @@ function MSHB:guild_member()
 end
 
 function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
+    if not MeSoHordieAddon.db.char.showMultiPhaseIndicator then
+        return 0
+    end
+
     local result = 0;
     for i, v in pairs(self.supportedPhases) do
         if i > phase then

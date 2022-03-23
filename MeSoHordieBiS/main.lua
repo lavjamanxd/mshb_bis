@@ -147,6 +147,11 @@ function MeSoHordieAddon:PrintVersion()
     print("Data version: " .. msh_bis_addon_data["version"])
 end
 
+function MeSoHordieAddon:ToggleExperimentalFeatures()
+    self.db.char.showMultiPhaseIndicator = not self.db.char.showMultiPhaseIndicator
+    print("Experimental mode changed")
+end
+
 function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     if input == "" then
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
@@ -181,6 +186,10 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
 
     if (split[1] == "version") then
         self:PrintVersion()
+    end
+
+    if (split[1] == "experimental") then
+        self:ToggleExperimentalFeatures()
     end
 end
 
@@ -221,7 +230,8 @@ function MeSoHordieAddon:OnInitialize()
         char = {
             mode = 'spec',
             phase = MSHB:getCurrentPhase(),
-            showBisIndicator = true
+            showBisIndicator = true,
+            showMultiPhaseIndicator = false,
         }
     })
 
@@ -229,6 +239,10 @@ function MeSoHordieAddon:OnInitialize()
 
     if self.db.char.showBisIndicator == nil then
         self.db.char.showBisIndicator = true
+    end
+
+    if self.db.char.showMultiPhaseIndicator == nil then
+        self.db.char.showMultiPhaseIndicator = false
     end
 
     self:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")
