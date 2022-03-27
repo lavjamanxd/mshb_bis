@@ -1008,7 +1008,7 @@ async function predicateItemId(row, slot) {
     var flattenedInnerPredictions = innerPredictions.flat();
 
     if (flattenedInnerPredictions.length == 0) {
-      console.log(row[columnIndexes[slot]].value);
+      console.log(`couldnt find: ${row[columnIndexes[slot]].value}`);
       debugger;
     }
 
@@ -1180,7 +1180,7 @@ async function main() {
     }
 
     var phase = +phaseMatches[1];
-
+    console.log(`scraping phase: ${phase}`);
     var phaseResult = await scrapPhase(currentSheet);
 
     bisAddonData.phases[phase] = phaseResult;
