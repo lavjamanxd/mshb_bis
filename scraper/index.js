@@ -895,6 +895,47 @@ const tierTokens = {
   6: t6Tokens,
 };
 
+const hardcodedItems = {
+  "Magtheridon's Head": 32386,
+};
+
+var sunmoteItemCombinations = {
+  34405: 34339,
+  34393: 34202,
+  34399: 34233,
+  34406: 34342,
+  34386: 34170,
+  34403: 34245,
+  34391: 34209,
+  34398: 34212,
+  34384: 34169,
+  34407: 34351,
+  34404: 34244,
+  34392: 34195,
+  34397: 34211,
+  34385: 34188,
+  34408: 34234,
+  34402: 34332,
+  34390: 34208,
+  34396: 34229,
+  34383: 34186,
+  34409: 34350,
+  34401: 34243,
+  34389: 34193,
+  34395: 34216,
+  34382: 34167,
+  34400: 34345,
+  34388: 34192,
+  34394: 34215,
+  34381: 34180,
+};
+
+const verdantSphere = 32405;
+var verdantSphereRewards = [30007, 30015, 30017, 30018];
+
+const magtheridonsHead = 32386;
+var magtheridonsHeadReward = [28792, 28793, 28790, 28791];
+
 function linkLookup(pclass, spec, name, cell, slot) {
   var matches = cell.value.match(/item=(\d+)/);
 
@@ -953,12 +994,35 @@ async function wowheadLookup(pclass, spec, name, cell, slot) {
   return result;
 }
 
-const hardcodedItems = {
-  "Magtheridon's Head": 32386,
-};
-
 function hardcodedLookup(pclass, spec, name, cell, slot) {
   return hardcodedItems[name];
+}
+
+function sunmoteBaseItemLookup(pclass, spec, ids, cell, slot) {
+  var result = [];
+  ids.forEach((id) => {
+    if (sunmoteItemCombinations[id] != undefined) {
+      result.push(sunmoteItemCombinations[id]);
+    }
+  });
+
+  return result;
+}
+
+function verdantSphereItemLookup(pclass, spec, ids, cell, slot) {
+  ids.forEach((id) => {
+    if (verdantSphereRewards[id] != undefined) {
+      return verdantSphere;
+    }
+  });
+}
+
+function magtheridonsHeadItemLookup(pclass, spec, ids, cell, slot) {
+  ids.forEach((id) => {
+    if (magtheridonsHeadReward[id] != undefined) {
+      return magtheridonsHead;
+    }
+  });
 }
 
 var itemLookupStrategies = [
@@ -966,6 +1030,12 @@ var itemLookupStrategies = [
   tierSetLookup,
   wowheadLookup,
   hardcodedLookup,
+];
+
+var postItemLookupStrategies = [
+  sunmoteBaseItemLookup,
+  verdantSphereItemLookup,
+  magtheridonsHeadItemLookup,
 ];
 
 async function predicateItemId(row, slot) {
@@ -1012,7 +1082,26 @@ async function predicateItemId(row, slot) {
       debugger;
     }
 
+    var postPredictions = [];
+    for (const strategy of postItemLookupStrategies) {
+      try {
+        var result = await strategy(
+          row[columnIndexes.class].value.toLowerCase(),
+          row[columnIndexes.spec].value.toLowerCase(),
+          flattenedInnerPredictions,
+          row[columnIndexes[slot]],
+          slot
+        );
+        if (result != undefined) postPredictions.push(result);
+      } catch (e) {
+        debugger;
+      }
+    }
+
+    var flattenedPostPredictions = postPredictions.flat();
+
     predictions.push(flattenedInnerPredictions);
+    predictions.push(flattenedPostPredictions);
   }
 
   var flattenedPredictions = predictions
