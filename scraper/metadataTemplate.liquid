@@ -1,0 +1,86 @@
+metadata = {
+    {%- for item in metadata %}
+        ["{{ item[0] }}"] = {
+            ["info"] = {
+                {%- if item[1].info.slot %}
+                ["slot"] = {{ item[1].info.slot }}
+                {%- endif %}
+            },
+            ["source"] = {
+                {%- if item[1].source.profession %}
+                ["profession"] = {
+                    ["name"] = "{{ item[1].source.profession.name }}",
+                },
+                {%- endif %}
+                {%- if item[1].source.quest %}
+                ["quest"] = {
+                {%- for quest in item[1].source.quest %}
+                    {
+                        ["name"] = "{{ quest.name }}",
+                        ["zone"] = "{{ quest.zone }}",
+                    },
+                {%- endfor %}
+                },
+                {%- endif %}
+                {%- if item[1].source.drop %}
+                ["drop"] = {
+                {%- for npc in item[1].source.drop %}
+                    {
+                        ["name"] = "{{ npc.name }}",
+                        ["zone"] = "{{ npc.zone }}",
+                        ["chance"] = "{{ npc.chance }}",
+                    },
+                {%- endfor %}
+                },
+                {%- endif %}
+                {%- if item[1].source.containedin %}
+                ["containedin"] = {
+                {%- for container in item[1].source.containedin %}
+                    {
+                        ["name"] = "{{ container.name }}",
+                        ["zone"] = "{{ container.zone }}",
+                        ["chance"] = "{{ container.chance }}",
+                    },
+                {%- endfor %}
+                },
+                {%- endif %}
+                {%- if item[1].source.soldBy %}
+                ["soldby"] = {
+                {%- for vendor in item[1].source.soldBy %}
+                    {
+                        ["name"] = "{{ vendor.name }}",
+                        ["zone"] = "{{ vendor.zone }}",
+                        ["vendor"] = "{{ vendor.vendor }}",
+                        ["price"] = {
+                        {%- if vendor.price.money %}
+                            ["money"] = { {{ vendor.price.money.gold }}, {{ vendor.price.money.silver }}, {{ vendor.price.money.copper }} },
+                        {%- endif %}
+                        {%- if vendor.price.currency %}
+                            ["currency"] = {
+                            {%- for currency in vendor.price.currency  %}
+                                {
+                                    ["id"] = {{ currency.id }},
+                                    ["amount"] = {{ currency.amount }}
+                                },
+                            {%- endfor %}
+                            },
+                        {%- endif %}
+                        {%- if vendor.price.item %}
+                            ["item"] = {
+                            {%- for item in vendor.price.item  %}
+                                {
+                                    ["id"] = {{ item.id }},
+                                    ["amount"] = {{ item.amount }}
+                                },
+                            {%- endfor %}
+                            },
+                        {%- endif %}
+                        },
+                    },
+                {%- endfor %}
+                },
+                {%- endif %}
+            }
+        },
+    {%- endfor %}
+}

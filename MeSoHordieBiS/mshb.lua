@@ -164,21 +164,22 @@ function MSHB:render_multiphase(multi)
     if lastBiSPhase == 5 then
         return " (<End)"
     end
-    return " (<P" .. lastBiSPhase ..")"
+    return " (<P" .. lastBiSPhase .. ")"
 end
 
 function MSHB:append_spec(tooltip, class, spec, role, multi)
     if spec == "all" then
         tooltip:AddLine(
             "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|Tinterface/icons/classicon_" .. class ..
-                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. self:render_multiphase(multi),
-            r, g, b)
+                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
+                self:render_multiphase(multi), r, g, b)
         return
     end
 
     tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
                         self.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role .. self:render_multiphase(multi), r, g, b)
+                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
+                        self:render_multiphase(multi), r, g, b)
 end
 
 function MSHB:has_key(tab, val)
@@ -228,7 +229,7 @@ function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
             for i, v in ipairs(futurePhaseSpecBis) do
                 if v["spec"] == spec then
                     if self:has_value(v["items"], itemId) then
-                        result=result+1;
+                        result = result + 1;
                     end
                 end
             end
@@ -266,7 +267,8 @@ function MSHB:append_tooltip(tooltip)
         for i, v in ipairs(currentPhaseBiSClass) do
             if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
                 if self:has_value(v["items"], itemId) then
-                    local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                    local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(),
+                        itemId, MeSoHordieAddon.db.char.phase)
                     lines[#lines + 1] = {class, v["spec"], v["role"], multi}
                 end
             end
@@ -277,7 +279,8 @@ function MSHB:append_tooltip(tooltip)
         currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
         for i, v in ipairs(currentPhaseBiSClass) do
             if self:has_value(v["items"], itemId) then
-                local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(), itemId,
+                    MeSoHordieAddon.db.char.phase)
                 lines[#lines + 1] = {class, v["spec"], v["role"], multi}
             end
         end
@@ -288,7 +291,8 @@ function MSHB:append_tooltip(tooltip)
         for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
             for j, s in ipairs(c) do
                 if self:has_value(s["items"], itemId) then
-                    local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                    local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(), itemId,
+                        MeSoHordieAddon.db.char.phase)
                     lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi}
                 end
             end

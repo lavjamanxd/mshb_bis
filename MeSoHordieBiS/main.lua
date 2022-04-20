@@ -1,9 +1,3 @@
-MeSoHordieAddon = LibStub("AceAddon-3.0"):NewAddon("MyAddon", "AceConsole-3.0", "AceHook-3.0", "AceEvent-3.0")
-
-MeSoHordieAddon.addonVersion = GetAddOnMetadata("MeSoHordieBiS", "Version")
-
-MeSoHordieAddon.lazyHooks = {}
-
 MeSoHordieAddon.options = {
     name = "Me So Hordie BiS",
     handler = MeSoHordieAddon,
@@ -152,6 +146,25 @@ function MeSoHordieAddon:ToggleExperimentalFeatures()
     print("Experimental mode changed")
 end
 
+function MeSoHordieAddon:dump(t, indent, done)
+    done = done or {}
+    indent = indent or 0
+
+    done[t] = true
+
+    for key, value in pairs(t) do
+        if type(value) == "table" and not done[value] then
+            done[value] = true
+            print(string.rep(" ", indent) .. key, ":")
+
+            self:dump(value, indent + 2, done)
+            done[value] = nil
+        else
+            print(string.rep(" ", indent) .. key, " = ", value, "")
+        end
+    end
+end
+
 function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     if input == "" then
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
@@ -190,6 +203,10 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
 
     if (split[1] == "experimental") then
         self:ToggleExperimentalFeatures()
+    end
+
+    if (split[1] == "dev") then
+        self:ShowBiSWindow();
     end
 end
 
@@ -231,7 +248,7 @@ function MeSoHordieAddon:OnInitialize()
             mode = 'spec',
             phase = MSHB:getCurrentPhase(),
             showBisIndicator = true,
-            showMultiPhaseIndicator = false,
+            showMultiPhaseIndicator = false
         }
     })
 
@@ -254,6 +271,7 @@ function MeSoHordieAddon:OnInitialize()
         self:SecureHook("InspectPaperDollItemSlotButton_Update");
     end)
 
+    self:InitializeUI();
 end
 
 function MeSoHordieAddon:OnEnable()
