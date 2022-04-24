@@ -34,7 +34,7 @@ end
 
 function MeSoHordieAddon:GetAllSpecsForPhase(phase, class)
     local result = {}
-    for index, specObj in ipairs(msh_bis_addon_data["phases"]["phase"..phase][class:lower()]) do
+    for index, specObj in ipairs(msh_bis_addon_data["phases"]["phase" .. phase][class:lower()]) do
         result[specObj.spec] = MSHB:to_pascal_case(specObj.spec)
     end
 
@@ -43,7 +43,7 @@ end
 
 function MeSoHordieAddon:GetAllClassesForPhase(phase)
     local result = {}
-    for class, value in pairs(msh_bis_addon_data["phases"]["phase"..phase]) do
+    for class, value in pairs(msh_bis_addon_data["phases"]["phase" .. phase]) do
         result[class] = MSHB:to_pascal_case(class)
     end
 
@@ -115,7 +115,7 @@ function MeSoHordieAddon:ShowBiSWindow()
 
     local scroll = self.aceGui:Create("ScrollFrame")
     self.gui.ItemsContainer = scroll
-    scroll:SetLayout("Flow")
+    scroll:SetLayout("List")
     scrollcontainer:AddChild(scroll)
 
     MeSoHordieAddon:InvalidateSelectors()
@@ -166,26 +166,67 @@ function MeSoHordieAddon:InvalidateItems()
     local class = self.gui.state.class
     local spec = self.gui.state.spec
     local missingOnly = self.gui.state.missingOnly
-    MeSoHordieAddon:AddItemWidgets(self.gui.ItemsContainer, phase, class, spec, missingOnly)
+    MeSoHordieAddon:AddItemSlotGroups(self.gui.ItemsContainer, phase, class, spec, missingOnly)
 end
 
-function MeSoHordieAddon:AddItemWidgets(parent, phase, class, spec, missingOnly)
+function MeSoHordieAddon:AddItemSlotGroups(parent, phase, class, spec, missingOnly)
     parent:ReleaseChildren();
     local currentPhaseBiSClass = msh_bis_addon_data["phases"]["phase" .. phase][class:lower()];
 
     for i, v in ipairs(currentPhaseBiSClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
-            for index, item in ipairs(v["items"]) do
-                self:AddItemWidget(parent, item)
+            for itemSlot, items in pairs(v["items"]) do
+                self:AddItemSlotGroup(parent, itemSlot, items)
             end
         end
     end
+end
+
+function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, items)
+    if next(items) == nil then
+        return
+    end
+
+    if MeSoHordieAddon.gui.state.missingOnly then
+        for index, item in ipairs(items) do
+            if self:CharacterHasItem(item) then
+                return
+            end
+        end
+    end
+
+    local slotGroup = self.aceGui:Create("InlineGroup")
+    parent:AddChild(slotGroup)
+    slotGroup:SetTitle(itemSlot)
+    slotGroup:SetRelativeWidth(1.0)
+
+    for index, item in ipairs(items) do
+        self:AddItemWidget(slotGroup, item)
+    end
+end
+
+function MeSoHordieAddon:CharacterHasItem(itemId)
+    local hasItem = false;
+    if IsEquippedItem(itemId) then
+        hasItem = true;
+    else
+        for bagSlot = 0, NUM_BAG_SLOTS do
+            for containerSlot = 1, GetContainerNumSlots(bagSlot) do
+                if GetContainerItemID(bagSlot, containerSlot) == itemId then
+                    hasItem = true;
+                    break
+                end
+            end
+        end
+    end
+    return hasItem;
 end
 
 function MeSoHordieAddon:AddItemWidget(parent, itemId)
     local itemIdNumber = tonumber(itemId)
     local itemGroup = self.aceGui:Create("SimpleGroup")
     itemGroup:SetLayout("ItemWidgetLayout")
+    itemGroup:SetHeight(40)
     parent:AddChild(itemGroup)
 
     local itemIcon = self.aceGui:Create("Icon")
@@ -230,8 +271,8 @@ function MeSoHordieAddon:GetItemSourceString(itemId)
     end
 
     if source.soldby ~= nil then
-        return "Sold by: " .. source.soldby[1].name .. " <" .. source.soldby[1].vendor .. "> in " ..
-                   source.soldby[1].zone
+        return "Sold by: " .. source.soldby[1].name .. " <" .. source.soldby[1].vendor .. ">" ..
+                   self:ConcatIfNotEmpty("in %s", source.soldby[1].zone)
     end
 
     if source.profession ~= nil then
@@ -247,4 +288,12 @@ function MeSoHordieAddon:GetItemSourceString(itemId)
     end
 
     return "No data"
+end
+
+function MeSoHordieAddon:ConcatIfNotEmpty(format, variable)
+    if variable == "" then
+        return ""
+    end
+
+    return string.format(format, variable)
 end

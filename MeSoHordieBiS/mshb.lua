@@ -88,6 +88,8 @@ MSHB.spec_icon_table = {
     ["WARRIOR_fury"] = 'interface/icons/ability_warrior_innerrage.blp'
 }
 
+MSHB.tooltipCache = {}
+
 function MSHB:getSupportedModesDescription()
     result = {}
     local n = 1
@@ -202,6 +204,23 @@ function MSHB:has_value(tab, val)
     return false
 end
 
+function MSHB:has_value_nested(tab, val)
+    for index, value in pairs(tab) do
+        if (type(value) == "table") then
+            local result = self:has_value_nested(value, val)
+            if result then
+                return true
+            end
+        else
+            if value == val then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
 function MSHB:guild_member()
     if MeSoHordieAddon.db.char.ignoreGuildCheck then
         return true
@@ -228,7 +247,7 @@ function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
             local oldAmount = result;
             for i, v in ipairs(futurePhaseSpecBis) do
                 if v["spec"] == spec then
-                    if self:has_value(v["items"], itemId) then
+                    if self:has_value_nested(v["items"], itemId) then
                         result = result + 1;
                     end
                 end
@@ -262,41 +281,51 @@ function MSHB:append_tooltip(tooltip)
 
     local lines = {}
 
-    if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster then
-        currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-        for i, v in ipairs(currentPhaseBiSClass) do
-            if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
-                if self:has_value(v["items"], itemId) then
-                    local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(),
+    local cacheKey = itemId .. MeSoHordieAddon.db.char.mode .. MeSoHordieAddon.db.char.phase .. class .. spec ..
+                         tostring(isPlayerLootMaster)
+
+    if (MSHB.tooltipCache.key and MSHB.tooltipCache.key == cacheKey) then
+        lines = MSHB.tooltipCache.result
+    else
+        if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster then
+            currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
+            for index, bisClass in ipairs(currentPhaseBiSClass) do
+                if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
+                    if self:has_value_nested(bisClass["items"], itemId) then
+                        local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(),
+                            bisClass["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
+                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi}
+                    end
+                end
+            end
+        end
+
+        if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster then
+            currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
+            for index, bisClass in ipairs(currentPhaseBiSClass) do
+                if self:has_value_nested(bisClass["items"], itemId) then
+                    local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(), bisClass["role"]:lower(),
                         itemId, MeSoHordieAddon.db.char.phase)
-                    lines[#lines + 1] = {class, v["spec"], v["role"], multi}
+                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi}
                 end
             end
         end
-    end
 
-    if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster then
-        currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-        for i, v in ipairs(currentPhaseBiSClass) do
-            if self:has_value(v["items"], itemId) then
-                local multi = self:bis_for_multiple_phase(class:lower(), v["spec"]:lower(), v["role"]:lower(), itemId,
-                    MeSoHordieAddon.db.char.phase)
-                lines[#lines + 1] = {class, v["spec"], v["role"], multi}
-            end
-        end
-    end
-
-    if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster then
-        currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
-        for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
-            for j, s in ipairs(c) do
-                if self:has_value(s["items"], itemId) then
-                    local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(), itemId,
-                        MeSoHordieAddon.db.char.phase)
-                    lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi}
+        if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster then
+            currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
+            for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
+                for j, s in ipairs(c) do
+                    if self:has_value_nested(s["items"], itemId) then
+                        local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(),
+                            itemId, MeSoHordieAddon.db.char.phase)
+                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi}
+                    end
                 end
             end
         end
+
+        MSHB.tooltipCache.key = cacheKey
+        MSHB.tooltipCache.result = lines
     end
 
     if next(lines) ~= nil then
@@ -375,7 +404,7 @@ function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
     local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
     for i, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
-            if self:has_value(v["items"], tostring(itemId)) then
+            if self:has_value_nested(v["items"], tostring(itemId)) then
                 button.mshbIndicator:Show()
             end
         end

@@ -1,7 +1,7 @@
 msh_bis_addon_data = {
-    ["version"] = "{{ bisAddonData.version }}",
+    ["version"] = "{{ version }}",
     ["phases"] = {
-        {%- for phase in bisAddonData.phases %}
+        {%- for phase in phases %}
         ["phase{{ phase[0] }}"]= {
         {%- for classGroup in phase[1] %}
             ["{{ classGroup[0]  | downcase }}"] = {
@@ -10,10 +10,14 @@ msh_bis_addon_data = {
                     ["spec"] = "{{ spec.spec | downcase }}",
                     ["role"] = "{{ spec.role }}",
                     ["items"] = {
-                    {%- for itemIds in spec.items -%}
-                        {%- for itemId in itemIds[1] -%}
-                            "{{ itemId }}",
-                        {%- endfor -%}
+                    {%- for itemslot in spec.items %}
+                        ["{{ itemslot[0] }}"] = {
+                            {%- for itemGroup in itemslot[1] -%}
+                                {%- for itemId in itemGroup -%}
+                                    "{{ itemId }}",
+                                {%- endfor -%}
+                            {%- endfor -%}
+                        },
                     {%- endfor -%}
                     }
                 },
