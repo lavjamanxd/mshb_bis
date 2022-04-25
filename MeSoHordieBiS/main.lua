@@ -62,7 +62,7 @@ end
 
 function MeSoHordieAddon:SetShowBiSIndicator(info, value)
     self.db.char.showBisIndicator = value
-    self:RefreshCharacterFrame();
+    self:RefreshCharacterFrame()
 end
 
 function MeSoHordieAddon:GetCurrentPhase(info)
@@ -71,7 +71,7 @@ end
 
 function MeSoHordieAddon:SetCurrentPhase(info, value)
     self.db.char.phase = value
-    self:RefreshCharacterFrame();
+    self:RefreshCharacterFrame()
 end
 
 function MeSoHordieAddon:GetCurrentMode(info)
@@ -88,7 +88,7 @@ end
 
 function MeSoHordieAddon:SetIgnoreGuildCheck(info, value)
     self.db.char.ignoreGuildCheck = value
-    self:RefreshCharacterFrame();
+    self:RefreshCharacterFrame()
 end
 
 function MeSoHordieAddon:ChangePhaseCommand(phase)
@@ -98,7 +98,7 @@ function MeSoHordieAddon:ChangePhaseCommand(phase)
     end
 
     local phaseNumber = tonumber(phase)
-    local phaseSupported = MSHB:has_key(MSHB.supportedPhases, phaseNumber);
+    local phaseSupported = MSHB:has_key(MSHB.supportedPhases, phaseNumber)
 
     if phaseSupported then
         self:SetCurrentPhase(nil, phaseNumber)
@@ -206,7 +206,7 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
     end
 
     if (split[1] == "dev") then
-        self:ShowBiSWindow();
+        self:ShowBiSWindow()
     end
 end
 
@@ -238,7 +238,7 @@ function MeSoHordieAddon:LazyHook(addon, hookFunc)
 end
 
 function MeSoHordieAddon:OnInitialize()
-    self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded");
+    self:RegisterEvent("ADDON_LOADED", "OnAddonLoaded")
 
     LibStub("AceConfig-3.0"):RegisterOptionsTable("MeSoHordieAddon", self.options)
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("MeSoHordieAddon", "MeSoHordieAddon")
@@ -266,12 +266,12 @@ function MeSoHordieAddon:OnInitialize()
 
     self:HookScript(GameTooltip, "OnTooltipSetItem", "UpdateTooltip")
     self:HookScript(ItemRefTooltip, "OnTooltipSetItem", "UpdateTooltip")
-    self:SecureHook("PaperDollItemSlotButton_Update");
+    self:SecureHook("PaperDollItemSlotButton_Update")
     self:LazyHook("Blizzard_InspectUI", function()
-        self:SecureHook("InspectPaperDollItemSlotButton_Update");
+        self:SecureHook("InspectPaperDollItemSlotButton_Update")
     end)
 
-    self:InitializeUI();
+    self:InitializeUI()
 end
 
 function MeSoHordieAddon:OnEnable()

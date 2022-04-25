@@ -45,10 +45,16 @@ async function wowheadLookup(pclass, spec, name, cell, slot) {
     var itemResult = whResponse.results.find((r) => r.type == 3);
 
     if (itemResult) {
-      return [itemResult.id]
+      return [itemResult.id];
     }
   } catch (error) {
     debugger;
+  }
+}
+
+function warglaiveLookup(pclass, spec, name, cell, slot) {
+  if (name == "Warglaive of Azzinoth") {
+    return [constants.warglaives[slot]];
   }
 }
 
@@ -57,23 +63,23 @@ function hardcodedLookup(pclass, spec, name, cell, slot) {
 }
 
 function sunmoteBaseItemLookup(pclass, spec, ids, cell, slot) {
-  for (var id of ids){
+  for (var id of ids) {
     if (constants.sunmoteItemCombinations[id] != undefined) {
-      return [constants.sunmoteItemCombinations[id]]
+      return [constants.sunmoteItemCombinations[id]];
     }
   }
 }
 
 function verdantSphereItemLookup(pclass, spec, ids, cell, slot) {
-  for (var id of ids){
+  for (var id of ids) {
     if (constants.verdantSphereRewards.includes(id)) {
-      return [constants.verdantSphere]
+      return [constants.verdantSphere];
     }
   }
 }
 
 function magtheridonsHeadItemLookup(pclass, spec, ids, cell, slot) {
-  for (var id of ids){
+  for (var id of ids) {
     if (constants.magtheridonsHeadRewards.includes(id)) {
       return [constants.magtheridonsHead];
     }
@@ -82,6 +88,7 @@ function magtheridonsHeadItemLookup(pclass, spec, ids, cell, slot) {
 
 var itemLookupStrategies = [
   hardcodedLookup,
+  warglaiveLookup,
   tierSetLookup,
   linkLookup,
   wowheadLookup,

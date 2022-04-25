@@ -5,9 +5,10 @@ const fs = require("fs");
 const { dirname, join } = require("path");
 const luamin = require("luamin");
 const appDir = dirname(require.main.filename);
-const cheerio = require("cheerio");
 const bisListStrategies = require("./bislist_strategies");
-const metadataStrategies = require("./metadata_strategies");
+const wowheadMetadata = require("./wowhead_metadata_scraper");
+const tbcDbMetadata = require("./tbcdb_metadata_scraper");
+const constants = require("./consts");
 
 var { Liquid } = require("liquidjs");
 var engine = new Liquid();
@@ -21,9 +22,9 @@ var metadata = {};
 
 async function predicateItemId(row, slot) {
   var predictions = [];
-  var content = row[columnIndexes[slot]].value;
-  var classs = row[columnIndexes.class].value.toLowerCase();
-  var spec = row[columnIndexes.spec].value.toLowerCase();
+  var content = row[constants.columnIndexes[slot]].value;
+  var classs = row[constants.columnIndexes.class].value.toLowerCase();
+  var spec = row[constants.columnIndexes.spec].value.toLowerCase();
   if (
     content == null ||
     content == "NA" ||
@@ -42,7 +43,7 @@ async function predicateItemId(row, slot) {
 
   console.log(classs + " " + spec + "-" + slot);
 
-  console.log("cell content: " + content)
+  console.log("cell content: " + content);
   for (const name of names) {
     console.log("\t" + name);
     var innerPredictions = [];
@@ -56,13 +57,18 @@ async function predicateItemId(row, slot) {
             classs,
             spec,
             name,
-            row[columnIndexes[slot]],
+            row[constants.columnIndexes[slot]],
             slot
           );
           if (result != undefined) {
-            console.log("\t- " + strategy.name + " found " + JSON.stringify(result));
+            console.log(
+              "\t- " + strategy.name + " found " + JSON.stringify(result)
+            );
             innerPredictions.push(result);
-            if (name.match(/.*[tT](\d+)/) == undefined) {
+            if (
+              name.match(/.*[tT](\d+)/) == undefined &&
+              name != "Warglaive of Azzinoth"
+            ) {
               if (predictionCache[name] == undefined) {
                 predictionCache[name] = [];
               }
@@ -81,7 +87,7 @@ async function predicateItemId(row, slot) {
     var flattenedInnerPredictions = innerPredictions.flat();
 
     if (flattenedInnerPredictions.length == 0) {
-      console.log(`couldnt find: ${row[columnIndexes[slot]].value}`);
+      console.log(`couldnt find: ${row[constants.columnIndexes[slot]].value}`);
       debugger;
     }
 
@@ -92,13 +98,15 @@ async function predicateItemId(row, slot) {
           classs,
           spec,
           flattenedInnerPredictions,
-          row[columnIndexes[slot]],
+          row[constants.columnIndexes[slot]],
           slot
         );
         if (result != undefined) {
-          console.log("\t- " + strategy.name + " found " + JSON.stringify(result));
+          console.log(
+            "\t- " + strategy.name + " found " + JSON.stringify(result)
+          );
           postPredictions.push(result);
-        }else{
+        } else {
           //console.log(strategy.name + " found nothing");
         }
       } catch (e) {
@@ -106,24 +114,33 @@ async function predicateItemId(row, slot) {
       }
     }
 
-    for (var postItem of postPredictions.flat()){
-      flattenedInnerPredictions.push(postItem)
+    for (var postItem of postPredictions.flat()) {
+      flattenedInnerPredictions.push(postItem);
     }
 
     predictions.push(flattenedInnerPredictions);
   }
 
   if (predictions.length == 0) {
-    console.log(row[columnIndexes[slot]].value);
+    console.log(row[constants.columnIndexes[slot]].value);
     debugger;
   }
 
   for (const itemId of predictions.flat()) {
     try {
       if (metadata[itemId] == undefined) {
-        var newMetadata = await fetchMetadataForItem(itemId);
+        var newMetadata = await wowheadMetadata.fetchMetadataForItem(itemId);
+        var newtbcDbMetadata = await tbcDbMetadata.fetchMetadataForItem(itemId);
 
-        metadata[itemId] = newMetadata;
+        console.log("wowhead:");
+        console.log(JSON.stringify(newMetadata));
+
+        console.log("tbcdb:");
+        console.log(JSON.stringify(newtbcDbMetadata));
+        metadata[itemId] = mergeAndPredictBestMetadata(
+          newMetadata,
+          newtbcDbMetadata
+        );
       }
     } catch (e) {
       debugger;
@@ -133,110 +150,97 @@ async function predicateItemId(row, slot) {
   return predictions;
 }
 
-async function fetchMetadataForItem(itemId) {
-  try {
-    var resultObj = {};
+function mergeAndPredictBestMetadata(first, second) {
+  var rating1 = getBestRatedSource(first.source);
+  var rating2 = getBestRatedSource(second.source);
+  console.log(">>>rating1");
+  console.log(JSON.stringify(rating1));
+  console.log(">>>rating2");
+  console.log(JSON.stringify(rating2));
 
-    const response = await fetch(`https://tbc.wowhead.com/item=${itemId}`);
-
-    const htmlSource = await response.text();
-
-    const $ = cheerio.load(htmlSource);
-
-    var scripts = $("script");
-    for (var i = 0; i < scripts.length; i++) {
-      var node = $(scripts[i]);
-      if (
-        node[0].children[0] != undefined &&
-        node[0].children[0].type == "text"
-      ) {
-        var text = node[0].children[0].data;
-        if (text.trim().startsWith("WH.Gatherer.addData")) {
-          var splitLines = text.trim().split("\n");
-          var itemInfoData = eval(
-            "var WH = { Gatherer : { addData : (a,b,data) => {return data;}}}; " +
-              splitLines[0]
-          );
-          await extractItemInfo(itemId, itemInfoData, resultObj);
-        }
-
-        if (text.trim().startsWith("var tabsRelated")) {
-          var splitLines = text.split("\n");
-          var itemInfoData = [];
-          var current = "";
-          var progress = false;
-
-          splitLines.forEach((line) => {
-            if (line == "});") {
-              current += "}; a;";
-              progress = false;
-              itemInfoData.push(eval(current));
-              current = "";
-            }
-
-            if (progress) {
-              if (!line.includes("Listview") && !line.includes("WH.")) {
-                current += line;
-              }
-            }
-
-            if (line == "new Listview({") {
-              current = "var a = {";
-              progress = true;
-            }
-          });
-          await extractSource(itemId, itemInfoData, resultObj);
-        }
-      }
-    }
-
-    return resultObj;
-  } catch (error) {}
-  return {};
-}
-
-async function extractItemInfo(itemId, data, resultObj) {
-  resultObj.info = resultObj.info ?? {};
-  for (const entry of Object.entries(data)) {
-    if (entry[0] == itemId) {
-      resultObj.info.slot = entry[1].jsonequip.slotbak;
-    }
+  var better = null;
+  if (rating1.value > rating2.value) {
+    better = rating1;
+  } else {
+    better = rating2;
   }
+
+  return { source: { [better.field]: better.element } };
 }
 
-async function extractSource(itemId, data, resultObj) {
-  resultObj.source = {};
-  for (const d of data) {
-    for (const es of metadataStrategies.extractionStrategies) {
-      await es(itemId, d, resultObj);
-    }
-  }
-}
-
-const columnIndexes = {
-  class: 0,
-  spec: 1,
-  role: 2,
-  variant: 3,
-  head: 4,
-  neck: 5,
-  shoulders: 6,
-  back: 7,
-  chest: 8,
-  wrists: 9,
-  mainHand: 10,
-  offHand: 11,
-  twoHand: 12,
-  hands: 13,
-  belt: 14,
-  legs: 15,
-  feet: 16,
-  ring1: 17,
-  ring2: 18,
-  trinket1: 19,
-  trinket2: 20,
-  ranged: 21,
+var groupValues = {
+  soldBy: 100,
+  quest: 100,
+  profession: 100,
+  containedin: 80,
+  drop: 70,
 };
+
+var groupFields = {
+  soldBy: ["zone", "name", "tag", "price"],
+  quest: ["zone", "name"],
+  profession: ["name"],
+  containedin: ["zone", "name", "chance"],
+  drop: ["name", "chance", "zone"],
+};
+
+function getBestRatedSource(source) {
+  if (!source){
+    return {};
+  }
+  var keys = Object.keys(source);
+  var currentBest = -Infinity;
+  var field = "";
+  var element = null;
+
+  keys.forEach((key) => {
+    var best = getRatingFor(source, key);
+    if (best.value > currentBest) {
+      currentBest = best.value;
+      field = key;
+      element = best.element;
+    }
+  });
+
+  return { value: currentBest, field, element };
+}
+
+function getRatingFor(source, name) {
+  if (!source[name]) return { value: -Infinity, element: null };
+  result = findBestElementAndValue(source[name], groupFields[name]);
+  result.value += groupValues[name];
+  return result;
+}
+
+function findBestElementAndValue(sources, fields) {
+  var max = -Infinity;
+  var element = null;
+
+  sources.forEach((entry) => {
+    var value = calculateMissingFieldsValue(entry, fields);
+    if (value > max) {
+      max = value;
+      element = entry;
+    }
+  });
+
+  return { value: max, element };
+}
+
+function calculateMissingFieldsValue(source, fields) {
+  var value = 0;
+  fields.forEach((field) => {
+    if (source[field]) {
+      if (source[field] == "" || source[field] == 0) {
+        value -= 10;
+      }
+    } else {
+      value -= 10;
+    }
+  });
+
+  return value;
+}
 
 async function scrapPhase(sheet) {
   const rows = await sheet.getRows();
@@ -250,10 +254,10 @@ async function scrapPhase(sheet) {
     if (row[0].value == null) break;
 
     scrapedList.push({
-      class: row[columnIndexes["class"]].value,
-      spec: row[columnIndexes["spec"]].value,
-      role: row[columnIndexes["role"]].value,
-      variant: row[columnIndexes["variant"]].value,
+      class: row[constants.columnIndexes["class"]].value,
+      spec: row[constants.columnIndexes["spec"]].value,
+      role: row[constants.columnIndexes["role"]].value,
+      variant: row[constants.columnIndexes["variant"]].value,
       items: {
         head: await predicateItemId(row, "head"),
         neck: await predicateItemId(row, "neck"),
@@ -335,14 +339,12 @@ async function main() {
     "utf8"
   );
 
-  engine
-    .parseAndRender(template, bisAddonData)
-    .then((render) => {
-      fs.writeFileSync(
-        join(appDir, "..", "MeSoHordieBiS", "bis_list.lua"),
-        luamin.minify(render)
-      );
-    });
+  engine.parseAndRender(template, bisAddonData).then((render) => {
+    fs.writeFileSync(
+      join(appDir, "..", "MeSoHordieBiS", "data", "bis_list.lua"),
+      luamin.minify(render)
+    );
+  });
 
   // var metadata = JSON.parse(
   //   fs.readFileSync(join(appDir, "cached_metadata.json"))
@@ -355,7 +357,7 @@ async function main() {
 
   engine.parseAndRender(template, { metadata }).then((render) => {
     fs.writeFileSync(
-      join(appDir, "..", "MeSoHordieBiS", "metadata.lua"),
+      join(appDir, "..", "MeSoHordieBiS", "data", "metadata.lua"),
       luamin.minify(render)
     );
   });

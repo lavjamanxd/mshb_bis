@@ -43,6 +43,30 @@ MSHB.supportedPhases = {
     }
 }
 
+MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "twoHand", "mainHand", "offHand",
+                       "hands", "belt", "legs", "feet", "ring1", "ring2", "trinket1", "trinket2", "ranged"}
+
+MSHB.inventorySlotsLabels = {
+    ["head"] = "Head",
+    ["neck"] = "Necklace",
+    ["shoulders"] = "Shoulders",
+    ["back"] = "Back",
+    ["chest"] = "Chest",
+    ["wrists"] = "Wrists",
+    ["twoHand"] = "Two-hand",
+    ["mainHand"] = "Main-hand",
+    ["offHand"] = "Off-hand",
+    ["hands"] = "Hands",
+    ["belt"] = "Waist",
+    ["legs"] = "Legs",
+    ["feet"] = "Feet",
+    ["ring1"] = "Ring 1",
+    ["ring2"] = "Ring 2",
+    ["trinket1"] = "Trinket 1",
+    ["trinket2"] = "Trinket 2",
+    ["ranged"] = "Ranged/Totem/Libram/Idol"
+}
+
 MSHB.supportedModes = {
     ["spec"] = {
         name = "Spec",
@@ -130,7 +154,7 @@ function MSHB:pconcat(tab, joinChar)
 end
 
 function MSHB:to_pascal_case(input)
-    local result = input:sub(1, 1):upper() .. input:sub(2):lower();
+    local result = input:sub(1, 1):upper() .. input:sub(2):lower()
     return result
 end
 
@@ -139,7 +163,7 @@ function MSHB:predict_player(target, inspect)
     local predictedSpec = ""
     local predictedSpecSpentPoints = -1
     for i = 1, GetNumTalentTabs(inspect) do
-        local name, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect);
+        local name, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect)
         if predictedSpecSpentPoints < pointsSpent then
             predictedSpec = name
             predictedSpecSpentPoints = pointsSpent
@@ -162,7 +186,7 @@ function MSHB:render_multiphase(multi)
     if multi == 0 then
         return ""
     end
-    local lastBiSPhase = current + multi;
+    local lastBiSPhase = current + multi
     if lastBiSPhase == 5 then
         return " (<End)"
     end
@@ -240,15 +264,15 @@ function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
         return 0
     end
 
-    local result = 0;
+    local result = 0
     for i, v in pairs(self.supportedPhases) do
         if i > phase then
-            local futurePhaseSpecBis = msh_bis_addon_data["phases"]["phase" .. i][class];
-            local oldAmount = result;
+            local futurePhaseSpecBis = msh_bis_addon_data["phases"]["phase" .. i][class]
+            local oldAmount = result
             for i, v in ipairs(futurePhaseSpecBis) do
                 if v["spec"] == spec then
                     if self:has_value_nested(v["items"], itemId) then
-                        result = result + 1;
+                        result = result + 1
                     end
                 end
             end
@@ -274,9 +298,9 @@ function MSHB:append_tooltip(tooltip)
     end
 
     local itemId = select(3, strfind(itemLink, "item:(%d+)"))
-    local class, spec = self:predict_player("player", false);
-    local currentPhaseBiSClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
-    local isPlayerLootMaster = self:player_is_master_looter();
+    local class, spec = self:predict_player("player", false)
+    local currentPhaseBiSClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()]
+    local isPlayerLootMaster = self:player_is_master_looter()
     local currentMode = ""
 
     local lines = {}
@@ -304,8 +328,8 @@ function MSHB:append_tooltip(tooltip)
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 if self:has_value_nested(bisClass["items"], itemId) then
-                    local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(), bisClass["role"]:lower(),
-                        itemId, MeSoHordieAddon.db.char.phase)
+                    local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(),
+                        bisClass["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
                     lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi}
                 end
             end
@@ -337,11 +361,11 @@ function MSHB:append_tooltip(tooltip)
 end
 
 function MSHB:string_split(s, delimiter)
-    result = {};
+    result = {}
     for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
-        table.insert(result, match);
+        table.insert(result, match)
     end
-    return result;
+    return result
 end
 
 function MSHB:UpdateButton(button, target)
@@ -370,13 +394,13 @@ function MSHB:UpdateButton(button, target)
             return item:ContinueOnItemLoad(function()
                 local id = item:GetItemID()
                 if id then
-                    self:ShowIndicatorIfBiS(button, id, "player", false);
+                    self:ShowIndicatorIfBiS(button, id, "player", false)
                 end
             end)
         else
-            local itemId = GetInventoryItemID(target, slotID);
+            local itemId = GetInventoryItemID(target, slotID)
             if itemId then
-                self:ShowIndicatorIfBiS(button, itemId, "target", true);
+                self:ShowIndicatorIfBiS(button, itemId, "target", true)
                 return button.mshbIndicator
             end
         end
@@ -400,8 +424,8 @@ function MSHB:AddIndicatorToButtonIfNeeded(button)
 end
 
 function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
-    local class, spec = self:predict_player(unit, inspect);
-    local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()];
+    local class, spec = self:predict_player(unit, inspect)
+    local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()]
     for i, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
             if self:has_value_nested(v["items"], tostring(itemId)) then

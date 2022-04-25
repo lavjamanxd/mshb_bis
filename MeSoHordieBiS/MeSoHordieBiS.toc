@@ -6,8 +6,8 @@
 
 embeds.xml
 
-bis_list.lua
-metadata.lua
+data/bis_list.lua
+data/metadata.lua
 init.lua
 bis_browser.lua
 mshb.lua
