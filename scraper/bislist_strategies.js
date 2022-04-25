@@ -66,7 +66,7 @@ function sunmoteBaseItemLookup(pclass, spec, ids, cell, slot) {
 
 function verdantSphereItemLookup(pclass, spec, ids, cell, slot) {
   for (var id of ids){
-    if (constants.verdantSphereRewards[id] != undefined) {
+    if (constants.verdantSphereRewards.includes(id)) {
       return [constants.verdantSphere]
     }
   }
@@ -74,7 +74,7 @@ function verdantSphereItemLookup(pclass, spec, ids, cell, slot) {
 
 function magtheridonsHeadItemLookup(pclass, spec, ids, cell, slot) {
   for (var id of ids){
-    if (constants.magtheridonsHeadRewards[id] != undefined) {
+    if (constants.magtheridonsHeadRewards.includes(id)) {
       return [constants.magtheridonsHead];
     }
   }
