@@ -118,6 +118,7 @@ function MeSoHordieAddon:ShowBiSWindow()
 
     frame:SetTitle("MSHB BiS Browser")
     frame:SetCallback("OnClose", function(widget)
+        self.gui.isBiSBrowserOpen = false
         self.aceGui:Release(widget)
     end)
     frame:SetLayout("Flow")
@@ -419,8 +420,8 @@ function MeSoHordieAddon:GetItemSourceString(itemId)
     end
 
     if source.soldby ~= nil then
-        return "Sold by: " .. source.soldby.name .. self:FormatIfNotEmpty(" <%s> ", source.soldby.tag) ..
-                   self:FormatIfNotEmpty("in %s", source.soldby.zone) ..
+        return "Sold by: " .. source.soldby.name ..
+                   self:FormatIfNotEmpty(" in %s", source.soldby.zone) ..
                    self:FormatIfNotEmpty(" for %s", self:getStringFromPrice(source.soldby.price))
     end
 
@@ -429,7 +430,7 @@ function MeSoHordieAddon:GetItemSourceString(itemId)
     end
 
     if source.quest ~= nil then
-        return "Quest reward from: " .. source.quest.name .. " in " ..
+        return "Quest reward from: " .. source.quest.name ..
                    self:FormatIfNotEmpty(" in %s", source.quest.zone)
     end
 
@@ -450,31 +451,39 @@ function MeSoHordieAddon:getStringFromPrice(price)
 
     if price.money then
         if string.len(result) ~= 0 then
-            result = result .. " & "
+            result = result .. " and "
         end
-        result = result .. price.money.gold .. "g " .. price.money.silver .. "s " .. price.money.copper .. "c"
+        if price.money[1] then
+            result = result .. price.money[1] .. "g "
+        end
+        if price.money[2] then
+            result = result .. price.money[2] .. "s "
+        end
+        if price.money[3] then
+            result = result .. price.money[3] .. "c"
+        end
     end
 
     if price.arena then
         if string.len(result) ~= 0 then
-            result = result .. " & "
+            result = result .. " and "
         end
         result = result .. price.arena .. " arena points"
     end
 
     if price.honor then
         if string.len(result) ~= 0 then
-            result = result .. " & "
+            result = result .. " and "
         end
         result = result .. price.honor .. " honor points"
     end
 
     if price.item then
-        if string.len(result) ~= 0 then
-            result = result .. " & "
-        end
         if price.item[1].id == 29434 then
-            result = result .. price.item[1].amount .. " BoJ"
+            if string.len(result) ~= 0 then
+                result = result .. " and "
+            end
+            result = result .. price.item[1].amount .. "x BoJ"
         end
     end
 

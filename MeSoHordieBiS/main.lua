@@ -47,13 +47,37 @@ MeSoHordieAddon.options = {
             set = "SetIgnoreGuildCheck",
             order = 30,
             width = "full"
+        },
+        showMinimapIcon = {
+            type = "toggle",
+            name = "Show minimap icon",
+            desc = "Shows the minimap icon for the BiS Browser",
+            get = "GetShowMinimapIcon",
+            set = "SetShowMinimapIcon",
+            order = 31,
+            width = "full"
         }
     }
 }
 
+MeSoHordieAddon.icon = LibStub("LibDBIcon-1.0")
+
 function MeSoHordieAddon:RefreshCharacterFrame()
     ToggleCharacter("PaperDollFrame")
     ToggleCharacter("PaperDollFrame")
+end
+
+function MeSoHordieAddon:GetShowMinimapIcon(info)
+    return not self.db.profile.minimap.hide
+end
+
+function MeSoHordieAddon:SetShowMinimapIcon(info, value)
+    self.db.profile.minimap.hide = not value
+    if value then
+        self.icon:Show("MeSoHordieMM")
+    else
+        self.icon:Hide("MeSoHordieMM")
+    end
 end
 
 function MeSoHordieAddon:GetShowBiSIndicator(info)
@@ -245,14 +269,29 @@ function MeSoHordieAddon:OnInitialize()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("MeSoHordieAddon", self.options)
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("MeSoHordieAddon", "MeSoHordieAddon")
 
+    local mshbmmLDB = LibStub("LibDataBroker-1.1"):NewDataObject("MeSoHordieMM", {
+        type = "data source",
+        text = "MeSoHordie BiS Browser",
+        icon = "Interface\\Icons\\INV_Chest_Cloth_17",
+        OnClick = function() self:ShowBiSWindow() end,
+        })
+
     self.db = LibStub("AceDB-3.0"):New("MeSoHordieAddonDB", {
         char = {
             mode = 'spec',
             phase = MSHB:getCurrentPhase(),
             showBisIndicator = true,
-            showMultiPhaseIndicator = false
+            showMultiPhaseIndicator = false,
+            missingOnlyEnabled = false,
+        } ,
+        profile = {
+            minimap = {
+                hide = false
+            }
         }
     })
+
+    self.icon:Register("MeSoHordieMM", mshbmmLDB, self.db.profile.minimap)
 
     self.db.char.phase = MSHB:getCurrentPhase()
 
