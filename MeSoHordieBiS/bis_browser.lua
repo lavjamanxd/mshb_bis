@@ -4,6 +4,9 @@ MeSoHordieAddon.gui = {}
 MeSoHordieAddon.gui.isBiSBrowserOpen = false
 MeSoHordieAddon.gui.tooltip = MeSoHordieAddon.gui.tooltip or
                                   CreateFrame('GameTooltip', "MSHBBisItemTooltip", UIParent, 'GameTooltipTemplate')
+MeSoHordieAddon.gui.compareTooltip = MeSoHordieAddon.gui.compareTooltip or
+                                  CreateFrame('GameTooltip', "MSHBBisItemCompareTooltip", UIParent, 'GameTooltipTemplate')
+
 MeSoHordieAddon.gui.state = {}
 
 function MeSoHordieAddon:InitializeUI()
@@ -90,6 +93,26 @@ function MeSoHordieAddon:CloseBiSWindow()
     return false
 end
 
+function MeSoHordieAddon:InvalidateTooltip()
+    if self.gui.state.tooltipVisible then
+        self.gui.tooltip:SetOwner(self.gui.state.currentTooltipOwner.frame, "ANCHOR_LEFT")
+        self.gui.tooltip:SetItemByID(self.gui.state.tooltipItemShown)
+        self.gui.tooltip:Show()
+    else
+        self.gui.tooltip:Hide()
+    end
+
+    if self.gui.state.tooltipVisible and self.gui.state.shiftHeld and self.gui.state.tooltipSlot ~= -1 then
+        local equippedItemLink = GetInventoryItemLink("player", self.gui.state.tooltipSlot);
+        self.gui.compareTooltip:SetOwner(self.gui.tooltip, "ANCHOR_NONE")
+        self.gui.compareTooltip:SetPoint("RIGHT", self.gui.tooltip, "LEFT")
+        self.gui.compareTooltip:SetHyperlink(equippedItemLink)
+        self.gui.compareTooltip:Show()
+    else
+        self.gui.compareTooltip:Hide()
+    end
+end
+
 function MeSoHordieAddon:ShowBiSWindow()
     if self:CloseBiSWindow() then
         return
@@ -100,6 +123,11 @@ function MeSoHordieAddon:ShowBiSWindow()
     self.gui.state.class = class
     self.gui.state.spec = spec
     self.gui.state.missingOnly = self.db.char.missingOnlyEnabled
+    self.gui.state.tooltipVisible = false
+    self.gui.state.shiftHeld = false
+    self.gui.state.tooltipItemShown = -1
+    self.gui.state.currentTooltipOwner = nil
+    self.gui.state.tooltipSlot = -1
 
     local frame = self.aceGui:Create("Window")
     self.gui.RootFrame = frame
@@ -113,6 +141,19 @@ function MeSoHordieAddon:ShowBiSWindow()
             MeSoHordieAddon:CloseBiSWindow()
         else
             frame.frame:SetPropagateKeyboardInput(true)
+        end
+
+        if key == "LSHIFT" then
+            MeSoHordieAddon.gui.state.shiftHeld = true
+            frame.frame:SetPropagateKeyboardInput(false)
+            MeSoHordieAddon:InvalidateTooltip()
+        end
+    end);
+
+    frame.frame:SetScript("OnKeyUp", function(self, key)
+        if key == "LSHIFT" then
+            MeSoHordieAddon.gui.state.shiftHeld = false
+            MeSoHordieAddon:InvalidateTooltip()
         end
     end);
 
@@ -329,7 +370,7 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     for index, group in ipairs(itemGroups) do
         for yindex, item in ipairs(group) do
             local ident = yindex ~= 1
-            self:AddItemWidget(slotGroup, item, ident)
+            self:AddItemWidget(slotGroup, item, ident, itemSlot)
         end
     end
 end
@@ -351,7 +392,7 @@ function MeSoHordieAddon:CharacterHasItem(itemId)
     return hasItem
 end
 
-function MeSoHordieAddon:AddItemWidget(parent, itemId, ident)
+function MeSoHordieAddon:AddItemWidget(parent, itemId, ident, itemSlot)
     local itemIdNumber = tonumber(itemId)
     local itemGroup = self.aceGui:Create("SimpleGroup")
     itemGroup.content.ident = ident
@@ -364,13 +405,19 @@ function MeSoHordieAddon:AddItemWidget(parent, itemId, ident)
     itemIcon:SetImageSize(30, 30)
     itemGroup:AddChild(itemIcon)
     itemIcon:SetCallback("OnEnter", function(widget)
-        self.gui.tooltip:SetOwner(itemIcon.frame, "ANCHOR_LEFT")
-        self.gui.tooltip:SetItemByID(itemIdNumber)
-        self.gui.tooltip:Show()
+        self.gui.state.tooltipVisible = true
+        self.gui.state.tooltipItemShown = itemIdNumber
+        self.gui.state.currentTooltipOwner = widget
+        self.gui.state.tooltipSlot = MSHB.inventorySlotIdMap[itemSlot]
+        MeSoHordieAddon:InvalidateTooltip()
     end)
 
     itemIcon:SetCallback("OnLeave", function(widget)
-        self.gui.tooltip:Hide()
+        self.gui.state.tooltipVisible = false
+        self.gui.state.tooltipItemShown = -1
+        self.gui.state.currentTooltipOwner = nil
+        self.gui.state.tooltipSlot = -1
+        MeSoHordieAddon:InvalidateTooltip()
     end)
 
     itemIcon:SetCallback("OnClick", function(widget, event, button)

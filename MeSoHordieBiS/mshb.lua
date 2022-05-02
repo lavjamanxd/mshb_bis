@@ -67,6 +67,27 @@ MSHB.inventorySlotsLabels = {
     ["ranged"] = "Ranged/Totem/Libram/Idol"
 }
 
+MSHB.inventorySlotIdMap = {
+    ["head"] = 1,
+    ["neck"] = 2,
+    ["shoulders"] = 3,
+    ["back"] = 15,
+    ["chest"] = 5,
+    ["wrists"] = 9,
+    ["twoHand"] = 16,
+    ["mainHand"] = 16,
+    ["offHand"] = 17,
+    ["hands"] = 10,
+    ["belt"] = 6,
+    ["legs"] = 7,
+    ["feet"] = 8,
+    ["ring1"] = 11,
+    ["ring2"] = 12,
+    ["trinket1"] = 13,
+    ["trinket2"] = 14,
+    ["ranged"] = 18
+}
+
 MSHB.supportedModes = {
     ["spec"] = {
         name = "Spec",
