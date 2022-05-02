@@ -175,6 +175,8 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
         print("/mshb phase <number>")
         print("/mshb indicator")
         print("/mshb ignoreguildcheck")
+        print("/mshb browser")
+        print("/mshb experimental")
         print("/mshb version")
         return
     end
@@ -205,7 +207,7 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
         self:ToggleExperimentalFeatures()
     end
 
-    if (split[1] == "dev") then
+    if (split[1] == "browser") then
         self:ShowBiSWindow()
     end
 end
