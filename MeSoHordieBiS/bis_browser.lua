@@ -99,7 +99,7 @@ function MeSoHordieAddon:ShowBiSWindow()
     local class, spec = MSHB:predict_player("player", false)
     self.gui.state.class = class
     self.gui.state.spec = spec
-    self.gui.state.missingOnly = false
+    self.gui.state.missingOnly = self.db.char.missingOnlyEnabled
 
     local frame = self.aceGui:Create("Window")
     self.gui.RootFrame = frame
@@ -186,6 +186,7 @@ function MeSoHordieAddon:ShowBiSWindow()
 
     missingOnlyCheckBox:SetCallback("OnValueChanged", function(self, event, value)
         MeSoHordieAddon.gui.state.missingOnly = value
+        MeSoHordieAddon.db.char.missingOnlyEnabled = value
         MeSoHordieAddon:InvalidateItems()
     end)
 
