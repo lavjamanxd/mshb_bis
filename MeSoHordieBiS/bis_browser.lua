@@ -80,12 +80,20 @@ function MeSoHordieAddon:GetAllRolesForSpec(phase, class, spec)
     return result
 end
 
-function MeSoHordieAddon:ShowBiSWindow()
+function MeSoHordieAddon:CloseBiSWindow()
     if self.gui.isBiSBrowserOpen then
         self.gui.isBiSBrowserOpen = false
         self.gui.RootFrame:Hide()
+        return true
     end
 
+    return false
+end
+
+function MeSoHordieAddon:ShowBiSWindow()
+    if self:CloseBiSWindow() then
+        return
+    end
     self.gui.isBiSBrowserOpen = true
     self.gui.state.phase = self.db.char.phase
     local class, spec = MSHB:predict_player("player", false)
@@ -98,6 +106,15 @@ function MeSoHordieAddon:ShowBiSWindow()
     frame:EnableResize(false)
     frame:SetWidth(512)
     frame:SetHeight(700)
+    frame.frame:EnableKeyboard(true)
+    frame.frame:SetScript("OnKeyDown", function(self, key)
+        if key == "ESCAPE" then
+            frame.frame:SetPropagateKeyboardInput(false)
+            MeSoHordieAddon:CloseBiSWindow()
+        else
+            frame.frame:SetPropagateKeyboardInput(true)
+        end
+    end);
 
     frame:SetTitle("MSHB BiS Browser")
     frame:SetCallback("OnClose", function(widget)
