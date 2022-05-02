@@ -31,7 +31,6 @@ metadata = {
                 ["soldby"] = {
                     ["name"] = "{{ item[1].source.soldBy.name }}",
                     ["zone"] = "{{ item[1].source.soldBy.zone }}",
-                    ["tag"] = "{{ item[1].source.soldBy.tag }}",
                     ["price"] = {
                     {%- if item[1].source.soldBy.price.money %}
                         ["money"] = { {{ item[1].source.soldBy.price.money.gold }}, {{ item[1].source.soldBy.price.money.silver }}, {{ vendor.price.money.copper }} },
