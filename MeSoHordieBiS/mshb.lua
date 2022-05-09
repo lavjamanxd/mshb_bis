@@ -319,6 +319,11 @@ function MSHB:append_tooltip(tooltip)
     end
 
     local itemId = select(3, strfind(itemLink, "item:(%d+)"))
+
+    if itemId == nil then
+        return
+    end
+
     local class, spec = self:predict_player("player", false)
     local currentPhaseBiSClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()]
     local isPlayerLootMaster = self:player_is_master_looter()
