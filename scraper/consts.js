@@ -925,6 +925,8 @@ const warglaives = {
   offHand: 32838,
 };
 
+const sunmote = 34664;
+
 var professions = [
   "Alchemy",
   "Blacksmithing",
@@ -973,4 +975,5 @@ module.exports = {
   sunmoteItemCombinations,
   professions,
   columnIndexes,
+  sunmote
 };

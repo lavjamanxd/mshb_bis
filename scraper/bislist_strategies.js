@@ -65,7 +65,7 @@ function hardcodedLookup(pclass, spec, name, cell, slot) {
 function sunmoteBaseItemLookup(pclass, spec, ids, cell, slot) {
   for (var id of ids) {
     if (constants.sunmoteItemCombinations[id] != undefined) {
-      return [constants.sunmoteItemCombinations[id]];
+      return [constants.sunmoteItemCombinations[id], constants.sunmote];
     }
   }
 }
