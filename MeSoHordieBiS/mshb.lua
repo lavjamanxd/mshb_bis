@@ -37,8 +37,8 @@ MSHB.supportedPhases = {
         name = "Phase 5 - SW",
         start = time {
             year = 2022,
-            month = 12,
-            day = 31
+            month = 5,
+            day = 10
         }
     }
 }
