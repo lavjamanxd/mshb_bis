@@ -911,7 +911,18 @@ var sunmoteItemCombinations = {
   34400: 34345,
   34388: 34192,
   34394: 34215,
-  34381: 34180,
+  34381: 34180
+};
+
+var darkmoonDecks = {
+  19287: 19257,
+  19288: 19228,
+  19289: 19267,
+  19290: 19277,
+  31856: 31890,
+  31857: 31891,
+  31858: 31907,
+  31859: 31914
 };
 
 const verdantSphere = 32405;
@@ -975,5 +986,6 @@ module.exports = {
   sunmoteItemCombinations,
   professions,
   columnIndexes,
-  sunmote
+  sunmote,
+  darkmoonDecks
 };

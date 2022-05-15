@@ -70,6 +70,14 @@ function sunmoteBaseItemLookup(pclass, spec, ids, cell, slot) {
   }
 }
 
+function darkmoonDeckItemLookup(pclass, spec, ids, cell, slot) {
+  for (var id of ids) {
+    if (constants.darkmoonDecks[id] != undefined) {
+      return [constants.darkmoonDecks[id]];
+    }
+  }
+}
+
 function verdantSphereItemLookup(pclass, spec, ids, cell, slot) {
   for (var id of ids) {
     if (constants.verdantSphereRewards.includes(id)) {
@@ -98,6 +106,7 @@ var postItemLookupStrategies = [
   sunmoteBaseItemLookup,
   verdantSphereItemLookup,
   magtheridonsHeadItemLookup,
+  darkmoonDeckItemLookup,
 ];
 
 module.exports = {
