@@ -153,12 +153,8 @@ async function predicateItemId(row, slot) {
 function mergeAndPredictBestMetadata(first, second) {
   var rating1 = getBestRatedSource(first.source);
   var rating2 = getBestRatedSource(second.source);
-  console.log(">>>rating1");
-  console.log(JSON.stringify(rating1));
-  console.log(">>>rating2");
-  console.log(JSON.stringify(rating2));
-
   var better = null;
+
   if (rating1.value > rating2.value) {
     better = rating1;
   } else {
