@@ -214,19 +214,38 @@ function MSHB:render_multiphase(multi)
     return " (<P" .. lastBiSPhase .. ")"
 end
 
-function MSHB:append_spec(tooltip, class, spec, role, multi)
+function MSHB:get_extra_from_group(class, spec, role, multi, group)
+    if group == nil then
+        return ""
+    end
+
+    if self:has_value_nested(group, "34664") then
+        return " |Tinterface/icons/spell_nature_elementalshields.blp:0|t"
+    end
+
+    return ""
+end
+
+function MSHB:append_spec(tooltip, class, spec, role, multi, group)
     if spec == "all" then
         tooltip:AddLine(
-            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|Tinterface/icons/classicon_" .. class ..
-                ".blp:0|t" .. " " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                self:render_multiphase(multi), r, g, b)
+            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " ..
+            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " ..
+            self:to_pascal_case(class) .. 
+            " - " .. self:to_pascal_case(spec) ..
+            " - " .. role ..
+            self:get_extra_from_group(class, spec, role, multi, group) .. 
+            self:render_multiphase(multi))
         return
     end
 
     tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
                         self.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                        self:render_multiphase(multi), r, g, b)
+                        self:to_pascal_case(class) ..
+                        " - " .. self:to_pascal_case(spec) ..
+                        " - " .. role ..
+                        self:get_extra_from_group(class, spec, role, multi, group) ..
+                        self:render_multiphase(multi))
 end
 
 function MSHB:has_key(tab, val)
@@ -255,6 +274,23 @@ function MSHB:has_value_nested(tab, val)
             local result = self:has_value_nested(value, val)
             if result then
                 return true
+            end
+        else
+            if value == val then
+                return true
+            end
+        end
+    end
+
+    return nil
+end
+
+function MSHB:get_table_which_contains(tab, val)
+    for index, value in pairs(tab) do
+        if (type(value) == "table") then
+            local result = self:has_value_nested(value, val)
+            if result then
+                return value
             end
         else
             if value == val then
@@ -341,10 +377,11 @@ function MSHB:append_tooltip(tooltip)
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
-                    if self:has_value_nested(bisClass["items"], itemId) then
+                    local group = self:get_table_which_contains(bisClass["items"], itemId)
+                    if group then
                         local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(),
                             bisClass["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
-                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi}
+                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi, group}
                     end
                 end
             end
@@ -353,10 +390,11 @@ function MSHB:append_tooltip(tooltip)
         if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster then
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
-                if self:has_value_nested(bisClass["items"], itemId) then
+                local group = self:get_table_which_contains(bisClass["items"], itemId)
+                if group then
                     local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(),
                         bisClass["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
-                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi}
+                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi, group}
                 end
             end
         end
@@ -365,10 +403,11 @@ function MSHB:append_tooltip(tooltip)
             currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
             for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
                 for j, s in ipairs(c) do
-                    if self:has_value_nested(s["items"], itemId) then
+                    local group = self:get_table_which_contains(s["items"], itemId)
+                    if group then
                         local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(),
                             itemId, MeSoHordieAddon.db.char.phase)
-                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi}
+                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi, group}
                     end
                 end
             end
@@ -381,7 +420,7 @@ function MSHB:append_tooltip(tooltip)
     if next(lines) ~= nil then
         tooltip:AddLine("Me So Hordie BiS - Phase " .. MeSoHordieAddon.db.char.phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
-            self:append_spec(tooltip, v[1], v[2], v[3], v[4])
+            self:append_spec(tooltip, v[1], v[2], v[3], v[4], v[5])
         end
     end
 end
