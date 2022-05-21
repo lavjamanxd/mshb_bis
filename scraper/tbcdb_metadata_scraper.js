@@ -212,7 +212,7 @@ async function fetchMetadataForItem(itemId, resultObj) {
                 )
                   continue;
                 var itemInfoData = eval(
-                  "var LANG = {}; var tabsRelated = {}; var Listview = {colDefs:{Common:{}}, extraCols: {}}; var a = " +
+                  "var LANG = {}; var tabsRelated = {}; var Listview = {colDefs:{Common:{}}, extraCols: {}, funcBox: { createSimpleCol: () => {}}}; var a = " +
                     data.substring(0, data.length - 2) +
                     "; a;"
                 );
