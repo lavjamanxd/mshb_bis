@@ -245,7 +245,7 @@ function MeSoHordieAddon:InspectPaperDollItemSlotButton_Update(button)
 end
 
 function MeSoHordieAddon:UpdateTooltip(frame)
-    MSHB:append_tooltip(frame)
+    MSHB:append_tooltip(frame, false)
 end
 
 function MeSoHordieAddon:OnAddonLoaded(event, addon)

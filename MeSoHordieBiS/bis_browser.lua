@@ -9,8 +9,13 @@ MeSoHordieAddon.gui.compareTooltip = MeSoHordieAddon.gui.compareTooltip or
 
 MeSoHordieAddon.gui.state = {}
 
+function MeSoHordieAddon:UpdateTooltipWithForceAllMode(frame)
+    MSHB:append_tooltip(frame, true)
+end
+
 function MeSoHordieAddon:InitializeUI()
     self:RegisterItemWidgetLayout()
+    self:HookScript(MeSoHordieAddon.gui.tooltip, "OnTooltipSetItem", "UpdateTooltipWithForceAllMode")
 end
 
 function MeSoHordieAddon:RegisterItemWidgetLayout()
@@ -103,7 +108,7 @@ function MeSoHordieAddon:InvalidateTooltip()
     end
 
     if self.gui.state.tooltipVisible and self.gui.state.shiftHeld and self.gui.state.tooltipSlot ~= -1 then
-        local equippedItemLink = GetInventoryItemLink("player", self.gui.state.tooltipSlot);
+        local equippedItemLink = GetInventoryItemLink("player", self.gui.state.tooltipSlot)
         self.gui.compareTooltip:SetOwner(self.gui.tooltip, "ANCHOR_NONE")
         self.gui.compareTooltip:SetPoint("RIGHT", self.gui.tooltip, "LEFT")
         self.gui.compareTooltip:SetHyperlink(equippedItemLink)
@@ -148,14 +153,14 @@ function MeSoHordieAddon:ShowBiSWindow()
             frame.frame:SetPropagateKeyboardInput(false)
             MeSoHordieAddon:InvalidateTooltip()
         end
-    end);
+    end)
 
     frame.frame:SetScript("OnKeyUp", function(self, key)
         if key == "LSHIFT" then
             MeSoHordieAddon.gui.state.shiftHeld = false
             MeSoHordieAddon:InvalidateTooltip()
         end
-    end);
+    end)
 
     frame:SetTitle("MSHB BiS Browser")
     frame:SetCallback("OnClose", function(widget)
@@ -425,7 +430,7 @@ function MeSoHordieAddon:AddItemWidget(parent, itemId, ident, itemSlot)
             return
         end
 
-        local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = GetItemInfo(itemId);
+        local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = GetItemInfo(itemId)
         if ChatFrameEditBox and ChatFrameEditBox:IsVisible() then
             ChatFrameEditBox:Insert(sLink)
         else

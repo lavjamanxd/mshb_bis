@@ -214,19 +214,19 @@ function MSHB:render_multiphase(multi)
     return " (<P" .. lastBiSPhase .. ")"
 end
 
-function MSHB:get_extra_from_group(class, spec, role, multi, group)
+function MSHB:get_extra_from_group(itemId, class, spec, role, multi, group)
     if group == nil then
         return ""
     end
 
-    if self:has_value_nested(group, "34664") then
+    if self:has_value_nested(group, "34664") and itemId ~= group[1][1] then
         return " |Tinterface/icons/spell_nature_elementalshields.blp:0|t"
     end
 
     return ""
 end
 
-function MSHB:append_spec(tooltip, class, spec, role, multi, group)
+function MSHB:append_spec(tooltip, itemId, class, spec, role, multi, group)
     if spec == "all" then
         tooltip:AddLine(
             "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " ..
@@ -234,7 +234,7 @@ function MSHB:append_spec(tooltip, class, spec, role, multi, group)
             self:to_pascal_case(class) .. 
             " - " .. self:to_pascal_case(spec) ..
             " - " .. role ..
-            self:get_extra_from_group(class, spec, role, multi, group) .. 
+            self:get_extra_from_group(itemId, class, spec, role, multi, group) .. 
             self:render_multiphase(multi))
         return
     end
@@ -244,7 +244,7 @@ function MSHB:append_spec(tooltip, class, spec, role, multi, group)
                         self:to_pascal_case(class) ..
                         " - " .. self:to_pascal_case(spec) ..
                         " - " .. role ..
-                        self:get_extra_from_group(class, spec, role, multi, group) ..
+                        self:get_extra_from_group(itemId, class, spec, role, multi, group) ..
                         self:render_multiphase(multi))
 end
 
@@ -343,7 +343,7 @@ function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
     return result
 end
 
-function MSHB:append_tooltip(tooltip)
+function MSHB:append_tooltip(tooltip, forcedAllMode)
     if not self:guild_member() then
         return
     end
@@ -368,12 +368,13 @@ function MSHB:append_tooltip(tooltip)
     local lines = {}
 
     local cacheKey = itemId .. MeSoHordieAddon.db.char.mode .. MeSoHordieAddon.db.char.phase .. class .. spec ..
-                         tostring(isPlayerLootMaster)
+                         tostring(isPlayerLootMaster) .. tostring(forcedAllMode)
 
     if (MSHB.tooltipCache.key and MSHB.tooltipCache.key == cacheKey) then
         lines = MSHB.tooltipCache.result
+        currentMode = MSHB.tooltipCache.mode
     else
-        if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster then
+        if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster and not forcedAllMode then
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
@@ -387,7 +388,7 @@ function MSHB:append_tooltip(tooltip)
             end
         end
 
-        if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster then
+        if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster and not forcedAllMode then
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 local group = self:get_table_which_contains(bisClass["items"], itemId)
@@ -399,7 +400,7 @@ function MSHB:append_tooltip(tooltip)
             end
         end
 
-        if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster then
+        if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster or forcedAllMode then
             currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
             for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
                 for j, s in ipairs(c) do
@@ -415,12 +416,13 @@ function MSHB:append_tooltip(tooltip)
 
         MSHB.tooltipCache.key = cacheKey
         MSHB.tooltipCache.result = lines
+        MSHB.tooltipCache.mode = currentMode
     end
 
     if next(lines) ~= nil then
         tooltip:AddLine("Me So Hordie BiS - Phase " .. MeSoHordieAddon.db.char.phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
-            self:append_spec(tooltip, v[1], v[2], v[3], v[4], v[5])
+            self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5])
         end
     end
 end
