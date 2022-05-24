@@ -1,7 +1,7 @@
 ## Interface: 20504
 ## Title: Me So Hordie BiS
 ## Author: Beckeeh
-## Version: 2.1.0
+## Version: 2.1.1
 ## SavedVariablesPerCharacter: MeSoHordieAddonDB
 
 embeds.xml
