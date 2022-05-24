@@ -324,7 +324,7 @@ function MeSoHordieAddon:AddItemSlotGroups(parent, phase, class, spec, role, mis
     local currentPhaseBiSClass = msh_bis_addon_data["phases"]["phase" .. phase][class:lower()]
 
     for i, v in ipairs(currentPhaseBiSClass) do
-        if v["spec"] == spec:lower() or v["spec"]:lower() == "all" and v["role"] == role then
+        if (v["spec"] == spec:lower() or v["spec"]:lower() == "all") and v["role"] == role then
             for index, slotName in ipairs(MSHB.inventorySlots) do
                 self:AddItemSlotGroup(parent, slotName, v["items"][slotName])
             end
