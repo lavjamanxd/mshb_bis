@@ -1,0 +1,10 @@
+{
+  "name": "seventyupgrades_generator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "clipboardy": "^3.0.0"
+  },
+  "type": "module"
+}
