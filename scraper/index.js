@@ -137,10 +137,13 @@ async function predicateItemId(row, slot) {
 
         console.log("tbcdb:");
         console.log(JSON.stringify(newtbcDbMetadata));
-        metadata[itemId] = mergeAndPredictBestMetadata(
+
+        var bestMetadata = mergeAndPredictBestMetadata(
           newMetadata,
           newtbcDbMetadata
         );
+
+        metadata[itemId] = tryReduceData(bestMetadata);
       }
     } catch (e) {
       debugger;
@@ -148,6 +151,31 @@ async function predicateItemId(row, slot) {
   }
 
   return predictions;
+}
+
+function tryReduceData(source) {
+  if (source && source.drop) {
+    var zoneCounts = {};
+    source.drop.forEach((x) => {
+      if (zoneCounts[x.zone]) zoneCounts[x.zone]++;
+      else zoneCounts[x.zone] = 1;
+    });
+
+    var result = { amount: 0 };
+
+    Object.entries(zoneCounts).forEach((x) => {
+      if (x[1] > result.amount) {
+        result.amount = x[1];
+        result.name = x[0];
+      }
+    });
+
+    if (result.amount > 10){
+      source.drop = [{name: "Trash mobs", zone: result.name, chance: 0}]
+    }
+  }
+
+  return source;
 }
 
 function mergeAndPredictBestMetadata(first, second) {
@@ -181,13 +209,15 @@ var groupFields = {
 };
 
 function getBestRatedSource(source) {
-  if (!source){
+  if (!source) {
     return {};
   }
   var keys = Object.keys(source);
   var currentBest = -Infinity;
   var field = "";
   var element = null;
+
+  source = tryReduceData(source);
 
   keys.forEach((key) => {
     var best = getRatingFor(source, key);
