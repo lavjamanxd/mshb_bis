@@ -34,6 +34,10 @@ async function predicateItemId(row, slot) {
   )
     return [];
 
+  if ((content.match(/\//g) || []).length > 4) {
+    debugger;
+  }
+
   var names = content.includes("http")
     ? [content.trim()]
     : content
@@ -170,8 +174,8 @@ function tryReduceData(source) {
       }
     });
 
-    if (result.amount > 10){
-      source.drop = [{name: "Trash mobs", zone: result.name, chance: 0}]
+    if (result.amount > 10) {
+      source.drop = [{ name: "Trash mobs", zone: result.name, chance: 0 }];
     }
   }
 
