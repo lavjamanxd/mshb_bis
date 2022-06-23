@@ -193,9 +193,9 @@ function extractCurrency(cost) {
     var money = cost[0];
     var gold = Math.floor(money / 10000);
     money -= gold * 10000;
-    var silver = Math.floor(money / 1000);
-    money -= silver * 1000;
-    var copper = Math.floor(money / 100);
+    var silver = Math.floor(money / 100);
+    money -= silver * 100;
+    var copper = money;
     result.money = {
       gold,
       silver,
