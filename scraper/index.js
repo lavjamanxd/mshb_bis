@@ -9,6 +9,7 @@ const bisListStrategies = require("./bislist_strategies");
 const wowheadMetadata = require("./wowhead_metadata_scraper");
 const tbcDbMetadata = require("./tbcdb_metadata_scraper");
 const constants = require("./consts");
+const { chromium } = require("playwright");
 
 var { Liquid } = require("liquidjs");
 var engine = new Liquid();
@@ -20,9 +21,17 @@ doc.useApiKey(process.env.GOOGLE_API_KEY);
 var predictionCache = {};
 var metadata = {};
 
-async function predicateItemId(row, slot) {
+async function predicateItemId(row, slot, newSpreadsheet = false) {
   var predictions = [];
-  var content = row[constants.columnIndexes[slot]].value;
+  var slotId = constants.columnIndexes[slot];
+
+  if (newSpreadsheet) {
+    slotId = 3;
+    if (!row || !row[slotId]) return [];
+  }
+
+  var content = row[slotId].value;
+
   var classs = row[constants.columnIndexes.class].value.toLowerCase();
   var spec = row[constants.columnIndexes.spec].value.toLowerCase();
   if (
@@ -57,13 +66,7 @@ async function predicateItemId(row, slot) {
     } else {
       for (const strategy of bisListStrategies.itemLookupStrategies) {
         try {
-          var result = await strategy(
-            classs,
-            spec,
-            name,
-            row[constants.columnIndexes[slot]],
-            slot
-          );
+          var result = await strategy(classs, spec, name, row[slotId], slot);
           if (result != undefined) {
             console.log(
               "\t- " + strategy.name + " found " + JSON.stringify(result)
@@ -91,7 +94,7 @@ async function predicateItemId(row, slot) {
     var flattenedInnerPredictions = innerPredictions.flat();
 
     if (flattenedInnerPredictions.length == 0) {
-      console.log(`couldnt find: ${row[constants.columnIndexes[slot]].value}`);
+      console.log(`couldnt find: ${row[slotId].value}`);
       debugger;
     }
 
@@ -102,7 +105,7 @@ async function predicateItemId(row, slot) {
           classs,
           spec,
           flattenedInnerPredictions,
-          row[constants.columnIndexes[slot]],
+          row[slotId],
           slot
         );
         if (result != undefined) {
@@ -126,7 +129,7 @@ async function predicateItemId(row, slot) {
   }
 
   if (predictions.length == 0) {
-    console.log(row[constants.columnIndexes[slot]].value);
+    console.log(row[slotId].value);
     debugger;
   }
 
@@ -185,6 +188,15 @@ function tryReduceData(source) {
 function mergeAndPredictBestMetadata(first, second) {
   var rating1 = getBestRatedSource(first.source);
   var rating2 = getBestRatedSource(second.source);
+
+  if (!rating1) {
+    return { source: { [rating2.field]: rating2.element } };
+  }
+
+  if (!rating2) {
+    return { source: { [rating1.field]: rating1.element } };
+  }
+
   var better = null;
 
   if (rating1.value > rating2.value) {
@@ -214,7 +226,7 @@ var groupFields = {
 
 function getBestRatedSource(source) {
   if (!source) {
-    return {};
+    return;
   }
   var keys = Object.keys(source);
   var currentBest = -Infinity;
@@ -323,6 +335,85 @@ async function scrapPhase(sheet) {
   return grouped;
 }
 
+async function scrapPhaseFromEightyUpgrades(sheet) {
+  const browser = await chromium.launch({ headless: false });
+  const page = await browser.newPage();
+
+  const rows = await sheet.getRows();
+  var scrapedList = [];
+  await sheet.loadCells();
+  for (var rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+    var row = Array.from(Array(4).keys()).map((colIndex) =>
+      sheet.getCell(rowIndex, colIndex)
+    );
+
+    if (row[0].value == null) break;
+
+    var newSet = {
+      class: row[constants.columnIndexes["class"]].value,
+      spec: row[constants.columnIndexes["spec"]].value,
+      role: row[constants.columnIndexes["role"]].value,
+    };
+
+    var link = row[3].value;
+    if (!link) continue;
+
+    await page.goto(link);
+    await page.locator('[aria-label="Export"]').click();
+    var element = await page
+      .locator('[aria-label="Export Set"] pre')
+      .innerText();
+    var set = JSON.parse(element);
+
+    var rowBase = [
+      { value: newSet.class },
+      { value: newSet.spec },
+      { value: newSet.role },
+    ];
+
+    var itemMap = {};
+    set.items.forEach((item) => {
+      itemMap[item.slot] = [...rowBase, { value: item.name }];
+    });
+
+    newSet.items = {
+      head: await predicateItemId(itemMap["HEAD"], "head", true),
+      neck: await predicateItemId(itemMap["NECK"], "neck", true),
+      shoulders: await predicateItemId(itemMap["SHOULDERS"], "shoulders", true),
+      back: await predicateItemId(itemMap["BACK"], "back", true),
+      chest: await predicateItemId(itemMap["CHEST"], "chest", true),
+      wrists: await predicateItemId(itemMap["WRISTS"], "wrists", true),
+      mainHand: await predicateItemId(itemMap["MAIN_HAND"], "mainHand", true),
+      offHand: await predicateItemId(itemMap["OFF_HAND"], "offHand", true),
+      twoHand: await predicateItemId(itemMap["TWO_HAND"], "twoHand", true),
+      hands: await predicateItemId(itemMap["HANDS"], "hands", true),
+      belt: await predicateItemId(itemMap["WAIST"], "belt", true),
+      legs: await predicateItemId(itemMap["LEGS"], "legs", true),
+      feet: await predicateItemId(itemMap["FEET"], "feet", true),
+      ring1: await predicateItemId(itemMap["FINGER_1"], "ring1", true),
+      ring2: await predicateItemId(itemMap["FINGER_2"], "ring2", true),
+      trinket1: await predicateItemId(itemMap["TRINKET_1"], "trinket1", true),
+      trinket2: await predicateItemId(itemMap["TRINKET_2"], "trinket2", true),
+      ranged: await predicateItemId(itemMap["RANGED"], "ranged", true),
+    };
+
+    scrapedList.push(newSet);
+  }
+
+  browser.close();
+
+  var grouped = {};
+
+  scrapedList.forEach((bis) => {
+    if (grouped[bis.class] == undefined) {
+      grouped[bis.class] = { class: bis.class, specs: [] };
+    }
+    grouped[bis.class].specs.push(bis);
+  });
+
+  return grouped;
+}
+
 async function main() {
   await doc.loadInfo();
   var now = new Date();
@@ -336,16 +427,16 @@ async function main() {
 
   for (sheetIndex = 0; sheetIndex < doc.sheetCount; sheetIndex++) {
     var currentSheet = doc.sheetsByIndex[sheetIndex];
-    var phaseMatches = currentSheet.title.match(/Phase (\d+)/);
+    var phaseMatches = currentSheet.title.match(/Pre-Patch/);
 
     if (phaseMatches == undefined) {
       continue;
     }
 
-    var phase = +phaseMatches[1];
+    var phase = -1;
 
     console.log(`scraping phase: ${phase}`);
-    var phaseResult = await scrapPhase(currentSheet);
+    var phaseResult = await scrapPhaseFromEightyUpgrades(currentSheet);
 
     bisAddonData.phases[phase] = phaseResult;
   }

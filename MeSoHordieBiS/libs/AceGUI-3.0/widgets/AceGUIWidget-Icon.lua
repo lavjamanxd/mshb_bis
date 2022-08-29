@@ -37,6 +37,7 @@ local methods = {
 		self:SetLabel()
 		self:SetImage(nil)
 		self:SetImageSize(64, 64)
+		self:SetDisabled(false)
 	end,
 
 	-- ["OnRelease"] = nil,

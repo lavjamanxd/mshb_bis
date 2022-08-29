@@ -1,46 +1,30 @@
 MSHB = {}
 
 MSHB.supportedPhases = {
-    [1] = {
-        name = "Phase 1 - KARA/G/M",
-        start = time {
-            year = 2021,
-            month = 6,
-            day = 1
-        }
-    },
-    [2] = {
-        name = "Phase 2 - SSC/TK",
-        start = time {
-            year = 2021,
-            month = 9,
-            day = 15
-        }
-    },
-    [3] = {
-        name = "Phase 3 - MH/BT",
+    [-1] = {
+        name = "Pre-Patch",
         start = time {
             year = 2022,
-            month = 1,
-            day = 28
+            month = 8,
+            day = 30
         }
     },
-    [4] = {
-        name = "Phase 4 - ZA",
-        start = time {
-            year = 2022,
-            month = 3,
-            day = 22
-        }
-    },
-    [5] = {
-        name = "Phase 5 - SW",
-        start = time {
-            year = 2022,
-            month = 5,
-            day = 10
-        }
-    }
+    -- [0] = {
+    --     name = "Phase 0 - Pre-Raid",
+    --     start = time {
+    --         year = 2022,
+    --         month = 9,
+    --         day = 26
+    --     }
+    -- },
+    -- [1] = {
+    --     name = "Phase 1 - Naxx/OS/EOE/VoA",
+    --     start = time {
+    --         year = 2022,
+    --         month = 10,
+    --         day = 6
+    --     }
+    -- }
 }
 
 MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "twoHand", "mainHand", "offHand",
@@ -146,7 +130,7 @@ function MSHB:getSupportedModesDescription()
 end
 
 function MSHB:getCurrentPhase()
-    local phaseResult = 0
+    local phaseResult = -1
     local now = time()
     for i, v in pairs(self.supportedPhases) do
         if v["start"] < time() then

@@ -39,7 +39,7 @@ function tierSetLookup(pclass, spec, name, cell, slot) {
 async function wowheadLookup(pclass, spec, name, cell, slot) {
   try {
     const response = await fetch(
-      `https://tbc.wowhead.com/search/suggestions-template?q=${name}`
+      `https://www.wowhead.com/wotlk/search/suggestions-template?q=${name}`
     );
     const whResponse = await response.json();
     var itemResult = whResponse.results.find((r) => r.type == 3);

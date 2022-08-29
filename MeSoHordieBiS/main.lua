@@ -60,8 +60,6 @@ MeSoHordieAddon.options = {
     }
 }
 
-MeSoHordieAddon.icon = LibStub("LibDBIcon-1.0")
-
 function MeSoHordieAddon:RefreshCharacterFrame()
     ToggleCharacter("PaperDollFrame")
     ToggleCharacter("PaperDollFrame")
@@ -268,7 +266,7 @@ function MeSoHordieAddon:OnInitialize()
 
     LibStub("AceConfig-3.0"):RegisterOptionsTable("MeSoHordieAddon", self.options)
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("MeSoHordieAddon", "MeSoHordieAddon")
-
+    self.icon = LibStub("LibDBIcon-1.0")
     local mshbmmLDB = LibStub("LibDataBroker-1.1"):NewDataObject("MeSoHordieMM", {
         type = "data source",
         text = "MeSoHordie BiS Browser",

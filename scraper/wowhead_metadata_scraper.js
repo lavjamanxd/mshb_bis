@@ -7,7 +7,7 @@ var professionCache = {};
 var zoneCache = {};
 var npcDropCache = {};
 
-const dbUrl = "https://tbc.wowhead.com";
+const dbUrl = "https://www.wowhead.com/wotlk";
 
 var professionMap = {
   171: "Alchemy",

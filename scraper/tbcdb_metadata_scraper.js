@@ -6,7 +6,7 @@ const constants = require("./consts");
 var zoneCache = {};
 var npcZoneCache = {};
 var objectZoneCache = {};
-const dbUrl = "https://tbcdb.com";
+const dbUrl = "https://wotlk.evowow.com";
 
 var professionMap = {
   171: "Alchemy",
@@ -54,7 +54,7 @@ async function getZoneFromQuestCategories(id1, id2) {
   }
   try {
     const response = await fetch(
-      `https://tbc.wowhead.com/quests=${id2}.${id1}`
+      `https://www.wowhead.com/wotlk/quests=${id2}.${id1}`
     );
     const htmlSource = await response.text();
     const $ = cheerio.load(htmlSource);
