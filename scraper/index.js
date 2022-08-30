@@ -335,8 +335,82 @@ async function scrapPhase(sheet) {
   return grouped;
 }
 
-async function scrapPhaseFromEightyUpgrades(sheet) {
-  const browser = await chromium.launch({ headless: false });
+async function scrapeFromEightyUpgrades(link, page) {
+  await page.goto(link);
+  await page.locator('[aria-label="Export"]').click();
+  var element = await page.locator('[aria-label="Export Set"] pre').innerText();
+  return JSON.parse(element);
+}
+
+const wowheadSlotMap = {
+  Head: "HEAD",
+  Neck: "NECK",
+  Shoulder: "SHOULDERS",
+  Chest: "CHEST",
+  Waist: "WAIST",
+  Legs: "LEGS",
+  Feet: "FEET",
+  Wrist: "WRISTS",
+  Hands: "HANDS",
+  "Finger 1": "FINGER_1",
+  "Finger 2": "FINGER_2",
+  "Trinket 1": "TRINKET_1",
+  "Trinket 2": "TRINKET_2",
+  Back: "BACK",
+  "Two Hand": "TWO_HAND",
+  "Main Hand": "MAIN_HAND",
+  "Off Hand": "OFF_HAND",
+  Ranged: "RANGED",
+  Relic: "RANGED",
+};
+
+async function scrapeFromWowhead(link, page) {
+  var result = [];
+
+  await page.goto(link);
+  var rows = await page.locator(".gear-planner-slots-group-slot");
+
+  const count = await rows.count();
+  var offhandEmpty = false;
+
+  for (let i = count; i > 0; i--) {
+    var line = rows.nth(i-1);
+    var itemLink = await line.locator(
+      ".gear-planner-slots-group-slot-name > .gear-planner-slots-group-slot-link"
+    );
+
+    var itemName = await itemLink.innerText();
+    var slot = await itemLink.getAttribute("data-default-name");
+
+    console.log({ itemName, slot });
+
+    if (itemName == "") {
+      continue;
+    }
+
+    if (itemName == slot){
+      if (slot == "Off Hand"){
+        offhandEmpty=true;
+      }
+      continue;
+    }
+
+    if (slot == "Main Hand" && offhandEmpty){
+      slot == "Two Hand";
+    }
+
+    if (!wowheadSlotMap[slot]) {
+      debugger;
+    }
+
+    result.push({ name: itemName, slot: wowheadSlotMap[slot] });
+  }
+
+  return result;
+}
+
+async function scrapeFromWeb(sheet) {
+  const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
 
   const rows = await sheet.getRows();
@@ -358,13 +432,6 @@ async function scrapPhaseFromEightyUpgrades(sheet) {
     var link = row[3].value;
     if (!link) continue;
 
-    await page.goto(link);
-    await page.locator('[aria-label="Export"]').click();
-    var element = await page
-      .locator('[aria-label="Export Set"] pre')
-      .innerText();
-    var set = JSON.parse(element);
-
     var rowBase = [
       { value: newSet.class },
       { value: newSet.spec },
@@ -372,9 +439,22 @@ async function scrapPhaseFromEightyUpgrades(sheet) {
     ];
 
     var itemMap = {};
-    set.items.forEach((item) => {
-      itemMap[item.slot] = [...rowBase, { value: item.name }];
-    });
+
+    if (link.includes("eightyupgrades")) {
+      var set = await scrapeFromEightyUpgrades(link, page);
+
+      set.items.forEach((item) => {
+        itemMap[item.slot] = [...rowBase, { value: item.name }];
+      });
+    }
+
+    if (link.includes("wowhead")) {
+      var items = await scrapeFromWowhead(link, page);
+
+      items.forEach((item) => {
+        itemMap[item.slot] = [...rowBase, { value: item.name }];
+      });
+    }
 
     newSet.items = {
       head: await predicateItemId(itemMap["HEAD"], "head", true),
@@ -436,7 +516,7 @@ async function main() {
     var phase = -1;
 
     console.log(`scraping phase: ${phase}`);
-    var phaseResult = await scrapPhaseFromEightyUpgrades(currentSheet);
+    var phaseResult = await scrapeFromWeb(currentSheet);
 
     bisAddonData.phases[phase] = phaseResult;
   }
