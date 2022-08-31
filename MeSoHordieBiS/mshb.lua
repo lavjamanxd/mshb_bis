@@ -8,7 +8,7 @@ MSHB.supportedPhases = {
             month = 8,
             day = 30
         }
-    },
+    }
     -- [0] = {
     --     name = "Phase 0 - Pre-Raid",
     --     start = time {
@@ -90,6 +90,7 @@ MSHB.supportedModes = {
 MSHB.spec_icon_table = {
     ["DRUID_balance"] = 'interface/icons/spell_nature_starfall.blp',
     ["DRUID_feral combat"] = 'interface/icons/ability_racial_bearform.blp',
+    ["DRUID_feral combat_cat"] = 'interface/icons/ability_druid_catform.blp',
     ["DRUID_restoration"] = 'interface/icons/spell_nature_healingtouch.blp',
     ["HUNTER_beast mastery"] = 'interface/icons/ability_hunter_beasttaming.blp',
     ["HUNTER_marksmanship"] = 'interface/icons/ability_marksmanship.blp',
@@ -114,7 +115,10 @@ MSHB.spec_icon_table = {
     ["WARLOCK_destruction"] = 'interface/icons/spell_shadow_rainoffire.blp',
     ["WARRIOR_protection"] = 'interface/icons/inv_shield_06.blp',
     ["WARRIOR_arms"] = 'interface/icons/ability_rogue_eviscerate.blp',
-    ["WARRIOR_fury"] = 'interface/icons/ability_warrior_innerrage.blp'
+    ["WARRIOR_fury"] = 'interface/icons/ability_warrior_innerrage.blp',
+    ["DEATH KNIGHT_blood"] = 'interface/icons/spell_deathknight_bloodpresence.blp',
+    ["DEATH KNIGHT_frost"] = 'interface/icons/spell_deathknight_frostpresence.blp',
+    ["DEATH KNIGHT_unholy"] = 'interface/icons/spell_deathknight_unholypresence.blp'
 }
 
 MSHB.tooltipCache = {}
@@ -130,7 +134,7 @@ function MSHB:getSupportedModesDescription()
 end
 
 function MSHB:getCurrentPhase()
-    local phaseResult = -1
+    local phaseResult = -2
     local now = time()
     for i, v in pairs(self.supportedPhases) do
         if v["start"] < time() then
@@ -211,23 +215,27 @@ function MSHB:get_extra_from_group(itemId, class, spec, role, multi, group)
 end
 
 function MSHB:append_spec(tooltip, itemId, class, spec, role, multi, group)
+    local classIcon = "classicon_" .. class .. ".blp"
+    local specIcon = self.spec_icon_table[class .. '_' .. spec:lower()]
+
+    if class == "DEATH KNIGHT" then
+        classIcon = "spell_deathknight_classicon.blp"
+    end
+
+    if class == "DRUID" and spec == "feral combat" and role == "DPS" then
+        specIcon = self.spec_icon_table[class .. '_' .. spec:lower() .. "_cat"]
+    end
+
     if spec == "all" then
-        tooltip:AddLine(
-            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " ..
-            "|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " ..
-            self:to_pascal_case(class) .. 
-            " - " .. self:to_pascal_case(spec) ..
-            " - " .. role ..
-            self:get_extra_from_group(itemId, class, spec, role, multi, group) .. 
-            self:render_multiphase(multi))
+        tooltip:AddLine("|Tinterface/icons/" .. classIcon .. ":0|t " .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
+                            self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
+                            self:get_extra_from_group(itemId, class, spec, role, multi, group) ..
+                            self:render_multiphase(multi))
         return
     end
 
-    tooltip:AddLine("|Tinterface/icons/classicon_" .. class .. ".blp:0|t" .. " " .. "|T" ..
-                        self.spec_icon_table[class .. '_' .. spec:lower()] .. ":0|t" .. " " ..
-                        self:to_pascal_case(class) ..
-                        " - " .. self:to_pascal_case(spec) ..
-                        " - " .. role ..
+    tooltip:AddLine("|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon .. ":0|t " ..
+                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
                         self:get_extra_from_group(itemId, class, spec, role, multi, group) ..
                         self:render_multiphase(multi))
 end
