@@ -94,6 +94,34 @@ function magtheridonsHeadItemLookup(pclass, spec, ids, cell, slot) {
   }
 }
 
+function tierSetReverseLookup(pclass, spec, ids, cell, slot){
+  var result = [];
+  for (var id of ids) {
+    Object.entries(constants.tierSets).forEach(tier => {
+      var tierNumber = +tier[0];
+      tier[1].forEach(classSet => {
+        if (classSet.class == pclass){
+          classSet.sets.forEach(tierSet => {
+            if (tierSet.spec.includes(spec)){
+              Object.entries(tierSet.items).forEach(items => {
+                if (items[1] == id){
+                  constants.tierTokens[tierNumber].forEach(tokens => {
+                    if (tokens.class.includes(pclass)){
+                      result.push(tokens.tokens[items[0]]);
+                    }
+                  })
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+  }
+
+  return result;
+}
+
 var itemLookupStrategies = [
   hardcodedLookup,
   warglaiveLookup,
@@ -107,6 +135,7 @@ var postItemLookupStrategies = [
   verdantSphereItemLookup,
   magtheridonsHeadItemLookup,
   darkmoonDeckItemLookup,
+  tierSetReverseLookup,
 ];
 
 module.exports = {
