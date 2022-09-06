@@ -424,7 +424,7 @@ async function scrapeFromWeb(sheet) {
     if (row[0].value == null) break;
 
     var newSet = {
-      class: row[constants.columnIndexes["class"]].value,
+      class: row[constants.columnIndexes["class"]].value.replace(/\s/g, ''),
       spec: row[constants.columnIndexes["spec"]].value,
       role: row[constants.columnIndexes["role"]].value,
     };

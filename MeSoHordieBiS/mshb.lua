@@ -116,9 +116,9 @@ MSHB.spec_icon_table = {
     ["WARRIOR_protection"] = 'interface/icons/inv_shield_06.blp',
     ["WARRIOR_arms"] = 'interface/icons/ability_rogue_eviscerate.blp',
     ["WARRIOR_fury"] = 'interface/icons/ability_warrior_innerrage.blp',
-    ["DEATH KNIGHT_blood"] = 'interface/icons/spell_deathknight_bloodpresence.blp',
-    ["DEATH KNIGHT_frost"] = 'interface/icons/spell_deathknight_frostpresence.blp',
-    ["DEATH KNIGHT_unholy"] = 'interface/icons/spell_deathknight_unholypresence.blp'
+    ["DEATHKNIGHT_blood"] = 'interface/icons/spell_deathknight_bloodpresence.blp',
+    ["DEATHKNIGHT_frost"] = 'interface/icons/spell_deathknight_frostpresence.blp',
+    ["DEATHKNIGHT_unholy"] = 'interface/icons/spell_deathknight_unholypresence.blp'
 }
 
 MSHB.tooltipCache = {}
@@ -218,7 +218,7 @@ function MSHB:append_spec(tooltip, itemId, class, spec, role, multi, group)
     local classIcon = "classicon_" .. class .. ".blp"
     local specIcon = self.spec_icon_table[class .. '_' .. spec:lower()]
 
-    if class == "DEATH KNIGHT" then
+    if class == "DEATHKNIGHT" then
         classIcon = "spell_deathknight_classicon.blp"
     end
 
@@ -485,6 +485,11 @@ end
 function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
     local class, spec = self:predict_player(unit, inspect)
     local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()]
+
+    if not bisClass then
+        return
+    end
+
     for i, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
             if self:has_value_nested(v["items"], tostring(itemId)) then
