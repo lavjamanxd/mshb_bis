@@ -343,25 +343,24 @@ async function scrapeFromEightyUpgrades(link, page) {
 }
 
 const wowheadSlotMap = {
-  Head: "HEAD",
-  Neck: "NECK",
-  Shoulder: "SHOULDERS",
-  Chest: "CHEST",
-  Waist: "WAIST",
-  Legs: "LEGS",
-  Feet: "FEET",
-  Wrist: "WRISTS",
-  Hands: "HANDS",
-  "Finger 1": "FINGER_1",
-  "Finger 2": "FINGER_2",
-  "Trinket 1": "TRINKET_1",
-  "Trinket 2": "TRINKET_2",
-  Back: "BACK",
+  1: "HEAD",
+  2: "NECK",
+  3: "SHOULDERS",
+  5: "CHEST",
+  6: "WAIST",
+  7: "LEGS",
+  8: "FEET",
+  9: "WRISTS",
+  10: "HANDS",
+  11: "FINGER_1",
+  12: "FINGER_2",
+  13: "TRINKET_1",
+  14: "TRINKET_2",
+  15: "BACK",
+  17: "OFF_HAND",
+  18: "RANGED",
   "Two Hand": "TWO_HAND",
   "Main Hand": "MAIN_HAND",
-  "Off Hand": "OFF_HAND",
-  Ranged: "RANGED",
-  Relic: "RANGED",
 };
 
 async function scrapeFromWowhead(link, page) {
@@ -374,29 +373,32 @@ async function scrapeFromWowhead(link, page) {
   var offhandEmpty = false;
 
   for (let i = count; i > 0; i--) {
-    var line = rows.nth(i-1);
+    var line = rows.nth(i - 1);
     var itemLink = await line.locator(
       ".gear-planner-slots-group-slot-name > .gear-planner-slots-group-slot-link"
     );
 
     var itemName = await itemLink.innerText();
-    var slot = await itemLink.getAttribute("data-default-name");
+    var slot = +(await line.getAttribute("data-slot-id"));
 
+    if (itemName == "undefined") itemName = "";
     console.log({ itemName, slot });
+
+    if (slot == 17 && itemName == "") {
+      offhandEmpty = true;
+      continue;
+    }
 
     if (itemName == "") {
       continue;
     }
 
-    if (itemName == slot){
-      if (slot == "Off Hand"){
-        offhandEmpty=true;
-      }
-      continue;
+    if (slot == 16 && offhandEmpty) {
+      slot = "Two Hand";
     }
 
-    if (slot == "Main Hand" && offhandEmpty){
-      slot == "Two Hand";
+    if (slot == 16 && !offhandEmpty) {
+      slot = "Main Hand";
     }
 
     if (!wowheadSlotMap[slot]) {
@@ -424,7 +426,7 @@ async function scrapeFromWeb(sheet) {
     if (row[0].value == null) break;
 
     var newSet = {
-      class: row[constants.columnIndexes["class"]].value.replace(/\s/g, ''),
+      class: row[constants.columnIndexes["class"]].value.replace(/\s/g, ""),
       spec: row[constants.columnIndexes["spec"]].value,
       role: row[constants.columnIndexes["role"]].value,
     };
