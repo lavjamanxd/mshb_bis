@@ -469,6 +469,14 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
     itemGroup:AddChild(itemSourceLabel)
     itemSourceLabel:SetText(self:GetItemSourceString(itemId))
 
+    if highlighted then
+        if index == 1 then
+            itemSourceLabel:SetColor(0.35, 0.92, 0)
+        else
+            itemSourceLabel:SetColor(0.90, 0.90, 0)
+        end
+    end
+
     if ident then
         local identImage = self.aceGui:Create("Image")
         itemGroup:AddChild(identImage)
