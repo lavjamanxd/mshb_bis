@@ -39,15 +39,6 @@ MeSoHordieAddon.options = {
             order = 20,
             width = "full"
         },
-        ignoreGuildCheck = {
-            type = "toggle",
-            name = "Ignore guild/realm check",
-            desc = "Shows information for non-guildies",
-            get = "GetIgnoreGuildCheck",
-            set = "SetIgnoreGuildCheck",
-            order = 30,
-            width = "full"
-        },
         showMinimapIcon = {
             type = "toggle",
             name = "Show minimap icon",
@@ -104,15 +95,6 @@ function MeSoHordieAddon:SetCurrentMode(info, value)
     self.db.char.mode = value
 end
 
-function MeSoHordieAddon:GetIgnoreGuildCheck(info)
-    return self.db.char.ignoreGuildCheck
-end
-
-function MeSoHordieAddon:SetIgnoreGuildCheck(info, value)
-    self.db.char.ignoreGuildCheck = value
-    self:RefreshCharacterFrame()
-end
-
 function MeSoHordieAddon:ChangePhaseCommand(phase)
     if (phase == nil) then
         print("Supported phases: " .. MSHB:pconcat(MSHB.supportedPhases, ", "))
@@ -153,20 +135,12 @@ function MeSoHordieAddon:ToggleIndicatorCommand()
     print("Indicator set to " .. (self:GetShowBiSIndicator(nil) and "shown" or "hidden"))
 end
 
-function MeSoHordieAddon:ToggleGuildCheckCommand()
-    self:SetIgnoreGuildCheck(nil, not self:GetIgnoreGuildCheck(nil))
-    print("Ignore guild check is set to " .. (self:GetIgnoreGuildCheck(nil) and "yes" or "no"))
-end
-
 function MeSoHordieAddon:PrintVersion()
     print("Addon version: " .. MeSoHordieAddon.addonVersion)
     print("Data version: " .. msh_bis_addon_data["version"])
 end
 
-function MeSoHordieAddon:ToggleExperimentalFeatures()
-    self.db.char.showMultiPhaseIndicator = not self.db.char.showMultiPhaseIndicator
-    print("Experimental mode changed")
-end
+
 
 function MeSoHordieAddon:dump(t, indent, done)
     done = done or {}
@@ -196,9 +170,7 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
         print("/mshb mode <mode>")
         print("/mshb phase <number>")
         print("/mshb indicator")
-        print("/mshb ignoreguildcheck")
         print("/mshb browser")
-        print("/mshb experimental")
         print("/mshb version")
         return
     end
@@ -217,16 +189,8 @@ function MeSoHordieAddon:MSHBInputProcessorFunc(input)
         self:ToggleIndicatorCommand()
     end
 
-    if (split[1] == "ignoreguildcheck") then
-        self:ToggleGuildCheckCommand()
-    end
-
     if (split[1] == "version") then
         self:PrintVersion()
-    end
-
-    if (split[1] == "experimental") then
-        self:ToggleExperimentalFeatures()
     end
 
     if (split[1] == "browser") then
@@ -279,7 +243,6 @@ function MeSoHordieAddon:OnInitialize()
             mode = 'spec',
             phase = MSHB:getCurrentPhase(),
             showBisIndicator = true,
-            showMultiPhaseIndicator = false,
             missingOnlyEnabled = false,
         } ,
         profile = {
@@ -295,10 +258,6 @@ function MeSoHordieAddon:OnInitialize()
 
     if self.db.char.showBisIndicator == nil then
         self.db.char.showBisIndicator = true
-    end
-
-    if self.db.char.showMultiPhaseIndicator == nil then
-        self.db.char.showMultiPhaseIndicator = false
     end
 
     self:RegisterChatCommand("mshb", "MSHBInputProcessorFunc")

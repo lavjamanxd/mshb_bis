@@ -10,6 +10,7 @@ const wowheadMetadata = require("./wowhead_metadata_scraper");
 const tbcDbMetadata = require("./tbcdb_metadata_scraper");
 const constants = require("./consts");
 const { chromium } = require("playwright");
+const Database = require("wow-classic-items");
 
 var { Liquid } = require("liquidjs");
 var engine = new Liquid();
@@ -496,6 +497,161 @@ async function scrapeFromWeb(sheet) {
   return grouped;
 }
 
+const wowtbcGGMap = {
+  head: "head",
+  neck: "neck",
+  shoulder: "shoulders",
+  back: "back",
+  chest: "chest",
+  wrist: "wrists",
+  hands: "hands",
+  waist: "belt",
+  legs: "legs",
+  feet: "feet",
+  "finger 1": "ring1",
+  "finger 2": "ring2",
+  "trinket 1": "trinket1",
+  "trinket 2": "trinket2",
+  weapon: "mainHand",
+  "off hand": "offHand",
+  relic: "ranged",
+  ranged: "ranged",
+};
+
+var weirdItemMap = {
+  "Darkmoon Card: Greatness": 44255,
+  "Darkmoon Card: Greatness v1": 44254,
+  "Darkmoon Card: Greatness v2": 42987,
+  "Darkmoon Card: Greatness v3": 44253,
+  "Warglaive of Azzinoth (OH)": 32838,
+  "Warglaive of Azzinoth (MH)": 32837,
+};
+
+async function fetchWowgg() {
+  const itemsDb = new Database.Items();
+
+  const combosRequest = await fetch(
+    `https://wowtbc.gg/page-data/wotlk/class-rankings/pve-rankings/page-data.json`
+  );
+  const combos = await combosRequest.json();
+  const result = { 0: {}, 1: {} };
+
+  for (const combo of combos.result.pageContext.sortedList) {
+    console.log(combo);
+
+    const listName = `${combo.spec
+      .toLowerCase()
+      .replace(" ", "-")}-${combo.class.toLowerCase().replace(" ", "-")}`;
+
+    const classs = combo.class;
+    const spec = combo.spec.replace("DPS", "").replace("Tank", "").trim();
+    if (spec == "feral") {
+      spec = "feral combat";
+    }
+    const role = combo.role == "Heals" ? "Heal" : combo.role;
+
+    const bisListRequest = await fetch(
+      `https://wowtbc.gg/page-data/wotlk/bis-list/${listName}/page-data.json`
+    );
+    const bisList = await bisListRequest.json();
+
+    const data = bisList.result.pageContext;
+    console.log(data);
+    const bisData = data.bisList;
+
+    console.log(`${classs} - ${spec} - ${role}`);
+
+    const phases = ["Pre-Bis", "T7"];
+    const slots = [
+      "head",
+      "neck",
+      "shoulder",
+      "back",
+      "chest",
+      "wrist",
+      "hands",
+      "waist",
+      "legs",
+      "feet",
+      "finger 1",
+      "finger 2",
+      "trinket 1",
+      "trinket 2",
+      "weapon",
+      "main hand fist",
+      "main hand sword",
+      "off hand",
+      "relic",
+      "ranged",
+    ];
+
+    for (const phase of phases) {
+      var phaseIndex = phases.indexOf(phase);
+      var className = classs.replace(" ", "");
+      if (!result[phaseIndex][className]) {
+        result[phaseIndex][className] = {
+          class: className,
+          specs: [],
+        };
+      }
+
+      if (!result[phaseIndex][className].specs) {
+        result[phaseIndex][className].specs = [];
+      }
+
+      var currentSpec = {
+        class: className,
+        spec: spec,
+        role: role,
+        items: {},
+      };
+
+      for (const slot of slots) {
+        const filteredItems = bisData.filter(
+          (i) => i.slot == slot && i.phase.includes(phase)
+        );
+
+        let itemsOrdered = [];
+
+        for (const filteredItem of filteredItems) {
+          if (!filteredItem.name) continue;
+          if (filteredItem[phase.toLocaleLowerCase()].bis) {
+            itemsOrdered = [filteredItem, ...itemsOrdered];
+          } else {
+            itemsOrdered.push(filteredItem);
+          }
+        }
+        itemsOrdered = itemsOrdered.slice(0, 6);
+
+        if (wowtbcGGMap[slot]) {
+          currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered
+            .map((item) => {
+              var found = itemsDb.find((i) => i.name == item.name);
+              if (!found) {
+                found = weirdItemMap[item.name];
+              }
+
+              if (!found) {
+                debugger;
+              }
+              metadata[found.itemId] = `${item.source} - ${item.source_type}`;
+              return found.itemId;
+            })
+            .map((id) => [id]);
+        } else {
+          if (itemsOrdered.length > 0) {
+            debugger;
+          }
+        }
+      }
+
+      result[phaseIndex][className].specs.push(currentSpec);
+    }
+  }
+
+  return result;
+}
+
 async function main() {
   await doc.loadInfo();
   var now = new Date();
@@ -507,31 +663,33 @@ async function main() {
     phases: {},
   };
 
-  for (sheetIndex = 0; sheetIndex < doc.sheetCount; sheetIndex++) {
-    var currentSheet = doc.sheetsByIndex[sheetIndex];
-    var phaseMatches = currentSheet.title.match(/Pre-Patch/);
+  // for (sheetIndex = 0; sheetIndex < doc.sheetCount; sheetIndex++) {
+  //   var currentSheet = doc.sheetsByIndex[sheetIndex];
+  //   var phaseMatches = currentSheet.title.match(/Pre-Patch/);
 
-    if (phaseMatches == undefined) {
-      continue;
-    }
+  //   if (phaseMatches == undefined) {
+  //     continue;
+  //   }
 
-    var phase = -1;
+  //   var phase = -1;
 
-    console.log(`scraping phase: ${phase}`);
-    var phaseResult = await scrapeFromWeb(currentSheet);
+  //   console.log(`scraping phase: ${phase}`);
+  //   var phaseResult = await scrapeFromWeb(currentSheet);
 
-    bisAddonData.phases[phase] = phaseResult;
-  }
+  //   bisAddonData.phases[phase] = phaseResult;
+  // }
 
-  fs.writeFileSync(
-    join(appDir, "cached_bisList.json"),
-    JSON.stringify(bisAddonData)
-  );
+  bisAddonData.phases = await fetchWowgg();
 
-  fs.writeFileSync(
-    join(appDir, "cached_metadata.json"),
-    JSON.stringify(metadata)
-  );
+  // fs.writeFileSync(
+  //   join(appDir, "cached_bisList.json"),
+  //   JSON.stringify(bisAddonData)
+  // );
+
+  // fs.writeFileSync(
+  //   join(appDir, "cached_metadata.json"),
+  //   JSON.stringify(metadata)
+  // );
 
   // var bisAddonData = JSON.parse(
   //   fs.readFileSync(join(appDir, "cached_bisList.json"))

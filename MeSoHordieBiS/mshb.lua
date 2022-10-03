@@ -1,33 +1,25 @@
 MSHB = {}
 
 MSHB.supportedPhases = {
-    [-1] = {
-        name = "Pre-Patch",
+    [0] = {
+        name = "Pre-Raid",
         start = time {
             year = 2022,
-            month = 8,
-            day = 30
+            month = 9,
+            day = 26
+        }
+    },
+    [1] = {
+        name = "Phase 1 - Naxx/OS/EOE/VoA",
+        start = time {
+            year = 2022,
+            month = 10,
+            day = 6
         }
     }
-    -- [0] = {
-    --     name = "Phase 0 - Pre-Raid",
-    --     start = time {
-    --         year = 2022,
-    --         month = 9,
-    --         day = 26
-    --     }
-    -- },
-    -- [1] = {
-    --     name = "Phase 1 - Naxx/OS/EOE/VoA",
-    --     start = time {
-    --         year = 2022,
-    --         month = 10,
-    --         day = 6
-    --     }
-    -- }
 }
 
-MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "twoHand", "mainHand", "offHand",
+MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "mainHand", "offHand",
                        "hands", "belt", "legs", "feet", "ring1", "ring2", "trinket1", "trinket2", "ranged"}
 
 MSHB.inventorySlotsLabels = {
@@ -37,8 +29,7 @@ MSHB.inventorySlotsLabels = {
     ["back"] = "Back",
     ["chest"] = "Chest",
     ["wrists"] = "Wrists",
-    ["twoHand"] = "Two-hand",
-    ["mainHand"] = "Main-hand",
+    ["mainHand"] = "Two-Hand / Main-Hand",
     ["offHand"] = "Off-hand",
     ["hands"] = "Hands",
     ["belt"] = "Waist",
@@ -48,7 +39,7 @@ MSHB.inventorySlotsLabels = {
     ["ring2"] = "Ring 2",
     ["trinket1"] = "Trinket 1",
     ["trinket2"] = "Trinket 2",
-    ["ranged"] = "Ranged/Totem/Libram/Idol"
+    ["ranged"] = "Ranged / Totem / Libram / Idol"
 }
 
 MSHB.inventorySlotIdMap = {
@@ -58,7 +49,6 @@ MSHB.inventorySlotIdMap = {
     ["back"] = 15,
     ["chest"] = 5,
     ["wrists"] = 9,
-    ["twoHand"] = 16,
     ["mainHand"] = 16,
     ["offHand"] = 17,
     ["hands"] = 10,
@@ -134,7 +124,7 @@ function MSHB:getSupportedModesDescription()
 end
 
 function MSHB:getCurrentPhase()
-    local phaseResult = -2
+    local phaseResult = -1
     local now = time()
     for i, v in pairs(self.supportedPhases) do
         if v["start"] < time() then
@@ -202,7 +192,7 @@ function MSHB:render_multiphase(multi)
     return " (<P" .. lastBiSPhase .. ")"
 end
 
-function MSHB:get_extra_from_group(itemId, class, spec, role, multi, group)
+function MSHB:get_extra_from_group(itemId, class, spec, role, nth, group)
     if group == nil then
         return ""
     end
@@ -214,8 +204,9 @@ function MSHB:get_extra_from_group(itemId, class, spec, role, multi, group)
     return ""
 end
 
-function MSHB:append_spec(tooltip, itemId, class, spec, role, multi, group)
+function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group)
     local classIcon = "classicon_" .. class .. ".blp"
+    print(class .. " " .. spec);
     local specIcon = self.spec_icon_table[class .. '_' .. spec:lower()]
 
     if class == "DEATHKNIGHT" then
@@ -227,17 +218,15 @@ function MSHB:append_spec(tooltip, itemId, class, spec, role, multi, group)
     end
 
     if spec == "all" then
-        tooltip:AddLine("|Tinterface/icons/" .. classIcon .. ":0|t " .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
+        tooltip:AddLine(nth .. ". " .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
                             self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                            self:get_extra_from_group(itemId, class, spec, role, multi, group) ..
-                            self:render_multiphase(multi))
+                            self:get_extra_from_group(itemId, class, spec, role, nth, group))
         return
     end
 
-    tooltip:AddLine("|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon .. ":0|t " ..
+    tooltip:AddLine(nth .. ". " .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon .. ":0|t " ..
                         self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                        self:get_extra_from_group(itemId, class, spec, role, multi, group) ..
-                        self:render_multiphase(multi))
+                        self:get_extra_from_group(itemId, class, spec, role, nth, group))
 end
 
 function MSHB:has_key(tab, val)
@@ -294,52 +283,19 @@ function MSHB:get_table_which_contains(tab, val)
     return false
 end
 
-function MSHB:guild_member()
-    if MeSoHordieAddon.db.char.ignoreGuildCheck then
-        return true
+function MSHB:indexOf(tab, val)
+    local counter = 1
+    for index, value in pairs(tab) do
+        if value[1] == val then
+            return counter
+        end
+        counter = counter+1;
     end
 
-    local guildName, _, _ = GetGuildInfo("player")
-    local realmName = GetRealmName()
-
-    if guildName == "Me So Hordie" and realmName == "Nethergarde Keep" then
-        return true
-    end
     return false
 end
 
-function MSHB:bis_for_multiple_phase(class, spec, role, itemId, phase)
-    if not MeSoHordieAddon.db.char.showMultiPhaseIndicator then
-        return 0
-    end
-
-    local result = 0
-    for i, v in pairs(self.supportedPhases) do
-        if i > phase then
-            local futurePhaseSpecBis = msh_bis_addon_data["phases"]["phase" .. i][class]
-            local oldAmount = result
-            for i, v in ipairs(futurePhaseSpecBis) do
-                if v["spec"] == spec then
-                    if self:has_value_nested(v["items"], itemId) then
-                        result = result + 1
-                    end
-                end
-            end
-
-            if oldAmount == result then
-                return result
-            end
-        end
-    end
-
-    return result
-end
-
 function MSHB:append_tooltip(tooltip, forcedAllMode)
-    if not self:guild_member() then
-        return
-    end
-
     local _, itemLink = tooltip:GetItem()
 
     if itemLink == nil then
@@ -372,9 +328,7 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
                 if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
                     local group = self:get_table_which_contains(bisClass["items"], itemId)
                     if group then
-                        local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(),
-                            bisClass["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
-                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi, group}
+                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], self:indexOf(group, itemId), group}
                     end
                 end
             end
@@ -385,9 +339,7 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 local group = self:get_table_which_contains(bisClass["items"], itemId)
                 if group then
-                    local multi = self:bis_for_multiple_phase(class:lower(), bisClass["spec"]:lower(),
-                        bisClass["role"]:lower(), itemId, MeSoHordieAddon.db.char.phase)
-                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], multi, group}
+                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], self:indexOf(group, itemId), group}
                 end
             end
         end
@@ -398,9 +350,7 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
                 for j, s in ipairs(c) do
                     local group = self:get_table_which_contains(s["items"], itemId)
                     if group then
-                        local multi = self:bis_for_multiple_phase(i:lower(), s["spec"]:lower(), s["role"]:lower(),
-                            itemId, MeSoHordieAddon.db.char.phase)
-                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], multi, group}
+                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], self:indexOf(group, itemId), group}
                     end
                 end
             end
@@ -412,7 +362,12 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
     end
 
     if next(lines) ~= nil then
-        tooltip:AddLine("Me So Hordie BiS - Phase " .. MeSoHordieAddon.db.char.phase .. " " .. currentMode)
+        local phase = "Pre-Raid"
+        if MeSoHordieAddon.db.char.phase > 0 then
+            phase = "Phase " .. MeSoHordieAddon.db.char.phase;
+        end
+        tooltip:AddLine("Me So Hordie BiS - " .. phase .. " " .. currentMode)
+        table.sort(lines, function (k1, k2) return k1[4] < k2[4] end)
         for i, v in ipairs(lines) do
             self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5])
         end
@@ -432,10 +387,6 @@ function MSHB:UpdateButton(button, target)
         button.mshbIndicator:Hide()
     end
 
-    if not self:guild_member() then
-        return
-    end
-
     if not MeSoHordieAddon.db.char.showBisIndicator then
         return
     end
@@ -444,7 +395,7 @@ function MSHB:UpdateButton(button, target)
 
     self:AddIndicatorToButtonIfNeeded(button)
 
-    if (slotID >= INVSLOT_FIRST_EQUIPPED and slotID <= INVSLOT_LAST_EQUIPPED) then
+    if (slotID >= INVSLOT_FIRST_EQUIPPED and slotID <= INVSLOT_LAST_EQUIPPED and slotID ~= 4 and slotID ~= 19) then
         if target == "player" then
             local item = Item:CreateFromEquipmentSlot(slotID)
             if item:IsItemEmpty() then
@@ -478,8 +429,7 @@ function MSHB:AddIndicatorToButtonIfNeeded(button)
     button.mshbIndicator = overlayFrame:CreateTexture(nil, "OVERLAY")
     button.mshbIndicator:SetSize(14, 14)
     button.mshbIndicator:SetPoint('TOPRIGHT', 4, 0)
-    button.mshbIndicator:SetAtlas("worldquest-tracker-checkmark")
-    button.mshbIndicator:Hide()
+    -- button.mshbIndicator:Hide()
 end
 
 function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
@@ -492,8 +442,16 @@ function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
 
     for i, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
-            if self:has_value_nested(v["items"], tostring(itemId)) then
-                button.mshbIndicator:Show()
+            local group = self:get_table_which_contains(v["items"], tostring(itemId))
+            if group then
+                local index = self:indexOf(group, tostring(itemId))
+                if index == 1 then 
+                    button.mshbIndicator:SetAtlas("worldquest-tracker-checkmark")
+                else
+                    button.mshbIndicator:SetAtlas("poi-door-arrow-up")
+                end
+            else
+                button.mshbIndicator:SetAtlas("Objective-Fail")
             end
         end
     end

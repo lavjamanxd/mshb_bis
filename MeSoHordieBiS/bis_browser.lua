@@ -466,34 +466,12 @@ function MeSoHordieAddon:AddItemWidget(parent, itemId, ident, itemSlot)
 end
 
 function MeSoHordieAddon:GetItemSourceString(itemId)
-    local source = metadata[tostring(itemId)].source
-    if source.drop ~= nil then
-        return "Drops from: " .. source.drop.name .. self:FormatIfNotEmpty(" (%s) ", source.drop.zone) .. " - " ..
-                   self:FormatPercent(source.drop.chance)
+    local source = metadata[tostring(itemId)]
+    if source == "" then
+        return "No data"
+    else
+        return source
     end
-
-    if source.soldby ~= nil then
-        return "Sold by: " .. source.soldby.name ..
-                   self:FormatIfNotEmpty(" in %s", source.soldby.zone) ..
-                   self:FormatIfNotEmpty(" for %s", self:getStringFromPrice(source.soldby.price))
-    end
-
-    if source.profession ~= nil then
-        return "Crafted by: " .. source.profession.name
-    end
-
-    if source.quest ~= nil then
-        return "Quest reward from: " .. source.quest.name ..
-                   self:FormatIfNotEmpty(" in %s", source.quest.zone)
-    end
-
-    if source.containedin ~= nil then
-        return
-            "Contained in: " .. source.containedin.name .. self:FormatIfNotEmpty(" in %s", source.containedin.zone) ..
-                " - " .. self:FormatPercent(source.containedin.chance)
-    end
-
-    return "No data"
 end
 
 function MeSoHordieAddon:getStringFromPrice(price)
