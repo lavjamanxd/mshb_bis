@@ -20,17 +20,21 @@ end
 
 function MeSoHordieAddon:RegisterItemWidgetLayout()
     self.aceGui:RegisterLayout("ItemWidgetLayout", function(content, children)
-        local icon = children[1]
-        local itemName = children[2]
-        local source = children[3]
-        local ident = children[4]
+        local index = children[1]
+        local icon = children[2]
+        local itemName = children[3]
+        local source = children[4]
+        local ident = children[5]
+
+        index.frame:SetPoint("LEFT", content, "LEFT", 0, 0)
+        index.frame:Show()
 
         if icon ~= nil then
             icon:SetWidth(30)
             icon:SetHeight(30)
-            local xOffset = 0
+            local xOffset = 20
             if content.ident then
-                xOffset = 30
+                xOffset = xOffset + 30
             end
             icon.frame:SetPoint("TOPLEFT", content, "TOPLEFT", xOffset, 0)
             icon.frame:Show()
@@ -347,11 +351,15 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     end
 
     local hasItem = false
+    local indexOf = -1
+    local hasIndex = -1
 
     for index, itemGroup in ipairs(itemGroups) do
         for yindex, item in ipairs(itemGroup) do
             if self:CharacterHasItem(item) then
                 hasItem = true
+                indexOf = MSHB:indexOf(itemGroups, tostring(item))
+                hasIndex = index
                 break
             end
         end
@@ -367,7 +375,11 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     slotGroup:SetRelativeWidth(1.0)
 
     if hasItem then
-        slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
+        if indexOf == 1 then
+            slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
+        else
+            slotGroup.border:SetBackdropBorderColor(0.90, 0.90, 0)
+        end
     else
         slotGroup.border:SetBackdropBorderColor(0.4, 0.4, 0.4)
     end
@@ -375,7 +387,7 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     for index, group in ipairs(itemGroups) do
         for yindex, item in ipairs(group) do
             local ident = yindex ~= 1
-            self:AddItemWidget(slotGroup, item, ident, itemSlot)
+            self:AddItemWidget(slotGroup, index, item, ident, itemSlot, hasIndex == index)
         end
     end
 end
@@ -397,7 +409,7 @@ function MeSoHordieAddon:CharacterHasItem(itemId)
     return hasItem
 end
 
-function MeSoHordieAddon:AddItemWidget(parent, itemId, ident, itemSlot)
+function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, highlighted)
     local itemIdNumber = tonumber(itemId)
     local itemGroup = self.aceGui:Create("SimpleGroup")
     itemGroup.content.ident = ident
@@ -405,6 +417,18 @@ function MeSoHordieAddon:AddItemWidget(parent, itemId, ident, itemSlot)
     itemGroup:SetLayout("ItemWidgetLayout")
     itemGroup:SetHeight(38)
     parent:AddChild(itemGroup)
+
+    local itemIndexLabel = self.aceGui:Create("Label")
+    itemGroup:AddChild(itemIndexLabel)
+    itemIndexLabel:SetText(index .. ".")
+
+    if highlighted then
+        if index == 1 then
+            itemIndexLabel:SetColor(0.35, 0.92, 0)
+        else
+            itemIndexLabel:SetColor(0.90, 0.90, 0)
+        end
+    end
 
     local itemIcon = self.aceGui:Create("Icon")
     itemIcon:SetImageSize(30, 30)

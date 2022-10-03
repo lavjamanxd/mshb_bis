@@ -206,7 +206,6 @@ end
 
 function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group)
     local classIcon = "classicon_" .. class .. ".blp"
-    print(class .. " " .. spec);
     local specIcon = self.spec_icon_table[class .. '_' .. spec:lower()]
 
     if class == "DEATHKNIGHT" then
@@ -429,7 +428,7 @@ function MSHB:AddIndicatorToButtonIfNeeded(button)
     button.mshbIndicator = overlayFrame:CreateTexture(nil, "OVERLAY")
     button.mshbIndicator:SetSize(14, 14)
     button.mshbIndicator:SetPoint('TOPRIGHT', 4, 0)
-    -- button.mshbIndicator:Hide()
+    button.mshbIndicator:Hide()
 end
 
 function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
@@ -453,6 +452,8 @@ function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
             else
                 button.mshbIndicator:SetAtlas("Objective-Fail")
             end
+
+            button.mshbIndicator:Show()
         end
     end
 end

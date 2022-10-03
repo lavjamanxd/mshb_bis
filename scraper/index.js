@@ -628,7 +628,7 @@ async function fetchWowgg() {
             .map((item) => {
               var found = itemsDb.find((i) => i.name == item.name);
               if (!found) {
-                found = weirdItemMap[item.name];
+                found = {itemId: weirdItemMap[item.name]};
               }
 
               if (!found) {
