@@ -19,8 +19,8 @@ MSHB.supportedPhases = {
     }
 }
 
-MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "mainHand", "offHand",
-                       "hands", "belt", "legs", "feet", "ring1", "ring2", "trinket1", "trinket2", "ranged"}
+MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "mainHand", "offHand", "hands", "belt",
+                       "legs", "feet", "ring1", "ring2", "trinket1", "trinket2", "ranged"}
 
 MSHB.inventorySlotsLabels = {
     ["head"] = "Head",
@@ -162,7 +162,8 @@ function MSHB:predict_player(target, inspect)
     local predictedSpec = ""
     local predictedSpecSpentPoints = -1
     for i = 1, GetNumTalentTabs(inspect) do
-        local name, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect)
+        local activeSpec = GetActiveTalentGroup(inspect)
+        local name, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect, false, activeSpec)
         if predictedSpecSpentPoints < pointsSpent then
             predictedSpec = name
             predictedSpecSpentPoints = pointsSpent
@@ -217,9 +218,10 @@ function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group)
     end
 
     if spec == "all" then
-        tooltip:AddLine(nth .. ". " .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
-                            self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                            self:get_extra_from_group(itemId, class, spec, role, nth, group))
+        tooltip:AddLine(
+            nth .. ". " .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
+                self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
+                self:get_extra_from_group(itemId, class, spec, role, nth, group))
         return
     end
 
@@ -282,16 +284,44 @@ function MSHB:get_table_which_contains(tab, val)
     return false
 end
 
+function MSHB:get_tables_which_contains(tab, val)
+    local result = {}
+    for index, value in pairs(tab) do
+        if (type(value) == "table") then
+            local hasValue = self:has_value_nested(value, val)
+            if hasValue then
+                table.insert(result, value)
+            end
+        end
+    end
+
+    return result
+end
+
 function MSHB:indexOf(tab, val)
     local counter = 1
     for index, value in pairs(tab) do
         if value[1] == val then
             return counter
         end
-        counter = counter+1;
+        counter = counter + 1;
     end
 
     return false
+end
+
+function MSHB:getIndexOfFromMultipleGroups(groups, itemId)
+    local group
+    local bisSlots = self:get_tables_which_contains(groups, itemId)
+    local betterIndex = 1000
+    for z, o in ipairs(bisSlots) do
+        local index = self:indexOf(o, itemId)
+        if index < betterIndex then
+            betterIndex = index
+            group = o
+        end
+    end
+    return betterIndex, group
 end
 
 function MSHB:append_tooltip(tooltip, forcedAllMode)
@@ -325,9 +355,9 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
-                    local group = self:get_table_which_contains(bisClass["items"], itemId)
+                    local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
                     if group then
-                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], self:indexOf(group, itemId), group}
+                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group}
                     end
                 end
             end
@@ -336,9 +366,9 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
         if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster and not forcedAllMode then
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for index, bisClass in ipairs(currentPhaseBiSClass) do
-                local group = self:get_table_which_contains(bisClass["items"], itemId)
+                local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
                 if group then
-                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], self:indexOf(group, itemId), group}
+                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group}
                 end
             end
         end
@@ -347,15 +377,18 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
             currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
             for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
                 for j, s in ipairs(c) do
-                    local group = self:get_table_which_contains(s["items"], itemId)
+                    local index, group = self:getIndexOfFromMultipleGroups(s["items"], itemId)
                     if group then
-                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], self:indexOf(group, itemId), group}
+                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], index, group}
                     end
                 end
             end
         end
 
         MSHB.tooltipCache.key = cacheKey
+        table.sort(lines, function(k1, k2)
+            return k1[4] < k2[4]
+        end)
         MSHB.tooltipCache.result = lines
         MSHB.tooltipCache.mode = currentMode
     end
@@ -366,7 +399,6 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
             phase = "Phase " .. MeSoHordieAddon.db.char.phase;
         end
         tooltip:AddLine("Me So Hordie BiS - " .. phase .. " " .. currentMode)
-        table.sort(lines, function (k1, k2) return k1[4] < k2[4] end)
         for i, v in ipairs(lines) do
             self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5])
         end
@@ -441,10 +473,9 @@ function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
 
     for i, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
-            local group = self:get_table_which_contains(v["items"], tostring(itemId))
+            local index, group = self:getIndexOfFromMultipleGroups(v["items"], tostring(itemId))
             if group then
-                local index = self:indexOf(group, tostring(itemId))
-                if index == 1 then 
+                if index == 1 then
                     button.mshbIndicator:SetAtlas("worldquest-tracker-checkmark")
                 else
                     button.mshbIndicator:SetAtlas("poi-door-arrow-up")
