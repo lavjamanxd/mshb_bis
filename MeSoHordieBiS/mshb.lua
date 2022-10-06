@@ -95,7 +95,7 @@ MSHB.spec_icon_table = {
     ["PRIEST_holy"] = 'interface/icons/spell_holy_holybolt.blp',
     ["PRIEST_discipline"] = 'interface/icons/spell_holy_wordfortitude.blp',
     ["ROGUE_combat"] = 'interface/icons/ability_backstab.blp',
-    ["ROGUE_assasination"] = 'interface/icons/ability_rogue_eviscerate.blp',
+    ["ROGUE_assassination"] = 'interface/icons/ability_rogue_eviscerate.blp',
     ["ROGUE_subtlety"] = 'interface/icons/ability_stealth.blp',
     ["SHAMAN_elemental"] = 'interface/icons/spell_nature_lightning.blp',
     ["SHAMAN_enhancement"] = 'interface/icons/spell_nature_lightningshield.blp',
@@ -316,7 +316,7 @@ function MSHB:getIndexOfFromMultipleGroups(groups, itemId)
     local betterIndex = 1000
     for z, o in ipairs(bisSlots) do
         local index = self:indexOf(o, itemId)
-        if index < betterIndex then
+        if index and index < betterIndex then
             betterIndex = index
             group = o
         end

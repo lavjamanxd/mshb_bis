@@ -5,7 +5,8 @@ MeSoHordieAddon.gui.isBiSBrowserOpen = false
 MeSoHordieAddon.gui.tooltip = MeSoHordieAddon.gui.tooltip or
                                   CreateFrame('GameTooltip', "MSHBBisItemTooltip", UIParent, 'GameTooltipTemplate')
 MeSoHordieAddon.gui.compareTooltip = MeSoHordieAddon.gui.compareTooltip or
-                                  CreateFrame('GameTooltip', "MSHBBisItemCompareTooltip", UIParent, 'GameTooltipTemplate')
+                                         CreateFrame('GameTooltip', "MSHBBisItemCompareTooltip", UIParent,
+        'GameTooltipTemplate')
 
 MeSoHordieAddon.gui.state = {}
 
@@ -335,7 +336,7 @@ function MeSoHordieAddon:AddItemSlotGroups(parent, phase, class, spec, role, mis
     for i, v in ipairs(currentPhaseBiSClass) do
         if (v["spec"] == spec:lower() or v["spec"]:lower() == "all") and v["role"] == role then
             for index, slotName in ipairs(MSHB.inventorySlots) do
-                self:AddItemSlotGroup(parent, slotName, v["items"][slotName])
+                self:AddItemSlotGroup(parent, slotName, v["items"])
             end
         end
     end
@@ -354,11 +355,12 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     local indexOf = -1
     local hasIndex = -1
 
-    for index, itemGroup in ipairs(itemGroups) do
+    for index, itemGroup in ipairs(itemGroups[itemSlot]) do
         for yindex, item in ipairs(itemGroup) do
+            local index, group = MSHB:getIndexOfFromMultipleGroups(itemGroups, item);
             if self:CharacterHasItem(item) then
                 hasItem = true
-                indexOf = MSHB:indexOf(itemGroups, tostring(item))
+                indexOf = index
                 hasIndex = index
                 break
             end
@@ -384,7 +386,7 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
         slotGroup.border:SetBackdropBorderColor(0.4, 0.4, 0.4)
     end
 
-    for index, group in ipairs(itemGroups) do
+    for index, group in ipairs(itemGroups[itemSlot]) do
         for yindex, item in ipairs(group) do
             local ident = yindex ~= 1
             self:AddItemWidget(slotGroup, index, item, ident, itemSlot, hasIndex == index)
