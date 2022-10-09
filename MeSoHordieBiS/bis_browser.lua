@@ -347,7 +347,7 @@ function MeSoHordieAddon:AddItemSlotGroups(parent, phase, class, spec, role, mis
 end
 
 function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
-    if next(itemGroups) == nil then
+    if next(itemGroups) == nil or itemGroups[itemSlot] == nil then
         return
     end
 
