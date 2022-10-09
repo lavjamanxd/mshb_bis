@@ -477,7 +477,7 @@ function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
             local index, group = self:getIndexOfFromMultipleGroups(v["items"], tostring(itemId))
             if group then
-                if index == 1 then
+                if index == 1 or index == 2 then
                     button.mshbIndicator:SetAtlas("worldquest-tracker-checkmark")
                 else
                     button.mshbIndicator:SetAtlas("poi-door-arrow-up")

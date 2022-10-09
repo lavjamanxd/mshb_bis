@@ -377,7 +377,7 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     slotGroup:SetRelativeWidth(1.0)
 
     if hasItem then
-        if indexOf == 1 then
+        if indexOf == 1 or indexOf == 2 then
             slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
         else
             slotGroup.border:SetBackdropBorderColor(0.90, 0.90, 0)
