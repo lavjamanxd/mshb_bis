@@ -301,8 +301,10 @@ end
 function MSHB:indexOf(tab, val)
     local counter = 1
     for index, value in pairs(tab) do
-        if value[1] == val then
-            return counter
+        for gI, g in ipairs(value) do
+            if g == val then
+                return counter
+            end
         end
         counter = counter + 1;
     end
