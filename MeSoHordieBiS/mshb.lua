@@ -181,16 +181,14 @@ function MSHB:player_is_master_looter()
     return false
 end
 
-function MSHB:render_multiphase(multi)
-    local current = MeSoHordieAddon.db.char.phase
-    if multi == 0 then
-        return ""
+function MSHB:guild_member()
+    local guildName, _, _ = GetGuildInfo("player")
+    local realmName = GetRealmName()
+
+    if guildName == "Me So Hordie" and realmName == "Nethergarde Keep" then
+        return true
     end
-    local lastBiSPhase = current + multi
-    if lastBiSPhase == 5 then
-        return " (<End)"
-    end
-    return " (<P" .. lastBiSPhase .. ")"
+    return false
 end
 
 function MSHB:get_extra_from_group(itemId, class, spec, role, nth, group)
@@ -217,16 +215,25 @@ function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group)
         specIcon = self.spec_icon_table[class .. '_' .. spec:lower() .. "_cat"]
     end
 
+    local price = " "
+
+    if self:guild_member() then
+        price = "MS "
+        if nth == 1 or nth == 2 then
+            price = "BiS "
+        end
+    end
+
     if spec == "all" then
-        tooltip:AddLine(
-            nth .. ". " .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
-                self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                self:get_extra_from_group(itemId, class, spec, role, nth, group))
+        tooltip:AddLine(nth .. ". " .. price  .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
+                            "|Tinterface/icons/" .. classIcon .. ":0|t " .. self:to_pascal_case(class) .. " - " ..
+                            self:to_pascal_case(spec) .. " - " .. role ..
+                            self:get_extra_from_group(itemId, class, spec, role, nth, group))
         return
     end
 
-    tooltip:AddLine(nth .. ". " .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon .. ":0|t " ..
-                        self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
+    tooltip:AddLine(nth .. ". " .. price .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon ..
+                        ":0|t " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
                         self:get_extra_from_group(itemId, class, spec, role, nth, group))
 end
 
