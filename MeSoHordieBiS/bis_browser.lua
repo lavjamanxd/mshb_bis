@@ -441,7 +441,10 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
 
     local itemIndexLabel = self.aceGui:Create("Label")
     itemGroup:AddChild(itemIndexLabel)
-    itemIndexLabel:SetText(index .. ".")
+
+    if not ident then
+        itemIndexLabel:SetText(index .. ".")
+    end
 
     if highlighted then
         if index == 1 or index == 2 then
@@ -520,74 +523,11 @@ end
 
 function MeSoHordieAddon:GetItemSourceString(itemId)
     local source = metadata[tostring(itemId)]
-    if source == "" then
+    if source == "" or source == nil then
         return "No data"
     else
         return source
     end
-end
-
-function MeSoHordieAddon:getStringFromPrice(price)
-    local result = ""
-    if price == nil then
-        return ""
-    end
-
-    if price.money then
-        if string.len(result) ~= 0 then
-            result = result .. " and "
-        end
-        if price.money[1] then
-            result = result .. price.money[1] .. "g "
-        end
-        if price.money[2] then
-            result = result .. price.money[2] .. "s "
-        end
-        if price.money[3] then
-            result = result .. price.money[3] .. "c"
-        end
-    end
-
-    if price.arena then
-        if string.len(result) ~= 0 then
-            result = result .. " and "
-        end
-        result = result .. price.arena .. " arena points"
-    end
-
-    if price.honor then
-        if string.len(result) ~= 0 then
-            result = result .. " and "
-        end
-        result = result .. price.honor .. " honor points"
-    end
-
-    if price.item then
-        if price.item[1].id == 29434 then
-            if string.len(result) ~= 0 then
-                result = result .. " and "
-            end
-            result = result .. price.item[1].amount .. "x BoJ"
-        end
-    end
-
-    return result
-end
-
-function MeSoHordieAddon:FormatPercent(percent)
-    if percent == "" then
-        return "0.00%"
-    end
-
-    return string.format("%3.2f%%", percent)
-end
-
-function MeSoHordieAddon:FormatIfNotEmpty(format, variable)
-    if variable == "" then
-        return ""
-    end
-
-    return string.format(format, variable)
 end
 
 function MeSoHordieAddon:getTableSize(table)

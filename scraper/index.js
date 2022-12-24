@@ -9,7 +9,13 @@ const Database = require("wow-classic-items");
 var { Liquid } = require("liquidjs");
 var engine = new Liquid();
 
-var metadata = {};
+var metadata = {
+  44569: "Naxxramas (10) - Sapphiron",
+  44577: "Naxxramas (25) - Sapphiron",
+  45038: "Ulduar (25) - Bosses",
+  46052: "Ulduar (10) - Algalon the Observer",
+  46053: "Ulduar (25) - Algalon the Observer"
+};
 
 const phases = ["Pre-Bis", "T7", "T8"];
 const slots = [
@@ -35,7 +41,8 @@ const slots = [
   "ranged",
 ];
 
-const tierTokenMap = {
+const itemDependencyMap = {
+  // PHASE 1
   // > 10M
   // - gloves
   // death knight, druid, mage, rogue
@@ -113,6 +120,87 @@ const tierTokenMap = {
   40631: [40421, 40447, 40456, 40571, 40576, 40581],
   // Heroic Key to the Focusing Iris
   44577: [44661, 44662, 44664, 44665],
+
+  //PHASE 2
+  // > 10M
+  // - gloves
+  // death knight, druid, mage, rogue
+  45646: [45337, 45341, 45345, 45351, 45355, 45397, 46131],
+  // warrior, hunter, shaman
+  45645: [45360, 45401, 45406, 45414, 45426, 45430],
+  // paladin, priest, warlock
+  45644: [45370, 45376, 45383, 45387, 45392, 45419],
+  // - shoulders
+  // death knight, druid, mage, rogue
+  45661: [45339, 45344, 45349, 45352, 45359, 45369, 45400],
+  // warrior, hunter, shaman
+  45660: [45363, 45404, 45410, 45415, 45428, 45433],
+  // paladin, priest, warlock
+  45659: [45373, 45380, 45385, 45390, 45393, 45422],
+  // - legs
+  // death knight, druid, mage, rogue
+  45652: [45338, 45343, 45347, 45353, 45357, 45367, 45399],
+  // warrior, hunter, shaman
+  45651: [45362, 45403, 45409, 45416, 45427, 45432],
+  // paladin, priest, warlock
+  45650: [45371, 45379, 45384, 45388, 45394, 45420],
+  // - chest
+  // death knight, druid, mage, rogue
+  45637: [45335, 45340, 45348, 45354, 45358, 45368, 45396],
+  // warrior, hunter, shaman
+  45636: [45364, 45405, 45411, 45413, 45424, 45429],
+  // paladin, priest, warlock
+  45635: [45374, 45375, 45381, 45389, 45395, 45421],
+  // - head
+  // death knight, druid, mage, rogue
+  45649: [45336, 45342, 45346, 45356, 45365, 45398, 46313],
+  // warrior, hunter, shaman
+  45648: [45361, 45402, 45408, 45412, 45425, 45431],
+  // paladin, priest, warlock
+  45647: [45372, 45377, 45382, 45386, 45391, 45417],
+  // Reply Code Alpha
+  46052: [46320, 46321, 46322, 46323],
+
+  // > 25M
+  // - gloves
+  // death knight, druid, mage, rogue
+  45643: [46113, 46119, 46124, 46132, 46158, 46183, 46189],
+  // warrior, hunter, shaman
+  45642: [46142, 46148, 46164, 46199, 46200, 46207],
+  // paladin, priest, warlock
+  45641: [46135, 46155, 46163, 46174, 46179, 46188],
+  // - shoulders
+  // death knight, druid, mage, rogue
+  45658: [46117, 46122, 46127, 46134, 46157, 46187, 46196],
+  // warrior, hunter, shaman
+  45657: [46145, 46149, 46167, 46203, 46204, 46211],
+  // paladin, priest, warlock
+  45656: [46136, 46152, 46165, 46177, 46182, 46190],
+  // - legs
+  // death knight, druid, mage, rogue
+  40636: [46116, 46121, 46126, 46133, 46160, 46185, 46192],
+  // warrior, hunter, shaman
+  45654: [46144, 46150, 46169, 46202, 46208, 46210],
+  // paladin, priest, warlock
+  45653: [46139, 46153, 46170, 46176, 46181, 46195],
+  // - chest
+  // death knight, druid, mage, rogue
+  45634: [46111, 46118, 46123, 46130, 46159, 46186, 46194],
+  // warrior, hunter, shaman
+  45633: [446141, 46146, 46162, 46198, 46205, 46206],
+  // paladin, priest, warlock
+  45632: [46137, 46154, 46168, 46173, 46178, 46193],
+  // - head
+  // death knight, druid, mage, rogue
+  45640: [46115, 46120, 46125, 46129, 46161, 46184, 46191],
+  // warrior, hunter, shaman
+  45639: [46143, 46151, 46166, 46201, 46209, 46212],
+  // paladin, priest, warlock
+  45638: [46140, 46156, 46172, 46175, 46180, 46197],
+  // Reply Code Alpha
+  46053: [45588, 45618, 45608, 45614],
+  // Val'anyr
+  46017: [45038],
 };
 
 const wowtbcGGMap = {
@@ -137,10 +225,10 @@ const wowtbcGGMap = {
 };
 
 var weirdItemMap = {
-  "Darkmoon Card: Greatness": 44255,  // intellect
+  "Darkmoon Card: Greatness": 44255, // intellect
   "Darkmoon Card: Greatness v1": 44254, // spirit
   "Darkmoon Card: Greatness v2": 42987, // strength
-  "Darkmoon Card: Greatness v3": 44253, // agility 
+  "Darkmoon Card: Greatness v3": 44253, // agility
   "Warglaive of Azzinoth (OH)": 32838,
   "Warglaive of Azzinoth (MH)": 32837,
 };
@@ -153,7 +241,7 @@ async function fetchWowgg() {
   );
 
   const combos = await combosRequest.json();
-  const result = { 0: {}, 1: {}, 2: {}};
+  const result = { 0: {}, 1: {}, 2: {} };
 
   for (const combo of combos.result.pageContext.sortedList) {
     console.log(combo);
@@ -237,9 +325,9 @@ async function fetchWowgg() {
         if (wowtbcGGMap[slot] && itemsOrdered.length > 0) {
           currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered
             .map((item) => {
-              if (weirdItemMap[item.name]){
+              if (weirdItemMap[item.name]) {
                 found = { itemId: weirdItemMap[item.name] };
-              }else{
+              } else {
                 var found = itemsDb.find((i) => i.name == item.name);
               }
 
@@ -260,11 +348,11 @@ async function fetchWowgg() {
       for (const entry of Object.entries(currentSpec.items)) {
         var items = entry[1];
         for (const itemArray of items) {
-          for (const tierTokenEntry of Object.entries(tierTokenMap)) {
+          for (const itemDependencyEntry of Object.entries(itemDependencyMap)) {
             var found = false;
-            for (const tierItem of tierTokenEntry[1]) {
-              if (tierItem == itemArray[0]) {
-                itemArray.push(+tierTokenEntry[0]);
+            for (const depItem of itemDependencyEntry[1]) {
+              if (depItem == itemArray[0]) {
+                itemArray.push(+itemDependencyEntry[0]);
                 found = true;
                 break;
               }
@@ -283,16 +371,16 @@ async function fetchWowgg() {
   return result;
 }
 
-function mergeSlots(items, slotName){
+function mergeSlots(items, slotName) {
   var first = items[`${slotName}1`];
   var second = items[`${slotName}2`];
   var result = [];
   var max = Math.max(first.length, second.length);
-  for (var i = 0; i < max; i++){
-    if (first[i] && result.findIndex(ig => ig[0] == first[i][0]) == -1){
+  for (var i = 0; i < max; i++) {
+    if (first[i] && result.findIndex((ig) => ig[0] == first[i][0]) == -1) {
       result.push(first[i]);
     }
-    if (second[i] && result.findIndex(ig => ig[0] == second[i][0]) == -1){
+    if (second[i] && result.findIndex((ig) => ig[0] == second[i][0]) == -1) {
       result.push(second[i]);
     }
   }
