@@ -416,7 +416,6 @@ end
 function MeSoHordieAddon:CharacterHasItem(itemId)
     local itemIdNumber = tonumber(itemId)
     if IsEquippedItem(itemId) then
-        print("found equipped " .. itemId)
         return true
     else
         for bagSlot = 0, NUM_BAG_SLOTS do
