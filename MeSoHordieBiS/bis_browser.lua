@@ -231,7 +231,7 @@ function MeSoHordieAddon:ShowBiSWindow()
     end)
 
     local missingOnlyCheckBox = self.aceGui:Create("CheckBox")
-    missingOnlyCheckBox:SetLabel("Missing only")
+    missingOnlyCheckBox:SetLabel("Show upgrades")
     frame:AddChild(missingOnlyCheckBox)
     missingOnlyCheckBox:SetValue(self.gui.state.missingOnly)
 
@@ -346,29 +346,40 @@ function MeSoHordieAddon:AddItemSlotGroups(parent, phase, class, spec, role, mis
     bugfixElement:SetHeight(0)
 end
 
+function MeSoHordieAddon:indexExists(table, indexToLookup)
+    for index, element in ipairs(table) do
+        if element == indexToLookup then
+            return true
+        end
+    end
+    return false
+end
+
 function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     if next(itemGroups) == nil or itemGroups[itemSlot] == nil then
         return
     end
 
-    local hasItem = false
-    local indexOf = -1
-    local hasIndex = -1
+    local gotItems = {}
 
     for index, itemGroup in ipairs(itemGroups[itemSlot]) do
         for yindex, item in ipairs(itemGroup) do
-            local index, group = MSHB:getIndexOfFromMultipleGroups(itemGroups, item);
             if self:CharacterHasItem(item) then
-                hasItem = true
-                indexOf = index
-                hasIndex = index
-                break
+                table.insert(gotItems, index);
             end
         end
     end
 
-    if MeSoHordieAddon.gui.state.missingOnly and hasItem then
-        return
+    if MeSoHordieAddon.gui.state.missingOnly then
+        if itemSlot == "trinket" or itemSlot == "ring" then
+            if self:indexExists(gotItems, 1) and self:indexExists(gotItems, 2) then
+                return
+            end
+        else
+            if self:indexExists(gotItems, 1) or self:indexExists(gotItems, 2) then
+                return
+            end
+        end
     end
 
     local slotGroup = self.aceGui:Create("CustomInlineGroup")
@@ -376,11 +387,19 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     slotGroup:SetTitle(MSHB.inventorySlotsLabels[itemSlot])
     slotGroup:SetRelativeWidth(1.0)
 
-    if hasItem then
-        if indexOf == 1 or indexOf == 2 then
-            slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
+    if table.getn(gotItems) ~= 0 then
+        if itemSlot == "trinket" or itemSlot == "ring" then
+            if self:indexExists(gotItems, 1) and self:indexExists(gotItems, 2) then
+                slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
+            else
+                slotGroup.border:SetBackdropBorderColor(0.90, 0.90, 0)
+            end
         else
-            slotGroup.border:SetBackdropBorderColor(0.90, 0.90, 0)
+            if self:indexExists(gotItems, 1) or self:indexExists(gotItems, 2) then
+                slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
+            else
+                slotGroup.border:SetBackdropBorderColor(0.90, 0.90, 0)
+            end
         end
     else
         slotGroup.border:SetBackdropBorderColor(0.4, 0.4, 0.4)
@@ -389,7 +408,7 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     for index, group in ipairs(itemGroups[itemSlot]) do
         for yindex, item in ipairs(group) do
             local ident = yindex ~= 1
-            self:AddItemWidget(slotGroup, index, item, ident, itemSlot, hasIndex == index)
+            self:AddItemWidget(slotGroup, index, item, ident, itemSlot, self:indexExists(gotItems, index))
         end
     end
 end
@@ -425,7 +444,7 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
     itemIndexLabel:SetText(index .. ".")
 
     if highlighted then
-        if index == 1 then
+        if index == 1 or index == 2 then
             itemIndexLabel:SetColor(0.35, 0.92, 0)
         else
             itemIndexLabel:SetColor(0.90, 0.90, 0)
@@ -472,7 +491,7 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
     itemSourceLabel:SetText(self:GetItemSourceString(itemId))
 
     if highlighted then
-        if index == 1 then
+        if index == 1 or index == 2 then
             itemSourceLabel:SetColor(0.35, 0.92, 0)
         else
             itemSourceLabel:SetColor(0.90, 0.90, 0)
