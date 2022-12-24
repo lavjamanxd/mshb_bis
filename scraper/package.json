@@ -4,11 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.10",
     "dotenv": "^10.0.0",
-    "google-spreadsheet": "^3.2.0",
     "liquidjs": "^9.31.0",
-    "node-fetch": "2"
+    "node-fetch": "2",
+    "wow-classic-items": "^2.0.1"
   },
   "devDependencies": {
     "luamin": "^1.0.4"
