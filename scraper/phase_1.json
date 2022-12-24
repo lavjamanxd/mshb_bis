@@ -13556,7 +13556,7 @@
             {
               "id": 42852,
               "name": "Deadly Gladiator's Libram of Fortitude",
-              "source": "Multiple - 1.2k Arena Points, 6.4k Honor & 350 Arena Points"
+              "source": "Multiple - 1.2k Arena Points (1800 rating required)"
             },
             {
               "id": 40191,
@@ -13564,14 +13564,19 @@
               "source": "Multiple - Gluth (25), Noth the Plaguebringer (25), Emblem of Valor (25) (4%)"
             },
             {
+              "id": 42851,
+              "name": "Hateful Gladiator's Libram of Fortitude",
+              "source": "Multiple - 4.480k Honor & 350 Arena Points (1200 rating required)"
+            },
+            {
+              "id": 42611,
+              "name": "Savage Gladiator's Libram of Fortitude",
+              "source": "Multiple - 4.480k Honor & 175 Arena Points"
+            },
+            {
               "id": 37574,
               "name": "Libram of Furious Blows",
               "source": "Quest Reward - Return My Remains (H), Get Me Outa Here! (A)"
-            },
-            {
-              "id": 38362,
-              "name": "Venture Co. Libram of Retribution",
-              "source": "PvP - Venture Coins (30)"
             }
           ]
         }

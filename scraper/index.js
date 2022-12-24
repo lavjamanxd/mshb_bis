@@ -453,20 +453,6 @@ async function main() {
 
   bisAddonData.phases = await processPhases();
 
-  fs.writeFileSync(
-    join(appDir, "cached_bisList.json"),
-    JSON.stringify(bisAddonData)
-  );
-
-  fs.writeFileSync(
-    join(appDir, "cached_metadata.json"),
-    JSON.stringify(metadata)
-  );
-
-  // var bisAddonData = JSON.parse(
-  //   fs.readFileSync(join(appDir, "cached_bisList.json"))
-  // );
-
   var template = fs.readFileSync(
     join(appDir, "./bisListTemplate.liquid"),
     "utf8"
@@ -478,10 +464,6 @@ async function main() {
       luamin.minify(render)
     );
   });
-
-  // var metadata = JSON.parse(
-  //   fs.readFileSync(join(appDir, "cached_metadata.json"))
-  // );
 
   var template = fs.readFileSync(
     join(appDir, "./metadataTemplate.liquid"),
