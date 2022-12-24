@@ -414,20 +414,20 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
 end
 
 function MeSoHordieAddon:CharacterHasItem(itemId)
-    local hasItem = false
+    local itemIdNumber = tonumber(itemId)
     if IsEquippedItem(itemId) then
-        hasItem = true
+        print("found equipped " .. itemId)
+        return true
     else
         for bagSlot = 0, NUM_BAG_SLOTS do
             for containerSlot = 1, GetContainerNumSlots(bagSlot) do
-                if GetContainerItemID(bagSlot, containerSlot) == itemId then
-                    hasItem = true
-                    break
+                if GetContainerItemID(bagSlot, containerSlot) == itemIdNumber then
+                    return true
                 end
             end
         end
     end
-    return hasItem
+    return false
 end
 
 function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, highlighted)
