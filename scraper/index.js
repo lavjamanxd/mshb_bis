@@ -9,12 +9,14 @@ const Database = require("wow-classic-items");
 var { Liquid } = require("liquidjs");
 var engine = new Liquid();
 
+const itemsDb = new Database.Items();
+
 var metadata = {
   44569: "Naxxramas (10) - Sapphiron",
   44577: "Naxxramas (25) - Sapphiron",
   45038: "Ulduar (25) - Bosses",
   46052: "Ulduar (10) - Algalon the Observer",
-  46053: "Ulduar (25) - Algalon the Observer"
+  46053: "Ulduar (25) - Algalon the Observer",
 };
 
 const phases = ["Pre-Bis", "T7", "T8"];
@@ -200,7 +202,7 @@ const itemDependencyMap = {
   // Reply Code Alpha
   46053: [45588, 45618, 45608, 45614],
   // Val'anyr
-  46017: [45038],
+  45038: [46017],
 };
 
 const wowtbcGGMap = {
@@ -233,9 +235,7 @@ var weirdItemMap = {
   "Warglaive of Azzinoth (MH)": 32837,
 };
 
-async function fetchWowgg() {
-  const itemsDb = new Database.Items();
-
+async function fetchWowggPure() {
   const combosRequest = await fetch(
     `https://wowtbc.gg/page-data/wotlk/class-rankings/pve-rankings/page-data.json`
   );
@@ -323,21 +323,28 @@ async function fetchWowgg() {
         }
 
         if (wowtbcGGMap[slot] && itemsOrdered.length > 0) {
-          currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered
-            .map((item) => {
-              if (weirdItemMap[item.name]) {
-                found = { itemId: weirdItemMap[item.name] };
-              } else {
-                var found = itemsDb.find((i) => i.name == item.name);
-              }
+          currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered.map((item) => {
+            if (weirdItemMap[item.name]) {
+              found = { itemId: weirdItemMap[item.name] };
+            } else {
+              var found = itemsDb.find((i) => i.name == item.name);
+            }
 
-              if (!found) {
-                debugger;
-              }
-              metadata[found.itemId] = `${item.source} - ${item.source_type}`;
-              return found.itemId;
-            })
-            .map((id) => [id]);
+            if (!found) {
+              debugger;
+            }
+
+            let sourceString = `${item.source} - ${item.source_type}`;
+            if (item.drop_chance) {
+              sourceString += ` (${Math.round(item.drop_chance * 100)}%)`;
+            }
+
+            return {
+              id: found.itemId,
+              name: itemsDb.find((i) => i.itemId == found.itemId).name,
+              source: sourceString,
+            };
+          });
         } else {
           if (itemsOrdered.length > 0) {
             debugger;
@@ -345,29 +352,65 @@ async function fetchWowgg() {
         }
       }
 
-      for (const entry of Object.entries(currentSpec.items)) {
-        var items = entry[1];
-        for (const itemArray of items) {
-          for (const itemDependencyEntry of Object.entries(itemDependencyMap)) {
-            var found = false;
-            for (const depItem of itemDependencyEntry[1]) {
-              if (depItem == itemArray[0]) {
-                itemArray.push(+itemDependencyEntry[0]);
-                found = true;
-                break;
-              }
-            }
-            if (found) break;
-          }
-        }
-      }
-
-      mergeSlots(currentSpec.items, "ring");
-      mergeSlots(currentSpec.items, "trinket");
       result[phaseIndex][className].specs.push(currentSpec);
     }
   }
 
+  return result;
+}
+
+async function processPhases() {
+  const result = { 0: {}, 1: {}, 2: {} };
+
+  for (const phase of phases) {
+    var phaseIndex = phases.indexOf(phase);
+    let data = JSON.parse(fs.readFileSync(`scraper/phase_${phaseIndex}.json`));
+    for (const classDef of Object.values(data)) {
+      let className = classDef["class"];
+      result[phaseIndex][className] = {
+        class: className,
+        specs: [],
+      };
+
+      for (const specDef of classDef.specs) {
+        var currentSpec = {
+          "class": specDef.className,
+          spec: specDef.spec,
+          role: specDef.role,
+          items: {},
+        };
+        
+        for (const itemSlot of Object.entries(specDef.items)){
+          currentSpec.items[itemSlot[0]] = [];
+          for (const itemObj of itemSlot[1]){
+            currentSpec.items[itemSlot[0]].push([itemObj.id]);
+            metadata[itemObj.id] = itemObj.source;
+          }
+        }
+
+        for (const entry of Object.entries(currentSpec.items)) {
+          var items = entry[1];
+          for (const itemArray of items) {
+            for (const itemDependencyEntry of Object.entries(itemDependencyMap)) {
+              var found = false;
+              for (const depItem of itemDependencyEntry[1]) {
+                if (depItem == itemArray[0]) {
+                  itemArray.push(+itemDependencyEntry[0]);
+                  found = true;
+                  break;
+                }
+              }
+              if (found) break;
+            }
+          }
+        }
+
+        mergeSlots(currentSpec.items, "ring");
+        mergeSlots(currentSpec.items, "trinket");
+        result[phaseIndex][className].specs.push(currentSpec);
+      }
+    }
+  }
   return result;
 }
 
@@ -392,6 +435,13 @@ function mergeSlots(items, slotName) {
 }
 
 async function main() {
+  // const wowtbcData = await fetchWowggPure();
+  // for (const phase of Object.entries(wowtbcData)) {
+  //   fs.writeFileSync(
+  //     join(appDir,`phase_${phase[0]}.json`),
+  //     JSON.stringify(phase[1], null, 2)
+  //   );
+  // }
   var now = new Date();
   var bisAddonData = {
     version: `${now.getFullYear()}${
@@ -401,7 +451,7 @@ async function main() {
     phases: {},
   };
 
-  bisAddonData.phases = await fetchWowgg();
+  bisAddonData.phases = await processPhases();
 
   fs.writeFileSync(
     join(appDir, "cached_bisList.json"),
