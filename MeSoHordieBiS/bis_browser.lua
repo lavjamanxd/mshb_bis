@@ -2,12 +2,6 @@ MeSoHordieAddon.aceGui = LibStub("AceGUI-3.0")
 
 MeSoHordieAddon.gui = {}
 MeSoHordieAddon.gui.isBiSBrowserOpen = false
-MeSoHordieAddon.gui.tooltip = MeSoHordieAddon.gui.tooltip or
-                                  CreateFrame('GameTooltip', "MSHBBisItemTooltip", UIParent, 'GameTooltipTemplate')
-MeSoHordieAddon.gui.compareTooltip = MeSoHordieAddon.gui.compareTooltip or
-                                         CreateFrame('GameTooltip', "MSHBBisItemCompareTooltip", UIParent,
-        'GameTooltipTemplate')
-
 MeSoHordieAddon.gui.state = {}
 
 function MeSoHordieAddon:UpdateTooltipWithForceAllMode(frame)
@@ -16,7 +10,6 @@ end
 
 function MeSoHordieAddon:InitializeUI()
     self:RegisterItemWidgetLayout()
-    self:HookScript(MeSoHordieAddon.gui.tooltip, "OnTooltipSetItem", "UpdateTooltipWithForceAllMode")
 end
 
 function MeSoHordieAddon:RegisterItemWidgetLayout()
@@ -105,21 +98,11 @@ end
 
 function MeSoHordieAddon:InvalidateTooltip()
     if self.gui.state.tooltipVisible then
-        self.gui.tooltip:SetOwner(self.gui.state.currentTooltipOwner.frame, "ANCHOR_LEFT")
-        self.gui.tooltip:SetItemByID(self.gui.state.tooltipItemShown)
-        self.gui.tooltip:Show()
+        GameTooltip:SetOwner(self.gui.state.currentTooltipOwner.frame, "ANCHOR_LEFT")
+        GameTooltip:SetItemByID(self.gui.state.tooltipItemShown)
+        GameTooltip:Show()
     else
-        self.gui.tooltip:Hide()
-    end
-
-    if self.gui.state.tooltipVisible and self.gui.state.shiftHeld and self.gui.state.tooltipSlot ~= -1 then
-        local equippedItemLink = GetInventoryItemLink("player", self.gui.state.tooltipSlot)
-        self.gui.compareTooltip:SetOwner(self.gui.tooltip, "ANCHOR_NONE")
-        self.gui.compareTooltip:SetPoint("RIGHT", self.gui.tooltip, "LEFT")
-        self.gui.compareTooltip:SetHyperlink(equippedItemLink)
-        self.gui.compareTooltip:Show()
-    else
-        self.gui.compareTooltip:Hide()
+        GameTooltip:Hide()
     end
 end
 
@@ -134,10 +117,8 @@ function MeSoHordieAddon:ShowBiSWindow()
     self.gui.state.spec = spec
     self.gui.state.missingOnly = self.db.char.missingOnlyEnabled
     self.gui.state.tooltipVisible = false
-    self.gui.state.shiftHeld = false
     self.gui.state.tooltipItemShown = -1
     self.gui.state.currentTooltipOwner = nil
-    self.gui.state.tooltipSlot = -1
 
     local frame = self.aceGui:Create("Window")
     self.gui.RootFrame = frame
@@ -154,7 +135,6 @@ function MeSoHordieAddon:ShowBiSWindow()
         end
 
         if key == "LSHIFT" then
-            MeSoHordieAddon.gui.state.shiftHeld = true
             frame.frame:SetPropagateKeyboardInput(false)
             MeSoHordieAddon:InvalidateTooltip()
         end
@@ -162,7 +142,6 @@ function MeSoHordieAddon:ShowBiSWindow()
 
     frame.frame:SetScript("OnKeyUp", function(self, key)
         if key == "LSHIFT" then
-            MeSoHordieAddon.gui.state.shiftHeld = false
             MeSoHordieAddon:InvalidateTooltip()
         end
     end)
@@ -460,7 +439,6 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
         self.gui.state.tooltipVisible = true
         self.gui.state.tooltipItemShown = itemIdNumber
         self.gui.state.currentTooltipOwner = widget
-        self.gui.state.tooltipSlot = MSHB.inventorySlotIdMap[itemSlot]
         MeSoHordieAddon:InvalidateTooltip()
     end)
 
@@ -468,7 +446,6 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
         self.gui.state.tooltipVisible = false
         self.gui.state.tooltipItemShown = -1
         self.gui.state.currentTooltipOwner = nil
-        self.gui.state.tooltipSlot = -1
         MeSoHordieAddon:InvalidateTooltip()
     end)
 
