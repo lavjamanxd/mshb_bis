@@ -576,6 +576,7 @@ const tierTokenMap = {
   // Heroic Key to the Focusing Iris
   44577: [44661, 44662, 44664, 44665],
 };
+
 const wowtbcGGMap = {
   head: "head",
   neck: "neck",
@@ -612,8 +613,9 @@ async function fetchWowgg() {
   const combosRequest = await fetch(
     `https://wowtbc.gg/page-data/wotlk/class-rankings/pve-rankings/page-data.json`
   );
+
   const combos = await combosRequest.json();
-  const result = { 0: {}, 1: {} };
+  const result = { 0: {}, 1: {}, 2: {}};
 
   for (const combo of combos.result.pageContext.sortedList) {
     console.log(combo);
@@ -649,7 +651,7 @@ async function fetchWowgg() {
 
     console.log(`${classs} - ${spec} - ${role}`);
 
-    const phases = ["Pre-Bis", "T7"];
+    const phases = ["Pre-Bis", "T7", "T8"];
     const slots = [
       "head",
       "neck",

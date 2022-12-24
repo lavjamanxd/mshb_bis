@@ -10,11 +10,19 @@ MSHB.supportedPhases = {
         }
     },
     [1] = {
-        name = "Phase 1 - Naxx/OS/EOE/VoA",
+        name = "Phase 1 - Naxx/OS/EoE/VoA",
         start = time {
             year = 2022,
             month = 10,
             day = 6
+        }
+    },
+    [2] = {
+        name = "Phase 2 - Ulduar",
+        start = time {
+            year = 2023,
+            month = 1,
+            day = 16    -- update with a correct date
         }
     }
 }
