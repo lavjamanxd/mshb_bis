@@ -28,7 +28,7 @@ MSHB.supportedPhases = {
 }
 
 MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "mainHand", "offHand", "hands", "belt",
-                       "legs", "feet", "ring1", "ring2", "trinket1", "trinket2", "ranged"}
+                       "legs", "feet", "ring", "trinket", "ranged"}
 
 MSHB.inventorySlotsLabels = {
     ["head"] = "Head",
@@ -43,10 +43,8 @@ MSHB.inventorySlotsLabels = {
     ["belt"] = "Waist",
     ["legs"] = "Legs",
     ["feet"] = "Feet",
-    ["ring1"] = "Ring 1",
-    ["ring2"] = "Ring 2",
-    ["trinket1"] = "Trinket 1",
-    ["trinket2"] = "Trinket 2",
+    ["ring"] = "Rings",
+    ["trinket"] = "Trinkets",
     ["ranged"] = "Ranged / Totem / Libram / Idol"
 }
 

@@ -274,11 +274,33 @@ async function fetchWowgg() {
         }
       }
 
+      mergeSlots(currentSpec.items, "ring");
+      mergeSlots(currentSpec.items, "trinket");
       result[phaseIndex][className].specs.push(currentSpec);
     }
   }
 
   return result;
+}
+
+function mergeSlots(items, slotName){
+  var first = items[`${slotName}1`];
+  var second = items[`${slotName}2`];
+  var result = [];
+  var max = Math.max(first.length, second.length);
+  for (var i = 0; i < max; i++){
+    if (first[i] && result.findIndex(ig => ig[0] == first[i][0]) == -1){
+      result.push(first[i]);
+    }
+    if (second[i] && result.findIndex(ig => ig[0] == second[i][0]) == -1){
+      result.push(second[i]);
+    }
+  }
+
+  delete items[`${slotName}1`];
+  delete items[`${slotName}2`];
+
+  items[slotName] = result;
 }
 
 async function main() {
