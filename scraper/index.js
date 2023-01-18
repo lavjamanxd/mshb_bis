@@ -374,15 +374,15 @@ async function processPhases() {
 
       for (const specDef of classDef.specs) {
         var currentSpec = {
-          "class": specDef.className,
+          class: specDef.className,
           spec: specDef.spec,
           role: specDef.role,
           items: {},
         };
-        
-        for (const itemSlot of Object.entries(specDef.items)){
+
+        for (const itemSlot of Object.entries(specDef.items)) {
           currentSpec.items[itemSlot[0]] = [];
-          for (const itemObj of itemSlot[1]){
+          for (const itemObj of itemSlot[1]) {
             currentSpec.items[itemSlot[0]].push([itemObj.id]);
             metadata[itemObj.id] = itemObj.source;
           }
@@ -391,7 +391,9 @@ async function processPhases() {
         for (const entry of Object.entries(currentSpec.items)) {
           var items = entry[1];
           for (const itemArray of items) {
-            for (const itemDependencyEntry of Object.entries(itemDependencyMap)) {
+            for (const itemDependencyEntry of Object.entries(
+              itemDependencyMap
+            )) {
               var found = false;
               for (const depItem of itemDependencyEntry[1]) {
                 if (depItem == itemArray[0]) {
@@ -435,13 +437,13 @@ function mergeSlots(items, slotName) {
 }
 
 async function main() {
-  // const wowtbcData = await fetchWowggPure();
-  // for (const phase of Object.entries(wowtbcData)) {
-  //   fs.writeFileSync(
-  //     join(appDir,`phase_${phase[0]}.json`),
-  //     JSON.stringify(phase[1], null, 2)
-  //   );
-  // }
+  const wowtbcData = await fetchWowggPure();
+  for (const phase of Object.entries(wowtbcData)) {
+    fs.writeFileSync(
+      join(appDir, `phase_${phase[0]}.json`),
+      JSON.stringify(phase[1], null, 2)
+    );
+  }
   var now = new Date();
   var bisAddonData = {
     version: `${now.getFullYear()}${
