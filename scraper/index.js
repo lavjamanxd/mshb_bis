@@ -327,7 +327,13 @@ async function fetchWowggPure() {
             if (weirdItemMap[item.name]) {
               found = { itemId: weirdItemMap[item.name] };
             } else {
-              var found = itemsDb.find((i) => i.name == item.name);
+              var found = itemsDb.find(
+                (i) =>
+                  i.name == item.name &&
+                  i.slot != "Non-equippable" &&
+                  i.quality != "Poor" &&
+                  i.quality != "Common"
+              );
             }
 
             if (!found) {
