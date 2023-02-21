@@ -33,6 +33,7 @@
     "ItemRefTooltip",
     "InterfaceOptionsFrame_OpenToCategory",
     "INVSLOT_FIRST_EQUIPPED",
-    "INVSLOT_LAST_EQUIPPED"
+    "INVSLOT_LAST_EQUIPPED",
+    "class"
   ]
 }
