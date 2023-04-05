@@ -244,7 +244,6 @@ function MeSoHordieAddon:OnInitialize()
             phase = MSHB:getCurrentPhase(),
             showBisIndicator = true,
             missingOnlyEnabled = false,
-            browserProfile = nil
         } ,
         profile = {
             minimap = {

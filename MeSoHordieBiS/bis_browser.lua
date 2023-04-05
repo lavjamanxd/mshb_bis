@@ -111,19 +111,10 @@ function MeSoHordieAddon:ShowBiSWindow()
         return
     end
     self.gui.isBiSBrowserOpen = true
-
-    if self.db.char.browserProfile ~= nil then
-        self.gui.state.phase = self.db.char.browserProfile.phase;
-        self.gui.state.class = self.db.char.browserProfile.class;
-        self.gui.state.spec = self.db.char.browserProfile.spec;
-        self.gui.state.role = self.db.char.browserProfile.role;
-    else
-        self.gui.state.phase = self.db.char.phase
-        local class, spec = MSHB:predict_player("player", false)
-        self.gui.state.class = class
-        self.gui.state.spec = spec
-    end
-
+    self.gui.state.phase = self.db.char.phase
+    local class, spec = MSHB:predict_player("player", false)
+    self.gui.state.class = class
+    self.gui.state.spec = spec
     self.gui.state.missingOnly = self.db.char.missingOnlyEnabled
     self.gui.state.tooltipVisible = false
     self.gui.state.tooltipItemShown = -1
@@ -290,9 +281,7 @@ function MeSoHordieAddon:InvalidateRoleSelector()
     local rolesCount = self:getTableSize(roles)
     self.gui.roleSelector:SetList(roles)
 
-    if MSHB:has_key(roles, self.gui.state.role) == false then
-        self.gui.state.role = self:GetFirstKeyFromTable(roles)
-    end
+    self.gui.state.role = self:GetFirstKeyFromTable(roles)
 
     self.gui.roleSelector:SetValue(self.gui.state.role)
 
@@ -316,9 +305,6 @@ function MeSoHordieAddon:InvalidateItems()
     local spec = self.gui.state.spec
     local role = self.gui.state.role
     local missingOnly = self.gui.state.missingOnly
-    MeSoHordieAddon.db.char.browserProfile = {
-        phase = phase, class = class, spec = spec, role = role
-    };
     MeSoHordieAddon:AddItemSlotGroups(self.gui.ItemsContainer, phase, class, spec, role, missingOnly)
 end
 
