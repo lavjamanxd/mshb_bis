@@ -245,6 +245,7 @@ async function fetchWowggPure() {
 
   for (const combo of combos.result.pageContext.sortedList) {
     console.log(combo);
+    if (!combo.class && !combo.spec) continue;
 
     const listName = `${combo.spec
       .toLowerCase()
@@ -313,14 +314,8 @@ async function fetchWowggPure() {
             itemsOrdered.push(filteredItem);
           }
         }
-        itemsOrdered = itemsOrdered.slice(0, 6);
 
-        if (
-          itemsOrdered.map((x) => x.name).join("|") !==
-          itemsOrdered.map((x) => x.name).join("|")
-        ) {
-          debugger;
-        }
+        // itemsOrdered = itemsOrdered.slice(0, 6);
 
         if (wowtbcGGMap[slot] && itemsOrdered.length > 0) {
           currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered.map((item) => {
@@ -460,6 +455,16 @@ async function main() {
   };
 
   bisAddonData.phases = await processPhases();
+
+  fs.writeFileSync(
+    join(appDir, "items_processed.json"),
+    JSON.stringify(bisAddonData)
+  );
+
+  fs.writeFileSync(
+    join(appDir, "items_metadata_processed.json"),
+    JSON.stringify(metadata)
+  );
 
   var template = fs.readFileSync(
     join(appDir, "./bisListTemplate.liquid"),
