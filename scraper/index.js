@@ -19,8 +19,8 @@ var metadata = {
   46053: "Ulduar (25) - Algalon the Observer",
 };
 
-const phases = ["Pre-Bis", "T7", "T8"];
-const slots = [
+const phases = ["Pre-Bis", "T7", "T8", "T9"];
+const wowTbcggSlots = [
   "head",
   "neck",
   "shoulder",
@@ -226,6 +226,26 @@ const wowtbcGGMap = {
   ranged: "ranged",
 };
 
+const eupgradesMap = {
+  HEAD: "head",
+  NECK: "neck",
+  SHOULDERS: "shoulders",
+  BACK: "back",
+  CHEST: "chest",
+  WRISTS: "wrists",
+  HANDS: "hands",
+  WAIST: "belt",
+  LEGS: "legs",
+  FEET: "feet",
+  FINGER_1: "ring1",
+  FINGER_2: "ring2",
+  TRINKET_1: "trinket1",
+  TRINKET_2: "trinket2",
+  MAIN_HAND: "mainHand",
+  OFF_HAND: "offHand",
+  RANGED: "ranged",
+};
+
 var weirdItemMap = {
   "Darkmoon Card: Greatness": 44255, // intellect
   "Darkmoon Card: Greatness v1": 44254, // spirit
@@ -299,7 +319,7 @@ async function fetchWowggPure() {
         items: {},
       };
 
-      for (const slot of slots) {
+      for (const slot of wowTbcggSlots) {
         const filteredItems = bisData.filter(
           (i) => i.slot == slot && i.phase.includes(phase)
         );
@@ -360,12 +380,83 @@ async function fetchWowggPure() {
   return result;
 }
 
-async function processPhases() {
-  const result = { 0: {}, 1: {}, 2: {} };
+async function processPhasesMSH() {
+  const mshResult = { 0: {}, 1: {}, 2: {}, 3: {} };
 
   for (const phase of phases) {
     var phaseIndex = phases.indexOf(phase);
-    let data = JSON.parse(fs.readFileSync(`scraper/phase_${phaseIndex}.json`));
+
+    const mshFolderPath = join("data", "wotlk", phaseIndex.toString());
+    if (fs.existsSync(mshFolderPath)) {
+      const classes = fs.readdirSync(mshFolderPath);
+      for (const className of Object.values(classes)) {
+        const classFolderPath = join(mshFolderPath, className);
+
+        const currentClass = {
+          class: className,
+          specs: [],
+        };
+
+        const setFiles = fs.readdirSync(classFolderPath);
+        for (const setFile of Object.values(setFiles)) {
+          const split = setFile.replace(".json", "").split("-");
+          const specName = split[0];
+          const role = split[1];
+
+          var currentSpec = {
+            class: className,
+            spec: specName,
+            role: role,
+            items: {},
+          };
+
+          const setData = JSON.parse(
+            fs.readFileSync(join(classFolderPath, setFile))
+          );
+
+          if (
+            setData["phase"] != phaseIndex ||
+            setData["character"]["gameClass"] != className.toUpperCase() ||
+            setData["points"][0]["name"] != specName
+          ) {
+            debugger;
+          }
+
+          for (const item of setData["items"]) {
+            const slot = eupgradesMap[item["slot"]];
+            if (slot) {
+              const currentSlot = [];
+              currentSlot.push([item["id"]]);
+              currentSpec.items[slot] = currentSlot;
+            }
+          }
+
+          mergeSlots(currentSpec.items, "ring");
+          mergeSlots(currentSpec.items, "trinket");
+
+          currentClass.specs.push(currentSpec);
+        }
+
+        mshResult[phaseIndex][className] = currentClass;
+      }
+    }
+  }
+
+  return mshResult;
+}
+
+async function processPhasesWowTBCGG() {
+  const result = { 0: {}, 1: {}, 2: {}, 3: {} };
+
+  for (const phase of phases) {
+    var phaseIndex = phases.indexOf(phase);
+
+    const wowtbcDataPath = join("scraper", `phase_${phaseIndex}.json`);
+    if (!fs.existsSync(wowtbcDataPath)) continue;
+
+    const path = fs.readFileSync(wowtbcDataPath);
+    let data = JSON.parse(path);
+
     for (const classDef of Object.values(data)) {
       let className = classDef["class"];
       result[phaseIndex][className] = {
@@ -375,7 +466,7 @@ async function processPhases() {
 
       for (const specDef of classDef.specs) {
         var currentSpec = {
-          class: specDef.className,
+          class: className,
           spec: specDef.spec,
           role: specDef.role,
           items: {},
@@ -437,7 +528,7 @@ function mergeSlots(items, slotName) {
   items[slotName] = result;
 }
 
-async function main() {
+async function getWowTBCData() {
   const wowtbcData = await fetchWowggPure();
   for (const phase of Object.entries(wowtbcData)) {
     fs.writeFileSync(
@@ -445,45 +536,126 @@ async function main() {
       JSON.stringify(phase[1], null, 2)
     );
   }
+  return await processPhasesWowTBCGG();
+}
+
+async function mergeSources(wowtbcData, guildData) {
+  const result = { 0: {}, 1: {}, 2: {}, 3: {} };
+
+  for (const phase of phases) {
+    var phaseIndex = phases.indexOf(phase);
+
+    for (const classObj of Object.values(guildData[phaseIndex])) {
+      const className = classObj["class"];
+      const currentClass = {
+        class: className,
+        specs: [],
+      };
+
+      for (const spec of classObj.specs) {
+        var currentSpec = {
+          class: className,
+          spec: spec.spec,
+          role: spec.role,
+          items: {},
+        };
+
+        for (const [slot, items] of Object.entries(spec.items)) {
+          const itemGroupArray = [];
+          itemGroupArray.push(items[0]);
+
+          if (slot == "ring" || slot == "trinket"){
+            itemGroupArray.push(items[1]);
+          }
+
+          currentSpec.items[slot] = itemGroupArray;
+        }
+
+        currentClass.specs.push(currentSpec);
+      }
+
+      result[phaseIndex][className] = currentClass;
+    }
+
+    for (const classObj of Object.values(wowtbcData[phaseIndex])) {
+      const className = classObj["class"];
+      const currentClass = result[phaseIndex][className] ?? {
+        class: className,
+        specs: [],
+      };
+
+      for (const spec of classObj.specs) {
+        const existingSpec = currentClass.specs.find(
+          (x) =>
+            x["class"] == spec["class"] &&
+            x.spec == spec.spec &&
+            x.role == spec.role
+        );
+
+        const currentSpec = existingSpec ?? {
+          class: className,
+          spec: spec.spec,
+          role: spec.role,
+          items: {},
+        };
+
+        for (const [slot, items] of Object.entries(spec.items)) {
+          const itemGroupArray = currentSpec.items[slot] ? [...currentSpec.items[slot]] : [];
+
+          for (const itemGroup of items) {
+            if (!itemGroupArray.find(i => i == itemGroup[0])) {
+              itemGroupArray.push(itemGroup);
+            }
+          }
+
+          currentSpec.items[slot] = itemGroupArray.slice(0, 5);
+        }
+
+        if (!existingSpec) {
+          currentClass.specs.push(currentSpec);
+        }
+      }
+
+      result[phaseIndex][className] = currentClass;
+    }
+  }
+
+  return result;
+}
+
+async function main() {
   var now = new Date();
-  var bisAddonData = {
-    version: `${now.getFullYear()}${
-      now.getMonth() + 1
-    }${now.getDate()}${now.getHours()}${now.getMinutes()}`,
-    ordered: false,
-    phases: {},
-  };
 
-  bisAddonData.phases = await processPhases();
-
-  fs.writeFileSync(
-    join(appDir, "items_processed.json"),
-    JSON.stringify(bisAddonData)
-  );
-
-  fs.writeFileSync(
-    join(appDir, "items_metadata_processed.json"),
-    JSON.stringify(metadata)
-  );
-
-  var template = fs.readFileSync(
+  var bisListTemplate = fs.readFileSync(
     join(appDir, "./bisListTemplate.liquid"),
     "utf8"
   );
 
-  engine.parseAndRender(template, bisAddonData).then((render) => {
+  var metadataTemplate = fs.readFileSync(
+    join(appDir, "./metadataTemplate.liquid"),
+    "utf8"
+  );
+
+  var bisAddonData = {
+    version: `${now.getFullYear()}${
+      now.getMonth() + 1
+    }${now.getDate()}${now.getHours()}${now.getMinutes()}`,
+    phases: {},
+  };
+
+  const wowTBCData = await getWowTBCData();
+  const guildData = await processPhasesMSH();
+
+  bisAddonData.phases = mergeSources(wowTBCData, guildData);
+
+  engine.parseAndRender(bisListTemplate, bisAddonData).then((render) => {
     fs.writeFileSync(
       join(appDir, "..", "MeSoHordieBiS", "data", "bis_list.lua"),
       luamin.minify(render)
     );
   });
 
-  var template = fs.readFileSync(
-    join(appDir, "./metadataTemplate.liquid"),
-    "utf8"
-  );
-
-  engine.parseAndRender(template, { metadata }).then((render) => {
+  engine.parseAndRender(metadataTemplate, { metadata }).then((render) => {
     fs.writeFileSync(
       join(appDir, "..", "MeSoHordieBiS", "data", "metadata.lua"),
       luamin.minify(render)

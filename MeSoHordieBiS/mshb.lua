@@ -128,9 +128,9 @@ MSHB.spec_icon_table = {
 MSHB.tooltipCache = {}
 
 function MSHB:getSupportedModesDescription()
-    result = {}
+    local result = {}
     local n = 1
-    for i, v in pairs(self.supportedModes) do
+    for _, v in pairs(self.supportedModes) do
         result[n] = v["name"] .. " - " .. v["description"]
         n = n + 1
     end
@@ -140,8 +140,8 @@ end
 function MSHB:getCurrentPhase()
     local phaseResult = -1
     local now = time()
-    for i, v in pairs(self.supportedPhases) do
-        if v["start"] < time() then
+    for _, v in pairs(self.supportedPhases) do
+        if v["start"] < now then
             phaseResult = phaseResult + 1
         end
     end
@@ -187,7 +187,7 @@ function MSHB:predict_player(target, inspect)
 end
 
 function MSHB:player_is_master_looter()
-    lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
+    local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
     if lootmethod == "master" and (masterlooterPartyID == 0 or masterlooterRaidID == 0) then
         return true
     end
@@ -217,7 +217,7 @@ function MSHB:get_extra_from_group(itemId, class, spec, role, nth, group)
     return ""
 end
 
-function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group)
+function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group, slotID)
     local classIcon = "classicon_" .. class .. ".blp"
     local specIcon = self.spec_icon_table[class .. '_' .. spec:lower()]
 
@@ -229,24 +229,24 @@ function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group)
         specIcon = self.spec_icon_table[class .. '_' .. spec:lower() .. "_cat"]
     end
 
-    local price = " "
+    local prefix = tostring(nth) .. ". ";
 
     if self:guild_member() then
-        price = "MS "
-        if nth == 1 or nth == 2 then
-            price = "BiS "
+        if nth == 1 or (nth == 2 and (slotID == "INVTYPE_TRINKET" or slotID == "INVTYPE_FINGER")) then
+            prefix = "BiS "
         end
     end
 
+
     if spec == "all" then
-        tooltip:AddLine(nth .. ". " .. price  .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
+        tooltip:AddLine(prefix  .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
                             "|Tinterface/icons/" .. classIcon .. ":0|t " .. self:to_pascal_case(class) .. " - " ..
                             self:to_pascal_case(spec) .. " - " .. role ..
                             self:get_extra_from_group(itemId, class, spec, role, nth, group))
         return
     end
 
-    tooltip:AddLine(nth .. ". " .. price .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon ..
+    tooltip:AddLine(prefix .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon ..
                         ":0|t " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
                         self:get_extra_from_group(itemId, class, spec, role, nth, group))
 end
@@ -322,7 +322,7 @@ end
 function MSHB:indexOf(tab, val)
     local counter = 1
     for index, value in pairs(tab) do
-        for gI, g in ipairs(value) do
+        for _, g in ipairs(value) do
             if g == val then
                 return counter
             end
@@ -374,13 +374,14 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
         lines = MSHB.tooltipCache.result
         currentMode = MSHB.tooltipCache.mode
     else
+        local itemEquipLocation =  select(4, GetItemInfoInstant(itemId));
         if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster and not forcedAllMode then
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-            for index, bisClass in ipairs(currentPhaseBiSClass) do
+            for _, bisClass in ipairs(currentPhaseBiSClass) do
                 if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
                     local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
                     if group then
-                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group}
+                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group, itemEquipLocation}
                     end
                 end
             end
@@ -391,7 +392,7 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
             for index, bisClass in ipairs(currentPhaseBiSClass) do
                 local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
                 if group then
-                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group}
+                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group, itemEquipLocation}
                 end
             end
         end
@@ -399,10 +400,10 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
         if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster or forcedAllMode then
             currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
             for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
-                for j, s in ipairs(c) do
+                for _, s in ipairs(c) do
                     local index, group = self:getIndexOfFromMultipleGroups(s["items"], itemId)
                     if group then
-                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], index, group}
+                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], index, group, itemEquipLocation}
                     end
                 end
             end
@@ -423,13 +424,13 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
         end
         tooltip:AddLine("Me So Hordie BiS - " .. phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
-            self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5])
+            self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5], v[6])
         end
     end
 end
 
 function MSHB:string_split(s, delimiter)
-    result = {}
+    local result = {}
     for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
         table.insert(result, match)
     end
@@ -458,13 +459,13 @@ function MSHB:UpdateButton(button, target)
             return item:ContinueOnItemLoad(function()
                 local id = item:GetItemID()
                 if id then
-                    self:ShowIndicatorIfBiS(button, id, "player", false)
+                    self:ShowIndicatorIfBiS(slotID, button, id, "player", false)
                 end
             end)
         else
             local itemId = GetInventoryItemID(target, slotID)
             if itemId then
-                self:ShowIndicatorIfBiS(button, itemId, "target", true)
+                self:ShowIndicatorIfBiS(slotID, button, itemId, "target", true)
                 return button.mshbIndicator
             end
         end
@@ -486,7 +487,7 @@ function MSHB:AddIndicatorToButtonIfNeeded(button)
     button.mshbIndicator:Hide()
 end
 
-function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
+function MSHB:ShowIndicatorIfBiS(slotID, button, itemId, unit, inspect)
     local class, spec = self:predict_player(unit, inspect)
     local bisClass = msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase][class:lower()]
 
@@ -494,11 +495,11 @@ function MSHB:ShowIndicatorIfBiS(button, itemId, unit, inspect)
         return
     end
 
-    for i, v in ipairs(bisClass) do
+    for _, v in ipairs(bisClass) do
         if v["spec"] == spec:lower() or v["spec"]:lower() == "all" then
             local index, group = self:getIndexOfFromMultipleGroups(v["items"], tostring(itemId))
             if group then
-                if index == 1 or index == 2 then
+                if index == 1 or (index == 2 and (slotID == 11 or slotID == 12 or slotID == 13 or slotID == 14)) then
                     button.mshbIndicator:SetAtlas("worldquest-tracker-checkmark")
                 else
                     button.mshbIndicator:SetAtlas("poi-door-arrow-up")

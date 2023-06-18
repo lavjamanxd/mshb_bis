@@ -59,7 +59,7 @@ end
 
 function MeSoHordieAddon:GetAllSpecsForPhase(phase, class)
     local result = {}
-    for index, specObj in ipairs(msh_bis_addon_data["phases"]["phase" .. phase][class:lower()]) do
+    for _, specObj in ipairs(msh_bis_addon_data["phases"]["phase" .. phase][class:lower()]) do
         result[specObj.spec] = MSHB:to_pascal_case(specObj.spec)
     end
 
@@ -68,7 +68,7 @@ end
 
 function MeSoHordieAddon:GetAllClassesForPhase(phase)
     local result = {}
-    for class, value in pairs(msh_bis_addon_data["phases"]["phase" .. phase]) do
+    for class, _ in pairs(msh_bis_addon_data["phases"]["phase" .. phase]) do
         result[class] = MSHB:to_pascal_case(class)
     end
 
@@ -77,7 +77,7 @@ end
 
 function MeSoHordieAddon:GetAllRolesForSpec(phase, class, spec)
     local result = {}
-    for index, specObj in ipairs(msh_bis_addon_data["phases"]["phase" .. phase][class:lower()]) do
+    for _, specObj in ipairs(msh_bis_addon_data["phases"]["phase" .. phase][class:lower()]) do
         if spec:lower() == specObj.spec then
             result[specObj.role] = MSHB:to_pascal_case(specObj.role)
         end
@@ -342,7 +342,7 @@ function MeSoHordieAddon:AddItemSlotGroup(parent, itemSlot, itemGroups)
     local gotItems = {}
 
     for index, itemGroup in ipairs(itemGroups[itemSlot]) do
-        for yindex, item in ipairs(itemGroup) do
+        for _, item in ipairs(itemGroup) do
             if self:CharacterHasItem(item) then
                 table.insert(gotItems, index);
             end
@@ -425,7 +425,7 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
     end
 
     if highlighted then
-        if index == 1 or index == 2 then
+        if index == 1 or (index == 2 and (itemSlot == "ring" or itemSlot == "trinket")) then
             itemIndexLabel:SetColor(0.35, 0.92, 0)
         else
             itemIndexLabel:SetColor(0.90, 0.90, 0)
@@ -470,7 +470,7 @@ function MeSoHordieAddon:AddItemWidget(parent, index, itemId, ident, itemSlot, h
     itemSourceLabel:SetText(self:GetItemSourceString(itemId))
 
     if highlighted then
-        if index == 1 or index == 2 then
+        if index == 1 or (index == 2 and (itemSlot == "ring" or itemSlot == "trinket")) then
             itemSourceLabel:SetColor(0.35, 0.92, 0)
         else
             itemSourceLabel:SetColor(0.90, 0.90, 0)
