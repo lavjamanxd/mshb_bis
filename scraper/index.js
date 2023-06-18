@@ -315,7 +315,7 @@ async function fetchWowggPure() {
           }
         }
 
-        // itemsOrdered = itemsOrdered.slice(0, 6);
+        itemsOrdered = itemsOrdered.slice(0, 6);
 
         if (wowtbcGGMap[slot] && itemsOrdered.length > 0) {
           currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered.map((item) => {
