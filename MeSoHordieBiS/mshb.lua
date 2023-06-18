@@ -22,7 +22,15 @@ MSHB.supportedPhases = {
         start = time {
             year = 2023,
             month = 1,
-            day = 16    -- update with a correct date
+            day = 19
+        }
+    },
+    [3] = {
+        name = "Phase 3 - TotC/Onyxia",
+        start = time {
+            year = 2023,
+            month = 6,
+            day = 20
         }
     }
 }
