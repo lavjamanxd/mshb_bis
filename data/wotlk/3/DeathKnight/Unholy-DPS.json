@@ -1,0 +1,208 @@
+{
+    "name": "UH",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/hTdsvSZiywQeYM837hSMuw"
+    },
+    "character": {
+        "name": "Ptecthechad",
+        "level": 80,
+        "gameClass": "DEATHKNIGHT",
+        "race": "ORC",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Koltira's Helmet of Triumph",
+            "id": 48493,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "The Executioner's Vice",
+            "id": 47458,
+            "gems": [
+                null
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Koltira's Shoulderplates of Triumph",
+            "id": 48495,
+            "gems": [
+                null
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Koltira's Battleplate of Triumph",
+            "id": 48491,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Bloodbath Girdle",
+            "id": 47429,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Legplates of Ascension",
+            "id": 47465,
+            "gems": [
+                null,
+                null,
+                null
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Sabatons of Lifeless Night",
+            "id": 45599,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Armbands of Bedlam",
+            "id": 45663,
+            "gems": [
+                null
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Koltira's Gauntlets of Triumph",
+            "id": 48492,
+            "gems": [
+                null
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Ring of the Violent Temperament",
+            "id": 47413,
+            "gems": [
+                null
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Gormok's Band",
+            "id": 47993,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Death's Choice",
+            "id": 47464,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Comet's Trail",
+            "id": 45609,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Garrosh's Rage",
+            "id": 47548,
+            "gems": [
+                null
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Hellscream Slicer",
+            "id": 47475,
+            "gems": [
+                null
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Cudgel of the Damned",
+            "id": 47528,
+            "gems": [
+                null
+            ],
+            "slot": "OFF_HAND"
+        },
+        {
+            "name": "Sigil of Virulence",
+            "id": 47673,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [],
+    "points": [
+        {
+            "name": "Unholy DPS",
+            "stats": {
+                "dps": 10,
+                "attackPower": 1,
+                "agility": 0.7,
+                "strength": 3.2,
+                "armorPenRating": 0.7,
+                "critRating": 0.9,
+                "hasteRating": 2,
+                "hitRating": 2.2,
+                "expertiseRating": 2,
+                "metaSockets": 100,
+                "redSockets": 51.2,
+                "yellowSockets": 51.2,
+                "blueSockets": 51.2,
+                "prismaticSockets": 51.2
+            }
+        }
+    ],
+    "stats": {
+        "agility": 225,
+        "armor": 15466,
+        "armorPen": 2.93,
+        "armorPenRating": 41,
+        "attackPower": 4009,
+        "crit": 25.35,
+        "critRating": 852,
+        "defense": 400,
+        "dodge": 6.33,
+        "expertise": 23,
+        "expertiseRating": 154,
+        "feralAttackPower": 2263,
+        "haste": 17.84,
+        "hasteRating": 450,
+        "health": 26041,
+        "hit": 8.72,
+        "hitRating": 286,
+        "intellect": 32,
+        "mainHandSpeed": 2.6,
+        "mana": 200,
+        "offHandSpeed": 2.6,
+        "parry": 13.46,
+        "parryRating": 383,
+        "spellCrit": 18.56,
+        "spellCritRating": 852,
+        "spellHaste": 13.72,
+        "spellHit": 10.9,
+        "spirit": 61,
+        "stamina": 1810,
+        "strength": 1535
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

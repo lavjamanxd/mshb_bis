@@ -475,8 +475,7 @@ async function processPhasesMSH() {
 
           if (
             setData["phase"] != phaseIndex ||
-            setData["character"]["gameClass"] != className.toUpperCase() ||
-            setData["points"][0]["name"] != specName
+            setData["character"]["gameClass"] != className.toUpperCase()
           ) {
             debugger;
           }

@@ -1,0 +1,255 @@
+{
+    "name": "soulmojo soon",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/whG3fe28bdV7mtfqJPUmcw"
+    },
+    "character": {
+        "name": "soulmojo",
+        "level": 80,
+        "gameClass": "DRUID",
+        "race": "TAUREN",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Runetotem's Cover of Triumph",
+            "id": 48174,
+            "enchant": {
+                "name": "Arcanum of Burning Mysteries",
+                "id": 3820,
+                "itemId": 50368
+            },
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Cry of the Val'kyr",
+            "id": 47468,
+            "gems": [
+                null
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Runetotem's Mantle of Triumph",
+            "id": 48177,
+            "enchant": {
+                "name": "Greater Inscription of the Storm ",
+                "id": 3810,
+                "itemId": 50338
+            },
+            "gems": [
+                null
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Runetotem's Vestments of Triumph",
+            "id": 48176,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Belt of Biting Cold",
+            "id": 47447,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Leggings of the Awakening",
+            "id": 47479,
+            "enchant": {
+                "name": "Brilliant Spellthread",
+                "id": 3719,
+                "itemId": 41602
+            },
+            "gems": [
+                null,
+                null,
+                null
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Treads of the False Oracle",
+            "id": 45537,
+            "enchant": {
+                "name": "Enchant Boots - Tuskarr's Vitality",
+                "id": 3232,
+                "spellId": 47901
+            },
+            "gems": [
+                {
+                    "name": "Runed Scarlet Ruby",
+                    "id": 39998
+                },
+                {
+                    "name": "Purified Twilight Opal",
+                    "id": 40026
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Dark Essence Bindings",
+            "id": 47467,
+            "enchant": {
+                "name": "Enchant Bracers - Superior Spellpower",
+                "id": 2332,
+                "spellId": 60767
+            },
+            "gems": [
+                null
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Runetotem's Gloves of Triumph",
+            "id": 48173,
+            "enchant": {
+                "name": "Enchant Gloves - Exceptional Spellpower",
+                "id": 3246,
+                "spellId": 44592
+            },
+            "gems": [
+                null
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Lurid Manifestation",
+            "id": 47489,
+            "gems": [
+                null
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Nebula Band",
+            "id": 46046,
+            "gems": [
+                null
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Reign of the Dead",
+            "id": 47316,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Flare of the Heavens",
+            "id": 45518,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Aethas' Intensity",
+            "id": 47551,
+            "enchant": {
+                "name": "Enchant Cloak - Greater Speed",
+                "id": 3831,
+                "spellId": 47898
+            },
+            "gems": [
+                null
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Suffering's End",
+            "id": 47483,
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Lightbane Focus",
+            "id": 48032,
+            "gems": [
+                null
+            ],
+            "slot": "OFF_HAND"
+        },
+        {
+            "name": "Idol of Lunar Fury",
+            "id": 47670,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [],
+    "points": [
+        {
+            "name": "Balance",
+            "stats": {
+                "spellDamage": 1,
+                "arcaneDamage": 1,
+                "critRating": 1,
+                "hasteRating": 0.7,
+                "hitRating": 0.6,
+                "intellect": 0.2,
+                "mp5": 0.01,
+                "spirit": 0.1,
+                "metaSockets": 50,
+                "redSockets": 25,
+                "yellowSockets": 25,
+                "blueSockets": 20,
+                "prismaticSockets": 25,
+                "resilienceRating": 0.01,
+                "stamina": 0.05,
+                "armor": 0.02,
+                "spellPen": 0.01
+            }
+        }
+    ],
+    "stats": {
+        "agility": 88,
+        "arcaneDamage": 2518,
+        "armor": 3587,
+        "attackPower": 188,
+        "crit": 29.57,
+        "critRating": 966,
+        "defense": 400,
+        "dodge": 7.45,
+        "feralAttackPower": 982,
+        "fireDamage": 2518,
+        "frostDamage": 2518,
+        "haste": 24.07,
+        "hasteRating": 607,
+        "healing": 2518,
+        "health": 20317,
+        "hit": 7.26,
+        "hitRating": 238,
+        "holyDamage": 2518,
+        "intellect": 1265,
+        "mainHandSpeed": 1.8,
+        "mana": 22191,
+        "natureDamage": 2518,
+        "parry": 5,
+        "shadowDamage": 2518,
+        "spellCrit": 30.48,
+        "spellCritRating": 966,
+        "spellDamage": 2518,
+        "spellHaste": 18.51,
+        "spellHit": 9.07,
+        "spirit": 393,
+        "stamina": 1271,
+        "strength": 104
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

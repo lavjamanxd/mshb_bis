@@ -1,20 +1,20 @@
 {
-    "name": "Phase 3",
+    "name": "Demo p3",
     "phase": 3,
     "links": {
-        "set": "https://eightyupgrades.com/set/dVrX1TzB97V5poZJF37LFB"
+        "set": "https://eightyupgrades.com/set/nx55Rzejda5ug1vVsi588q"
     },
     "character": {
-        "name": "Beckeeh",
+        "name": "Raghnarock",
         "level": 80,
-        "gameClass": "PRIEST",
-        "race": "UNDEAD",
+        "gameClass": "WARLOCK",
+        "race": "ORC",
         "faction": "HORDE"
     },
     "items": [
         {
-            "name": "Zabra's Circlet of Triumph",
-            "id": 48088,
+            "name": "Gul'dan's Hood of Triumph",
+            "id": 47796,
             "enchant": {
                 "name": "Arcanum of Burning Mysteries",
                 "id": 3820,
@@ -33,19 +33,19 @@
             "slot": "HEAD"
         },
         {
-            "name": "Cry of the Val'kyr",
-            "id": 47468,
+            "name": "Sapphire Amulet of Renewal",
+            "id": 45243,
             "gems": [
                 {
-                    "name": "Reckless Ametrine",
-                    "id": 40155
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
                 }
             ],
             "slot": "NECK"
         },
         {
-            "name": "Zabra's Mantle of Triumph",
-            "id": 48091,
+            "name": "Gul'dan's Shoulderpads of Triumph",
+            "id": 47793,
             "enchant": {
                 "name": "Greater Inscription of the Storm ",
                 "id": 3810,
@@ -60,13 +60,8 @@
             "slot": "SHOULDERS"
         },
         {
-            "name": "Master Builder's Shirt",
-            "id": 11840,
-            "slot": "SHIRT"
-        },
-        {
-            "name": "Zabra's Raiments of Triumph",
-            "id": 48090,
+            "name": "Gul'dan's Robe of Triumph",
+            "id": 47794,
             "enchant": {
                 "name": "Enchant Chest - Major Spirit",
                 "id": 1144,
@@ -109,8 +104,8 @@
             "slot": "WAIST"
         },
         {
-            "name": "Zabra's Pants of Triumph",
-            "id": 48089,
+            "name": "Pants of the Soothing Touch",
+            "id": 47435,
             "enchant": {
                 "name": "Brilliant Spellthread",
                 "id": 3719,
@@ -120,6 +115,10 @@
                 {
                     "name": "Runed Cardinal Ruby",
                     "id": 40113
+                },
+                {
+                    "name": "Purified Dreadstone",
+                    "id": 40133
                 },
                 {
                     "name": "Purified Dreadstone",
@@ -149,8 +148,8 @@
             "slot": "FEET"
         },
         {
-            "name": "Dark Essence Bindings",
-            "id": 47467,
+            "name": "Bindings of the Ashen Saint",
+            "id": 47485,
             "enchant": {
                 "name": "Enchant Bracers - Superior Spellpower",
                 "id": 2332,
@@ -158,15 +157,15 @@
             },
             "gems": [
                 {
-                    "name": "Reckless Ametrine",
-                    "id": 40155
+                    "name": "Purified Dreadstone",
+                    "id": 40133
                 }
             ],
             "slot": "WRISTS"
         },
         {
-            "name": "Pharos Gloves",
-            "id": 45665,
+            "name": "Gul'dan's Gloves of Triumph",
+            "id": 47797,
             "enchant": {
                 "name": "Hyperspeed Accelerators",
                 "id": 3604,
@@ -174,12 +173,8 @@
             },
             "gems": [
                 {
-                    "name": "Purified Dreadstone",
-                    "id": 40133
-                },
-                {
-                    "name": "Reckless Ametrine",
-                    "id": 40155
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
                 }
             ],
             "slot": "HANDS"
@@ -207,18 +202,18 @@
             "slot": "FINGER_2"
         },
         {
-            "name": "Flare of the Heavens",
-            "id": 45518,
+            "name": "Living Flame",
+            "id": 45148,
             "slot": "TRINKET_1"
         },
         {
-            "name": "Reign of the Dead",
-            "id": 47477,
+            "name": "Flare of the Heavens",
+            "id": 45518,
             "slot": "TRINKET_2"
         },
         {
-            "name": "Aethas' Intensity",
-            "id": 47551,
+            "name": "Lady Liadrin's Conviction",
+            "id": 47554,
             "enchant": {
                 "name": "Lightweave Embroidery",
                 "id": 3722,
@@ -233,75 +228,88 @@
             "slot": "BACK"
         },
         {
-            "name": "Suffering's End",
-            "id": 47483,
+            "name": "Mortalis",
+            "id": 47518,
             "enchant": {
                 "name": "Enchant Weapon - Mighty Spellpower",
                 "id": 3834,
                 "spellId": 60714
             },
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
             "slot": "MAIN_HAND"
         },
         {
-            "name": "Talisman of Heedless Sins",
-            "id": 47437,
+            "name": "Lightbane Focus",
+            "id": 48032,
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
             "slot": "OFF_HAND"
         },
         {
-            "name": "Scepter of Imprisoned Souls",
-            "id": 47995,
+            "name": "Petrified Ivy Sprig",
+            "id": 45294,
+            "gems": [
+                {
+                    "name": "Rigid King's Amber",
+                    "id": 40125
+                }
+            ],
             "slot": "RANGED"
-        },
-        {
-            "name": "Tabard of Brute Force",
-            "id": 43349,
-            "slot": "TABARD"
         }
     ],
     "glyphs": [
         {
-            "name": "Glyph of Shadow",
-            "id": 42407,
+            "name": "Glyph of Felguard",
+            "id": 42459,
             "type": "MAJOR"
         },
         {
-            "name": "Glyph of Mind Flay",
-            "id": 42415,
+            "name": "Glyph of Quick Decay",
+            "id": 50077,
             "type": "MAJOR"
         },
         {
-            "name": "Glyph of Shadow Word: Death",
-            "id": 42414,
+            "name": "Glyph of Life Tap",
+            "id": 45785,
             "type": "MAJOR"
         },
         {
-            "name": "Glyph of Fortitude",
-            "id": 43371,
+            "name": "Glyph of Drain Soul",
+            "id": 43390,
             "type": "MINOR"
         },
         {
-            "name": "Glyph of Shadow Protection",
-            "id": 43372,
+            "name": "Glyph of Unending Breath",
+            "id": 43389,
             "type": "MINOR"
         },
         {
-            "name": "Glyph of Shadowfiend",
-            "id": 43374,
+            "name": "Glyph of Kilrogg",
+            "id": 43391,
             "type": "MINOR"
         }
     ],
     "points": [
         {
-            "name": "Shadow",
+            "name": "Demonology",
             "stats": {
                 "spellDamage": 1,
                 "shadowDamage": 1,
-                "intellect": 0.1,
-                "critRating": 0.7,
-                "hitRating": 1.5,
-                "hasteRating": 0.6,
-                "spirit": 0.4,
-                "metaSockets": 30,
+                "critRating": 0.6,
+                "hasteRating": 0.7,
+                "hitRating": 1.7,
+                "spirit": 0.65,
+                "intellect": 0.3,
+                "metaSockets": 100,
                 "redSockets": 19,
                 "yellowSockets": 19,
                 "blueSockets": 19,
@@ -310,40 +318,38 @@
         }
     ],
     "stats": {
-        "agility": 49,
-        "arcaneDamage": 2973,
-        "armor": 2271,
-        "attackPower": 74,
-        "crit": 19.8,
-        "critRating": 720,
+        "agility": 64,
+        "arcaneDamage": 2836,
+        "armor": 2304,
+        "attackPower": 114,
+        "crit": 16.44,
+        "critRating": 576,
         "defense": 400,
-        "dodge": 4.24,
-        "feralAttackPower": 982,
-        "fireDamage": 2973,
-        "frostDamage": 2973,
-        "haste": 21.2,
-        "hasteRating": 695,
-        "healing": 2973,
-        "health": 19330,
-        "hit": 9.03,
-        "hitRating": 296,
-        "holyDamage": 2973,
-        "intellect": 1344,
+        "dodge": 3.49,
+        "fireDamage": 2836,
+        "frostDamage": 2836,
+        "haste": 16.83,
+        "hasteRating": 552,
+        "healing": 2836,
+        "health": 19674,
+        "hit": 11.31,
+        "hitRating": 371,
+        "holyDamage": 2836,
+        "intellect": 1303,
         "mainHandSpeed": 1.8,
-        "mana": 23743,
-        "natureDamage": 2973,
+        "mana": 23121,
+        "natureDamage": 2836,
         "parry": 5,
         "rangedSpeed": 1.8,
-        "shadowDamage": 2973,
-        "shadowResist": 10,
-        "spellCrit": 24.99,
-        "spellCritRating": 720,
-        "spellDamage": 2973,
-        "spellHaste": 21.2,
-        "spellHit": 11.28,
-        "spirit": 794,
-        "stamina": 1255,
-        "strength": 42
+        "shadowDamage": 2836,
+        "spellCrit": 22.07,
+        "spellCritRating": 576,
+        "spellDamage": 2836,
+        "spellHaste": 16.83,
+        "spellHit": 14.14,
+        "spirit": 1080,
+        "stamina": 1269,
+        "strength": 62
     },
     "exportOptions": {
         "buffs": false,

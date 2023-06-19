@@ -1,0 +1,361 @@
+{
+    "name": "Phase 3 - 25M Pure BiS",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/pWiHozk7pzwDJXCDQ2sTLZ"
+    },
+    "character": {
+        "name": "Frankensteak",
+        "level": 80,
+        "gameClass": "DRUID",
+        "race": "TAUREN",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Runetotem's Headpiece of Triumph",
+            "id": 48144,
+            "enchant": {
+                "name": "Arcanum of Blissful Mending",
+                "id": 3819,
+                "itemId": 50370
+            },
+            "gems": [
+                {
+                    "name": "Insightful Earthsiege Diamond",
+                    "id": 41401
+                },
+                {
+                    "name": "Purified Dreadstone",
+                    "id": 40133
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Cry of the Val'kyr",
+            "id": 47468,
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Runetotem's Spaulders of Triumph",
+            "id": 48147,
+            "enchant": {
+                "name": "Greater Inscription of the Crag",
+                "id": 3809,
+                "itemId": 50336
+            },
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Runetotem's Vestments of Triumph",
+            "id": 48176,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                },
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Belt of Pale Thorns",
+            "id": 47469,
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                },
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                },
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                }
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Runetotem's Leggings of Triumph",
+            "id": 48145,
+            "enchant": {
+                "name": "Brilliant Spellthread",
+                "id": 3719,
+                "itemId": 41602
+            },
+            "gems": [
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                },
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                }
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Sandals of the Mourning Widow",
+            "id": 47454,
+            "enchant": {
+                "name": "Nitro Boosts",
+                "id": 3606,
+                "itemId": 41118
+            },
+            "gems": [
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                },
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Bindings of the Autumn Willow",
+            "id": 47438,
+            "enchant": {
+                "name": "Enchant Bracers - Superior Spellpower",
+                "id": 2332,
+                "spellId": 60767
+            },
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Runetotem's Handguards of Triumph",
+            "id": 48143,
+            "enchant": {
+                "name": "Enchant Gloves - Exceptional Spellpower",
+                "id": 3246,
+                "spellId": 44592
+            },
+            "gems": [
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Conductive Seal",
+            "id": 45495,
+            "gems": [
+                {
+                    "name": "Runed Cardinal Ruby",
+                    "id": 40113
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Circle of the Darkmender",
+            "id": 47439,
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Solace of the Fallen",
+            "id": 47432,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Show of Faith",
+            "id": 45535,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Lady Liadrin's Conviction",
+            "id": 47554,
+            "enchant": {
+                "name": "Springy Arachnoweave",
+                "id": 3859,
+                "spellId": 63765
+            },
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Val'anyr, Hammer of Ancient Kings",
+            "id": 46017,
+            "enchant": {
+                "name": "Enchant Weapon - Mighty Spellpower",
+                "id": 3834,
+                "spellId": 60714
+            },
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Lightbane Focus",
+            "id": 48032,
+            "gems": [
+                {
+                    "name": "Reckless Ametrine",
+                    "id": 40155
+                }
+            ],
+            "slot": "OFF_HAND"
+        },
+        {
+            "name": "Idol of Awakening",
+            "id": 40342,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [
+        {
+            "name": "Glyph of Wild Growth",
+            "id": 45602,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Swiftmend",
+            "id": 40906,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Rebirth",
+            "id": 40909,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Unburdened Rebirth",
+            "id": 43331,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of Dash",
+            "id": 43674,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of the Wild",
+            "id": 43335,
+            "type": "MINOR"
+        }
+    ],
+    "points": [
+        {
+            "name": "HPS P3 Crit",
+            "stats": {
+                "spellDamage": 100,
+                "hasteRating": 120,
+                "critRating": 30,
+                "intellect": 9.3,
+                "spirit": 19.4,
+                "metaSockets": 2500,
+                "redSockets": 2400,
+                "yellowSockets": 2400,
+                "blueSockets": 2400,
+                "prismaticSockets": 2400
+            }
+        },
+        {
+            "name": "MP5 P3",
+            "stats": {
+                "intellect": 72.3,
+                "spirit": 53.7,
+                "mp5": 150,
+                "metaSockets": 14738
+            }
+        },
+        {
+            "name": "* P3 Crit",
+            "stats": {
+                "spellDamage": 100,
+                "hasteRating": 120,
+                "critRating": 30,
+                "intellect": 81.6,
+                "spirit": 73.1,
+                "mp5": 150,
+                "metaSockets": 17200,
+                "redSockets": 2400,
+                "yellowSockets": 2400,
+                "blueSockets": 2400,
+                "prismaticSockets": 2400
+            }
+        }
+    ],
+    "stats": {
+        "agility": 88,
+        "arcaneDamage": 3124,
+        "armor": 3895,
+        "attackPower": 188,
+        "crit": 16.85,
+        "critRating": 382,
+        "defense": 400,
+        "dodge": 7.45,
+        "feralAttackPower": 978,
+        "fireDamage": 3124,
+        "frostDamage": 3124,
+        "haste": 34.14,
+        "hasteRating": 861,
+        "healing": 3124,
+        "health": 20097,
+        "hit": 1.31,
+        "hitRating": 43,
+        "holyDamage": 3124,
+        "intellect": 1304,
+        "mainHandSpeed": 1.8,
+        "mana": 22776,
+        "mp5": 46,
+        "natureDamage": 3124,
+        "parry": 5,
+        "shadowDamage": 3124,
+        "spellCrit": 18,
+        "spellCritRating": 382,
+        "spellDamage": 3124,
+        "spellHaste": 26.26,
+        "spellHit": 1.64,
+        "spirit": 835,
+        "stamina": 1249,
+        "strength": 104
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

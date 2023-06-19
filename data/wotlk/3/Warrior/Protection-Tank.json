@@ -1,0 +1,371 @@
+{
+    "name": "bislist",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/xsFgkzBztNsbtPMJj7ws8g"
+    },
+    "character": {
+        "name": "warscars",
+        "level": 80,
+        "gameClass": "WARRIOR",
+        "race": "ORC",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Hellscream's Greathelm of Triumph",
+            "id": 48468,
+            "enchant": {
+                "name": "Arcanum of the Stalwart Protector",
+                "id": 3818,
+                "itemId": 50369
+            },
+            "gems": [
+                {
+                    "name": "Austere Earthsiege Diamond",
+                    "id": 41380
+                },
+                {
+                    "name": "Regal Dreadstone",
+                    "id": 40138
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Legionnaire's Gorget",
+            "id": 47466,
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Hellscream's Pauldrons of Triumph",
+            "id": 48470,
+            "enchant": {
+                "name": "Greater Inscription of the Gladiator",
+                "id": 3852,
+                "itemId": 44957
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Hauberk of the Towering Monstrosity",
+            "id": 47415,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Belt of Bloodied Scars",
+            "id": 47444,
+            "gems": [
+                {
+                    "name": "Solid Dragon's Eye",
+                    "id": 36767
+                },
+                {
+                    "name": "Solid Dragon's Eye",
+                    "id": 36767
+                },
+                {
+                    "name": "Solid Dragon's Eye",
+                    "id": 36767
+                }
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Hellscream's Legguards of Triumph",
+            "id": 48469,
+            "enchant": {
+                "name": "Frosthide Leg Armor",
+                "id": 3822,
+                "itemId": 38373
+            },
+            "gems": [
+                {
+                    "name": "Regal Dreadstone",
+                    "id": 40138
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Greaves of the Lingering Vortex",
+            "id": 48024,
+            "enchant": {
+                "name": "Enchant Boots - Tuskarr's Vitality",
+                "id": 3232,
+                "spellId": 47901
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Armguards of the Shieldmaiden",
+            "id": 47459,
+            "enchant": {
+                "name": "Enchant Bracers - Major Stamina",
+                "id": 3850,
+                "spellId": 62256
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Hellscream's Handguards of Triumph",
+            "id": 48467,
+            "enchant": {
+                "name": "Glove Reinforcements",
+                "id": 3260,
+                "itemId": 34207
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Fate's Clutch",
+            "id": 45471,
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Band of the Traitor King",
+            "id": 47476,
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Juggernaut's Vitality",
+            "id": 47451,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Heart of Iron",
+            "id": 45158,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Cairne's Endurance",
+            "id": 47550,
+            "enchant": {
+                "name": "Enchant Cloak - Mighty Armor",
+                "id": 3294,
+                "spellId": 47672
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Hellscream Slicer",
+            "id": 47475,
+            "enchant": {
+                "name": "Enchant Weapon - Accuracy",
+                "id": 3788,
+                "spellId": 59619
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Forlorn Barrier",
+            "id": 47421,
+            "enchant": {
+                "name": "Titanium Plating",
+                "id": 3849,
+                "itemId": 44936
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "OFF_HAND"
+        },
+        {
+            "name": "Blades of the Sable Cross",
+            "id": 47660,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [
+        {
+            "name": "Glyph of Blocking",
+            "id": 43425,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Last Stand",
+            "id": 43426,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Shield Wall",
+            "id": 45797,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Thunder Clap",
+            "id": 43399,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of Command",
+            "id": 49084,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of Battle",
+            "id": 43395,
+            "type": "MINOR"
+        }
+    ],
+    "points": [
+        {
+            "name": "Protection",
+            "stats": {
+                "stamina": 1,
+                "agility": 0.6,
+                "strength": 0.33,
+                "armor": 0.05,
+                "armorBonus": 0.05,
+                "dodgeRating": 0.7,
+                "parryRating": 0.58,
+                "defenseRating": 0.8,
+                "blockRating": 0.35,
+                "blockValue": 0.59,
+                "blockValueBonus": 0.59,
+                "dps": 10,
+                "attackPower": 0.06,
+                "armorPenRating": 0.2,
+                "critRating": 0.2,
+                "hasteRating": 0.2,
+                "hitRating": 0.67,
+                "expertiseRating": 0.67,
+                "metaSockets": 50,
+                "redSockets": 24,
+                "yellowSockets": 24,
+                "blueSockets": 24,
+                "prismaticSockets": 24
+            }
+        }
+    ],
+    "stats": {
+        "agility": 200,
+        "armor": 25630,
+        "armorBonus": 1081,
+        "attackPower": 3196,
+        "block": 11.92,
+        "blockValue": 243,
+        "blockValueBonus": 1479,
+        "crit": 6.93,
+        "critRating": 25,
+        "defense": 573,
+        "defenseRating": 853,
+        "dodge": 27.23,
+        "dodgeRating": 646,
+        "expertise": 31,
+        "expertiseRating": 217,
+        "haste": 1.34,
+        "hasteRating": 44,
+        "health": 42441,
+        "hit": 6.1,
+        "hitRating": 200,
+        "intellect": 43,
+        "mainHandSpeed": 2.6,
+        "mana": 365,
+        "parry": 17.78,
+        "parryRating": 265,
+        "rangedAttackPower": 3246,
+        "rangedCrit": 6.93,
+        "rangedCritRating": 25,
+        "rangedHit": 6.1,
+        "rangedHitRating": 200,
+        "rangedSpeed": 1.8,
+        "resilience": 0.16,
+        "resilienceRating": 15,
+        "spellCrit": 0.54,
+        "spellCritRating": 25,
+        "spellHaste": 1.34,
+        "spellHit": 7.62,
+        "spirit": 71,
+        "stamina": 3450,
+        "strength": 1452
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

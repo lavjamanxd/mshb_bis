@@ -1,0 +1,343 @@
+{
+    "name": "P3 DPS ",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/dmyiXeasSru1TVC6eTfyEV"
+    },
+    "character": {
+        "name": "Cyanos",
+        "level": 80,
+        "gameClass": "DRUID",
+        "race": "TAUREN",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Runetotem's Headguard of Triumph",
+            "id": 48201,
+            "enchant": {
+                "name": "Arcanum of Torment",
+                "id": 3817,
+                "itemId": 50367
+            },
+            "gems": [
+                {
+                    "name": "Relentless Earthsiege Diamond",
+                    "id": 41398
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Charge of the Eredar",
+            "id": 47433,
+            "gems": [
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Runetotem's Shoulderpads of Triumph",
+            "id": 48198,
+            "enchant": {
+                "name": "Greater Inscription of the Axe",
+                "id": 3808,
+                "itemId": 50335
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Runetotem's Raiments of Triumph",
+            "id": 48199,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Belt of the Pitiless Killer",
+            "id": 47460,
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                },
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                }
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Legguards of Cunning Deception",
+            "id": 45536,
+            "enchant": {
+                "name": "Icescale Leg Armor",
+                "id": 3823,
+                "itemId": 38374
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                },
+                {
+                    "name": "Nightmare Tear",
+                    "id": 49110
+                }
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Icewalker Treads",
+            "id": 47445,
+            "enchant": {
+                "name": "Nitro Boosts",
+                "id": 3606,
+                "itemId": 41118
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Armbands of Dark Determination",
+            "id": 47474,
+            "enchant": {
+                "name": "Enchant Bracers - Greater Assault",
+                "id": 3845,
+                "spellId": 44575
+            },
+            "gems": [
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                },
+                {
+                    "name": "Precise Cardinal Ruby",
+                    "id": 40118
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Runetotem's Handgrips of Triumph",
+            "id": 48202,
+            "enchant": {
+                "name": "Hyperspeed Accelerators",
+                "id": 3604,
+                "spellId": 54999
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Band of Callous Aggression",
+            "id": 47443,
+            "gems": [
+                {
+                    "name": "Precise Cardinal Ruby",
+                    "id": 40118
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Brann's Signet Ring",
+            "id": 45608,
+            "gems": [
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                }
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Death's Choice",
+            "id": 47464,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Mjolnir Runestone",
+            "id": 45931,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Sylvanas' Cunning",
+            "id": 47546,
+            "enchant": {
+                "name": "Flexweave Underlay",
+                "id": 3605,
+                "itemId": 41111
+            },
+            "gems": [
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Twin's Pact",
+            "id": 47463,
+            "enchant": {
+                "name": "Enchant Weapon - Berserking",
+                "id": 3789,
+                "spellId": 59621
+            },
+            "gems": [
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                },
+                {
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
+                }
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Idol of Mutilation",
+            "id": 47668,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [
+        {
+            "name": "Glyph of Savage Roar",
+            "id": 45604,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Rip",
+            "id": 40902,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Shred",
+            "id": 40901,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Dash",
+            "id": 43674,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of Unburdened Rebirth",
+            "id": 43331,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of the Wild",
+            "id": 43335,
+            "type": "MINOR"
+        }
+    ],
+    "points": [
+        {
+            "name": "Feral DPS - Phase 3",
+            "stats": {
+                "attackPower": 0.78,
+                "feralAttackPower": 0.93,
+                "strength": 1.85,
+                "agility": 1.91,
+                "hitRating": 2.19,
+                "expertiseRating": 2.19,
+                "critRating": 1.5,
+                "hasteRating": 1.42,
+                "armorPenRating": 2.35,
+                "weaponDamage": 6.58,
+                "blueSockets": 47,
+                "redSockets": 47,
+                "yellowSockets": 47,
+                "prismaticSockets": 47,
+                "metaSockets": 299
+            }
+        }
+    ],
+    "stats": {
+        "agility": 1528,
+        "armor": 6976,
+        "armorPen": 44.21,
+        "armorPenRating": 619,
+        "attackPower": 2702,
+        "crit": 45.9,
+        "critRating": 922,
+        "defense": 400,
+        "dodge": 37.5,
+        "expertise": 15,
+        "expertiseRating": 126,
+        "feralAttackPower": 3173,
+        "haste": 17.68,
+        "hasteRating": 446,
+        "health": 23497,
+        "hit": 7.96,
+        "hitRating": 261,
+        "intellect": 159,
+        "mainHandSpeed": 2.4,
+        "mana": 5601,
+        "parry": 5,
+        "spellCrit": 22.89,
+        "spellCritRating": 922,
+        "spellHaste": 13.6,
+        "spellHit": 9.95,
+        "spirit": 181,
+        "stamina": 1589,
+        "strength": 184
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

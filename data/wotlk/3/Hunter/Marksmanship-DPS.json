@@ -1,0 +1,290 @@
+{
+    "name": "dennoo",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/9AQtgZACHfaLtfomumf5Km"
+    },
+    "character": {
+        "name": "dennoo Copy",
+        "level": 80,
+        "gameClass": "HUNTER",
+        "race": "TROLL",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Windrunner's Headpiece of Triumph",
+            "id": 48267,
+            "enchant": {
+                "name": "Arcanum of Torment",
+                "id": 3817,
+                "itemId": 50367
+            },
+            "gems": [
+                {
+                    "name": "Relentless Earthsiege Diamond",
+                    "id": 41398
+                },
+                {
+                    "name": "Deadly Ametrine",
+                    "id": 40147
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Charge of the Eredar",
+            "id": 47433,
+            "gems": [
+                {
+                    "name": "Rigid Dragon's Eye",
+                    "id": 42156
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Windrunner's Spaulders of Triumph",
+            "id": 48269,
+            "enchant": {
+                "name": "Master's Inscription of the Axe",
+                "id": 3835,
+                "spellId": 61117
+            },
+            "gems": [
+                {
+                    "name": "Rigid Dragon's Eye",
+                    "id": 42156
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Cuirass of Cruel Intent",
+            "id": 47412,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                null,
+                null,
+                null
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Waistguard of Deathly Dominion",
+            "id": 47472,
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Windrunner's Legguards of Triumph",
+            "id": 48268,
+            "enchant": {
+                "name": "Frosthide Leg Armor",
+                "id": 3822,
+                "itemId": 38373
+            },
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Greaves of Ruthless Judgment",
+            "id": 47457,
+            "enchant": {
+                "name": "Enchant Boots - Icewalker",
+                "id": 3826,
+                "spellId": 60623
+            },
+            "gems": [
+                null,
+                null
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Bracers of the Silent Massacre",
+            "id": 47442,
+            "enchant": {
+                "name": "Fur Lining - Attack Power",
+                "id": 3756,
+                "itemId": 43097
+            },
+            "gems": [
+                {
+                    "name": "Deadly Ametrine",
+                    "id": 40147
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Windrunner's Handguards of Triumph",
+            "id": 48266,
+            "enchant": {
+                "name": "Enchant Gloves - Precision",
+                "id": 3234,
+                "spellId": 44488
+            },
+            "gems": [
+                {
+                    "name": "Deadly Ametrine",
+                    "id": 40147
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Band of Callous Aggression",
+            "id": 47443,
+            "enchant": {
+                "name": "Enchant Ring - Assault",
+                "id": 3839,
+                "spellId": 44645
+            },
+            "gems": [
+                {
+                    "name": "Rigid King's Amber",
+                    "id": 40125
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Brann's Signet Ring",
+            "id": 45608,
+            "enchant": {
+                "name": "Enchant Ring - Assault",
+                "id": 3839,
+                "spellId": 44645
+            },
+            "gems": [
+                null
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Death's Choice",
+            "id": 47464,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Mjolnir Runestone",
+            "id": 45931,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Sylvanas' Cunning",
+            "id": 47546,
+            "enchant": {
+                "name": "Flexweave Underlay",
+                "id": 3605,
+                "itemId": 41111
+            },
+            "gems": [
+                {
+                    "name": "Rigid King's Amber",
+                    "id": 40125
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Hellion Glaive",
+            "id": 47491,
+            "enchant": {
+                "name": "Enchant Weapon - Accuracy",
+                "id": 3788,
+                "spellId": 59619
+            },
+            "gems": [
+                {
+                    "name": "Deadly Ametrine",
+                    "id": 40147
+                },
+                {
+                    "name": "Delicate Cardinal Ruby",
+                    "id": 40112
+                }
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Death's Head Crossbow",
+            "id": 47428,
+            "gems": [
+                null
+            ],
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [],
+    "points": [
+        {
+            "name": "Marksmanship",
+            "stats": {
+                "attackPower": 1,
+                "agility": 2.7,
+                "intellect": 1,
+                "stamina": 1,
+                "critRating": 1.6,
+                "hasteRating": 1.7,
+                "hitRating": 3,
+                "armorPenRating": 1.33,
+                "rangedDps": 12.5,
+                "metaSockets": 68,
+                "redSockets": 43,
+                "yellowSockets": 43,
+                "blueSockets": 43,
+                "prismaticSockets": 43
+            }
+        }
+    ],
+    "stats": {
+        "agility": 1652,
+        "armor": 11810,
+        "armorPen": 38.92,
+        "armorPenRating": 545,
+        "attackPower": 4517,
+        "crit": 41.12,
+        "critRating": 1048,
+        "defense": 400,
+        "dodge": 15.08,
+        "feralAttackPower": 3175,
+        "haste": 8.3,
+        "hasteRating": 272,
+        "health": 21724,
+        "hit": 10.52,
+        "hitRating": 345,
+        "intellect": 662,
+        "mainHandSpeed": 3.5,
+        "mana": 14696,
+        "parry": 5,
+        "rangedAttackPower": 4442,
+        "rangedCrit": 41.12,
+        "rangedCritRating": 1048,
+        "rangedHit": 10.52,
+        "rangedHitRating": 345,
+        "rangedSpeed": 2.8,
+        "spellCrit": 30.4,
+        "spellCritRating": 1048,
+        "spellHaste": 8.3,
+        "spellHit": 13.15,
+        "spirit": 108,
+        "stamina": 1458,
+        "strength": 85
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

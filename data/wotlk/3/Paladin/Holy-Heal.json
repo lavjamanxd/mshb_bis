@@ -1,0 +1,328 @@
+{
+    "name": "Hpala",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/cL9RyE7QhsTVD5SH11MtxC"
+    },
+    "character": {
+        "name": "Hpala",
+        "level": 80,
+        "gameClass": "PALADIN",
+        "race": "BLOODELF",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Liadrin's Headpiece of Triumph",
+            "id": 48587,
+            "enchant": {
+                "name": "Arcanum of Burning Mysteries",
+                "id": 3820,
+                "itemId": 50368
+            },
+            "gems": [
+                {
+                    "name": "Insightful Earthsiege Diamond",
+                    "id": 41401
+                },
+                {
+                    "name": "Brilliant Dragon's Eye",
+                    "id": 42148
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Cry of the Val'kyr",
+            "id": 47468,
+            "gems": [
+                {
+                    "name": "Brilliant Dragon's Eye",
+                    "id": 42148
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Liadrin's Spaulders of Triumph",
+            "id": 48585,
+            "enchant": {
+                "name": "Greater Inscription of the Storm ",
+                "id": 3810,
+                "itemId": 50338
+            },
+            "gems": [
+                {
+                    "name": "Brilliant Dragon's Eye",
+                    "id": 42148
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Chestplate of the Frozen Lake",
+            "id": 47471,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Girdle of the Frozen Reach",
+            "id": 47997,
+            "gems": [
+                {
+                    "name": "Nightmare Tear",
+                    "id": 49110
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Leggings of Failing Light",
+            "id": 47440,
+            "enchant": {
+                "name": "Brilliant Spellthread",
+                "id": 3719,
+                "itemId": 41602
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Sabatons of the Courageous",
+            "id": 47424,
+            "enchant": {
+                "name": "Nitro Boosts",
+                "id": 3606,
+                "itemId": 41118
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Bindings of Winter Gale",
+            "id": 45460,
+            "enchant": {
+                "name": "Enchant Bracers - Superior Spellpower",
+                "id": 2332,
+                "spellId": 60767
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Pharos Gloves",
+            "id": 45665,
+            "enchant": {
+                "name": "Enchant Gloves - Exceptional Spellpower",
+                "id": 3246,
+                "spellId": 44592
+            },
+            "gems": [
+                {
+                    "name": "Luminous Ametrine",
+                    "id": 40151
+                },
+                {
+                    "name": "Luminous Ametrine",
+                    "id": 40151
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Starshine Circle",
+            "id": 45614,
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Circle of the Darkmender",
+            "id": 47439,
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Soul Preserver",
+            "id": 37111,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Meteorite Crystal",
+            "id": 46051,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Aethas' Intensity",
+            "id": 47551,
+            "enchant": {
+                "name": "Enchant Cloak - Greater Speed",
+                "id": 3831,
+                "spellId": 47898
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Mortalis",
+            "id": 47518,
+            "enchant": {
+                "name": "Enchant Weapon - Mighty Spellpower",
+                "id": 3834,
+                "spellId": 60714
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Bastion of Resolve",
+            "id": 47448,
+            "enchant": {
+                "name": "Enchant Shield - Greater Intellect",
+                "id": 1128,
+                "spellId": 60653
+            },
+            "gems": [
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                }
+            ],
+            "slot": "OFF_HAND"
+        },
+        {
+            "name": "Libram of Renewal",
+            "id": 40705,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [],
+    "points": [
+        {
+            "name": "Holy",
+            "stats": {
+                "spellDamage": 1,
+                "intellect": 1.375,
+                "critRating": 1.125,
+                "hasteRating": 0.75,
+                "mp5": 1,
+                "metaSockets": 42.125,
+                "redSockets": 19,
+                "yellowSockets": 19,
+                "blueSockets": 19,
+                "prismaticSockets": 19
+            }
+        }
+    ],
+    "stats": {
+        "agility": 112,
+        "arcaneDamage": 2518,
+        "arcaneResist": 5,
+        "armor": 22004,
+        "attackPower": 556,
+        "block": 5,
+        "blockValue": 243,
+        "blockValueBonus": 84,
+        "crit": 24.24,
+        "critRating": 864,
+        "defense": 400,
+        "dodge": 5.36,
+        "fireDamage": 2518,
+        "fireResist": 5,
+        "frostDamage": 2518,
+        "frostResist": 5,
+        "haste": 37.35,
+        "hasteRating": 942,
+        "healing": 2518,
+        "health": 19884,
+        "holyDamage": 2518,
+        "intellect": 1845,
+        "mainHandSpeed": 1.8,
+        "mana": 31789,
+        "mp5": 55,
+        "natureDamage": 2518,
+        "natureResist": 5,
+        "parry": 5,
+        "shadowDamage": 2518,
+        "shadowResist": 5,
+        "spellCrit": 33.23,
+        "spellCritRating": 864,
+        "spellDamage": 2518,
+        "spellHaste": 28.73,
+        "spirit": 143,
+        "stamina": 1313,
+        "strength": 168
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

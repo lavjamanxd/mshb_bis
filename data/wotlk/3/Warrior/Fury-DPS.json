@@ -1,0 +1,361 @@
+{
+    "name": "Joemighty",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/4H9ABkKZnrHhoxeq8LzWQ"
+    },
+    "character": {
+        "name": "joemighty",
+        "level": 80,
+        "gameClass": "WARRIOR",
+        "race": "ORC",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Hellscream's Helmet of Triumph",
+            "id": 48398,
+            "enchant": {
+                "name": "Arcanum of Torment",
+                "id": 3817,
+                "itemId": 50367
+            },
+            "gems": [
+                {
+                    "name": "Destructive Skyflare Diamond",
+                    "id": 41307
+                },
+                {
+                    "name": "Bold Dragon's Eye",
+                    "id": 42142
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "The Executioner's Vice",
+            "id": 47458,
+            "gems": [
+                {
+                    "name": "Bold Dragon's Eye",
+                    "id": 42142
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Hellscream's Shoulderplates of Triumph",
+            "id": 48400,
+            "enchant": {
+                "name": "Master's Inscription of the Axe",
+                "id": 3835,
+                "spellId": 61117
+            },
+            "gems": [
+                {
+                    "name": "Bold Dragon's Eye",
+                    "id": 42142
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Hellscream's Battleplate of Triumph",
+            "id": 48396,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Bloodbath Girdle",
+            "id": 47429,
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Hellscream's Legplates of Triumph",
+            "id": 48399,
+            "enchant": {
+                "name": "Icescale Leg Armor",
+                "id": 3823,
+                "itemId": 38374
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Greaves of the Saronite Citadel",
+            "id": 47473,
+            "enchant": {
+                "name": "Enchant Boots - Icewalker",
+                "id": 3826,
+                "spellId": 60623
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Boneshatter Vambraces",
+            "id": 47414,
+            "enchant": {
+                "name": "Fur Lining - Attack Power",
+                "id": 3756,
+                "itemId": 43097
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Gauntlets of Bitter Reprisal",
+            "id": 47492,
+            "enchant": {
+                "name": "Enchant Gloves - Crusher",
+                "id": 1603,
+                "spellId": 60668
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Band of Callous Aggression",
+            "id": 47443,
+            "enchant": {
+                "name": "Enchant Ring - Assault",
+                "id": 3839,
+                "spellId": 44645
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Planestalker Band",
+            "id": 48007,
+            "enchant": {
+                "name": "Enchant Ring - Assault",
+                "id": 3839,
+                "spellId": 44645
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Vanquished Clutches of Yogg-Saron",
+            "id": 46312,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Death's Choice",
+            "id": 47464,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Sylvanas' Cunning",
+            "id": 47546,
+            "enchant": {
+                "name": "Flexweave Underlay",
+                "id": 3605,
+                "itemId": 41111
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Hellion Glaive",
+            "id": 47491,
+            "enchant": {
+                "name": "Enchant 2H Weapon - Massacre",
+                "id": 3827,
+                "spellId": 60691
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Hellion Glaive",
+            "id": 47491,
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                },
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "OFF_HAND"
+        },
+        {
+            "name": "Widebarrel Flintlock",
+            "id": 48022,
+            "enchant": {
+                "name": "Heartseeker Scope",
+                "id": 3608,
+                "itemId": 41167
+            },
+            "gems": [
+                {
+                    "name": "Inscribed Ametrine",
+                    "id": 40142
+                }
+            ],
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [],
+    "points": [
+        {
+            "name": "Fury",
+            "stats": {
+                "dps": 10,
+                "attackPower": 1,
+                "agility": 1.8,
+                "strength": 2.45,
+                "armorPenRating": 2,
+                "critRating": 2,
+                "hasteRating": 1.4,
+                "hitRating": 2,
+                "expertiseRating": 2.2,
+                "armor": 0.05,
+                "metaSockets": 52,
+                "redSockets": 39,
+                "yellowSockets": 39,
+                "blueSockets": 39,
+                "prismaticSockets": 39
+            }
+        }
+    ],
+    "stats": {
+        "agility": 709,
+        "armor": 16478,
+        "armorPen": 36.5,
+        "armorPenRating": 511,
+        "attackPower": 5204,
+        "block": 5,
+        "blockValueBonus": 821,
+        "crit": 47.62,
+        "critRating": 1519,
+        "defense": 400,
+        "dodge": 12.05,
+        "expertise": 34,
+        "expertiseRating": 279,
+        "feralAttackPower": 6350,
+        "haste": 1.52,
+        "hasteRating": 50,
+        "health": 27871,
+        "hit": 6.62,
+        "hitRating": 217,
+        "intellect": 43,
+        "mainHandSpeed": 3.5,
+        "mana": 365,
+        "offHandSpeed": 3.5,
+        "parry": 5,
+        "rangedAttackPower": 5763,
+        "rangedCrit": 47.62,
+        "rangedCritRating": 1519,
+        "rangedHit": 6.62,
+        "rangedHitRating": 217,
+        "rangedSpeed": 2.8,
+        "spellCrit": 33.09,
+        "spellCritRating": 1519,
+        "spellHaste": 1.52,
+        "spellHit": 8.27,
+        "spirit": 71,
+        "stamina": 1993,
+        "strength": 1643
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}

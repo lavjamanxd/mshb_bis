@@ -1,0 +1,345 @@
+{
+    "name": "ph3 - Mitigation",
+    "phase": 3,
+    "links": {
+        "set": "https://eightyupgrades.com/set/orkcQD7a6NLVpBfh411iJd"
+    },
+    "character": {
+        "name": "Bullsheetto 80",
+        "level": 80,
+        "gameClass": "DRUID",
+        "race": "TAUREN",
+        "faction": "HORDE"
+    },
+    "items": [
+        {
+            "name": "Runetotem's Headguard of Triumph",
+            "id": 48201,
+            "enchant": {
+                "name": "Arcanum of the Stalwart Protector",
+                "id": 3818,
+                "itemId": 50369
+            },
+            "gems": [
+                {
+                    "name": "Austere Earthsiege Diamond",
+                    "id": 41380
+                },
+                {
+                    "name": "Nightmare Tear",
+                    "id": 49110
+                }
+            ],
+            "slot": "HEAD"
+        },
+        {
+            "name": "Legionnaire's Gorget",
+            "id": 47466,
+            "gems": [
+                {
+                    "name": "Guardian's Dreadstone",
+                    "id": 40141
+                }
+            ],
+            "slot": "NECK"
+        },
+        {
+            "name": "Runetotem's Shoulderpads of Triumph",
+            "id": 48198,
+            "enchant": {
+                "name": "Greater Inscription of the Pinnacle",
+                "id": 3811,
+                "itemId": 50337
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "SHOULDERS"
+        },
+        {
+            "name": "Vest of Calamitous Fate",
+            "id": 47431,
+            "enchant": {
+                "name": "Enchant Chest - Powerful Stats",
+                "id": 3832,
+                "spellId": 60692
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "CHEST"
+        },
+        {
+            "name": "Belt of the Pitiless Killer",
+            "id": 47460,
+            "enchant": {
+                "name": "Personal Electromagnetic Pulse Generator",
+                "id": 3599,
+                "itemId": 40776
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "WAIST"
+        },
+        {
+            "name": "Runetotem's Legguards of Triumph",
+            "id": 48200,
+            "enchant": {
+                "name": "Frosthide Leg Armor",
+                "id": 3822,
+                "itemId": 38373
+            },
+            "gems": [
+                {
+                    "name": "Guardian's Dreadstone",
+                    "id": 40141
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "LEGS"
+        },
+        {
+            "name": "Icewalker Treads",
+            "id": 47445,
+            "enchant": {
+                "name": "Nitro Boosts",
+                "id": 3606,
+                "itemId": 41118
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "FEET"
+        },
+        {
+            "name": "Armbands of Dark Determination",
+            "id": 47474,
+            "enchant": {
+                "name": "Enchant Bracers - Major Stamina",
+                "id": 3850,
+                "spellId": 62256
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Guardian's Dreadstone",
+                    "id": 40141
+                }
+            ],
+            "slot": "WRISTS"
+        },
+        {
+            "name": "Runetotem's Handgrips of Triumph",
+            "id": 48202,
+            "enchant": {
+                "name": "Hyperspeed Accelerators",
+                "id": 3604,
+                "spellId": 54999
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "HANDS"
+        },
+        {
+            "name": "Band of the Twin Val'kyr",
+            "id": 48027,
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "FINGER_1"
+        },
+        {
+            "name": "Clutch of Fortification",
+            "id": 47731,
+            "slot": "FINGER_2"
+        },
+        {
+            "name": "Juggernaut's Vitality",
+            "id": 47451,
+            "slot": "TRINKET_1"
+        },
+        {
+            "name": "Heart of Iron",
+            "id": 45158,
+            "slot": "TRINKET_2"
+        },
+        {
+            "name": "Cairne's Endurance",
+            "id": 47550,
+            "enchant": {
+                "name": "Flexweave Underlay",
+                "id": 3605,
+                "itemId": 41111
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "BACK"
+        },
+        {
+            "name": "Grievance",
+            "id": 47520,
+            "enchant": {
+                "name": "Enchant Weapon - Mongoose",
+                "id": 2673,
+                "spellId": 27984
+            },
+            "gems": [
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                },
+                {
+                    "name": "Solid Majestic Zircon",
+                    "id": 40119
+                }
+            ],
+            "slot": "MAIN_HAND"
+        },
+        {
+            "name": "Idol of Mutilation",
+            "id": 47668,
+            "slot": "RANGED"
+        }
+    ],
+    "glyphs": [
+        {
+            "name": "Glyph of Frenzied Regeneration",
+            "id": 40896,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Maul",
+            "id": 40897,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Survival Instincts",
+            "id": 46372,
+            "type": "MAJOR"
+        },
+        {
+            "name": "Glyph of Challenging Roar",
+            "id": 43334,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of Unburdened Rebirth",
+            "id": 43331,
+            "type": "MINOR"
+        },
+        {
+            "name": "Glyph of the Wild",
+            "id": 43335,
+            "type": "MINOR"
+        }
+    ],
+    "points": [
+        {
+            "name": "Feral Tank - Phase 2",
+            "stats": {
+                "strength": 2.3786,
+                "agility": 4.6617,
+                "stamina": 6.9016,
+                "health": 0.422,
+                "expertiseRating": 2.8521,
+                "armor": 3.9968,
+                "armorBonus": 0.5813,
+                "defenseRating": 2.0681,
+                "dodgeRating": 2.0863,
+                "metaSockets": 42,
+                "blueSockets": 165.64,
+                "redSockets": 165.64,
+                "yellowSockets": 165.64,
+                "prismaticSockets": 165.64
+            }
+        }
+    ],
+    "stats": {
+        "agility": 1051,
+        "armor": 7817,
+        "armorBonus": 1708,
+        "armorPen": 9.71,
+        "armorPenRating": 136,
+        "attackPower": 2354,
+        "crit": 31.92,
+        "critRating": 543,
+        "defense": 441,
+        "defenseRating": 206,
+        "dodge": 33.14,
+        "dodgeRating": 179,
+        "expertise": 25,
+        "expertiseRating": 208,
+        "feralAttackPower": 3176,
+        "haste": 10.07,
+        "hasteRating": 254,
+        "health": 36257,
+        "hit": 10.58,
+        "hitRating": 347,
+        "intellect": 159,
+        "mainHandSpeed": 3.6,
+        "mana": 5601,
+        "parry": 7.77,
+        "parryRating": 51,
+        "spellCrit": 14.63,
+        "spellCritRating": 543,
+        "spellHaste": 7.75,
+        "spellHit": 13.23,
+        "spirit": 181,
+        "stamina": 2865,
+        "strength": 594
+    },
+    "exportOptions": {
+        "buffs": false,
+        "talents": false
+    }
+}
