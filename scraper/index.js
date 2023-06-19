@@ -489,7 +489,7 @@ async function processPhasesMSH() {
 
               const recipe = itemsDb.find(i=> i.name.includes(item["name"]) && i.class == "Recipe");
               if (recipe){
-                itemDependencyMap[recipe.itemId] = [itemObj.id];
+                itemDependencyMap[recipe.itemId] = [item["id"]];
                 metadata[recipe.itemId] = recipe.subclass;
               }
             }
