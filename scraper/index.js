@@ -203,6 +203,38 @@ const itemDependencyMap = {
   46053: [45588, 45618, 45608, 45614],
   // Val'anyr
   45038: [46017],
+
+  //PHASE 3
+  // Heroic tier
+  // paladin, priest, warlock
+  47557: [
+    47788, 47789, 47790, 47791, 47792, 47793, 47794, 47795, 47796, 47797, 48029,
+    48031, 48033, 48035, 48037, 48057, 48058, 48059, 48060, 48061, 48082, 48083,
+    48084, 48085, 48086, 48087, 48088, 48089, 48090, 48091, 48580, 48581, 48582,
+    48583, 48584, 48585, 48586, 48587, 48588, 48589, 48612, 48613, 48614, 48615,
+    48616, 48617, 48618, 48619, 48620, 48621, 48642, 48643, 48644, 48645, 48646,
+    48647, 48648, 48649, 48650, 48651,
+  ],
+
+  // hunter, shaman, warrior
+  47558: [
+    48260, 48261, 48262, 48263, 48264, 48265, 48266, 48267, 48268, 48269, 48290,
+    48291, 48292, 48293, 48294, 48305, 48306, 48307, 48308, 48309, 48321, 48322,
+    48323, 48324, 48325, 48326, 48327, 48328, 48329, 48330, 48351, 48352, 48353,
+    48354, 48355, 48356, 48357, 48358, 48359, 48360, 48381, 48382, 48383, 48384,
+    48385, 48396, 48397, 48398, 48399, 48400, 48433, 48447, 48451, 48453, 48455,
+    48466, 48467, 48468, 48469, 48470,
+  ],
+  // death knight, druid, mage, rogue
+  47559: [
+    47758, 47759, 47760, 47761, 47762, 47763, 47764, 47765, 47766, 47767, 48138,
+    48139, 48140, 48141, 48142, 48143, 48144, 48145, 48146, 48147, 48168, 48169,
+    48170, 48171, 48172, 48173, 48174, 48175, 48176, 48177, 48198, 48199, 48200,
+    48201, 48202, 48203, 48204, 48205, 48206, 48207, 48228, 48229, 48230, 48231,
+    48232, 48233, 48234, 48235, 48236, 48237, 48486, 48487, 48488, 48489, 48490,
+    48491, 48492, 48493, 48494, 48495, 48543, 48544, 48545, 48546, 48547, 48548,
+    48549, 48550, 48551, 48552,
+  ],
 };
 
 const wowtbcGGMap = {
@@ -255,13 +287,15 @@ var weirdItemMap = {
   "Warglaive of Azzinoth (MH)": 32837,
 };
 
+const heroicRegex = /(.*) \(H\)/;
+
 async function fetchWowggPure() {
   const combosRequest = await fetch(
     `https://wowtbc.gg/page-data/wotlk/class-rankings/pve-rankings/page-data.json`
   );
 
   const combos = await combosRequest.json();
-  const result = { 0: {}, 1: {}, 2: {} };
+  const result = { 0: {}, 1: {}, 2: {}, 3: {} };
 
   for (const combo of combos.result.pageContext.sortedList) {
     console.log(combo);
@@ -339,16 +373,36 @@ async function fetchWowggPure() {
 
         if (wowtbcGGMap[slot] && itemsOrdered.length > 0) {
           currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered.map((item) => {
+            const heroicMatch = heroicRegex.exec(item.name);
+
             if (weirdItemMap[item.name]) {
               found = { itemId: weirdItemMap[item.name] };
             } else {
-              var found = itemsDb.find(
+
+              let itemName = heroicMatch ? heroicMatch[1] : item.name;
+
+              const filteredItem = itemsDb.filter(
                 (i) =>
-                  i.name == item.name &&
-                  i.slot != "Non-equippable" &&
+                  i.name == itemName &&
+                  (i.class == "Recipe" || i.slot != "Non-equippable") &&
                   i.quality != "Poor" &&
                   i.quality != "Common"
               );
+
+              for (const item of filteredItem) {
+                const heroicVersion = item.tooltip.find(
+                  (t) => t.label == "Heroic"
+                );
+                if (heroicMatch && heroicVersion) {
+                  found = item;
+                  break;
+                }
+
+                if (!heroicMatch && !heroicVersion) {
+                  found = item;
+                  break;
+                }
+              }
             }
 
             if (!found) {
@@ -356,6 +410,11 @@ async function fetchWowggPure() {
             }
 
             let sourceString = `${item.source} - ${item.source_type}`;
+
+            if (heroicMatch) {
+              sourceString += ` (H)`;
+            }
+
             if (item.drop_chance) {
               sourceString += ` (${Math.round(item.drop_chance * 100)}%)`;
             }
@@ -428,6 +487,31 @@ async function processPhasesMSH() {
               const currentSlot = [];
               currentSlot.push([item["id"]]);
               currentSpec.items[slot] = currentSlot;
+
+              const recipe = itemsDb.find(i=> i.name.includes(item["name"]) && i.class == "Recipe");
+              if (recipe){
+                itemDependencyMap[recipe.itemId] = [itemObj.id];
+                metadata[recipe.itemId] = recipe.subclass;
+              }
+            }
+          }
+
+          for (const entry of Object.entries(currentSpec.items)) {
+            var items = entry[1];
+            for (const itemArray of items) {
+              for (const itemDependencyEntry of Object.entries(
+                itemDependencyMap
+              )) {
+                var found = false;
+                for (const depItem of itemDependencyEntry[1]) {
+                  if (depItem == itemArray[0]) {
+                    itemArray.push(+itemDependencyEntry[0]);
+                    found = true;
+                    break;
+                  }
+                }
+                if (found) break;
+              }
             }
           }
 
@@ -477,6 +561,11 @@ async function processPhasesWowTBCGG() {
           for (const itemObj of itemSlot[1]) {
             currentSpec.items[itemSlot[0]].push([itemObj.id]);
             metadata[itemObj.id] = itemObj.source;
+            const recipe = itemsDb.find(i=> i.name.includes(itemObj.name) && i.class == "Recipe");
+            if (recipe){
+              itemDependencyMap[recipe.itemId] = [itemObj.id];
+              metadata[recipe.itemId] = recipe.subclass;
+            }
           }
         }
 
@@ -494,6 +583,7 @@ async function processPhasesWowTBCGG() {
                   break;
                 }
               }
+
               if (found) break;
             }
           }
@@ -564,7 +654,7 @@ async function mergeSources(wowtbcData, guildData) {
           const itemGroupArray = [];
           itemGroupArray.push(items[0]);
 
-          if (slot == "ring" || slot == "trinket"){
+          if (slot == "ring" || slot == "trinket") {
             itemGroupArray.push(items[1]);
           }
 
@@ -600,10 +690,12 @@ async function mergeSources(wowtbcData, guildData) {
         };
 
         for (const [slot, items] of Object.entries(spec.items)) {
-          const itemGroupArray = currentSpec.items[slot] ? [...currentSpec.items[slot]] : [];
+          const itemGroupArray = currentSpec.items[slot]
+            ? [...currentSpec.items[slot]]
+            : [];
 
           for (const itemGroup of items) {
-            if (!itemGroupArray.find(i => i == itemGroup[0])) {
+            if (!itemGroupArray.find(ig => ig[0] == itemGroup[0])) {
               itemGroupArray.push(itemGroup);
             }
           }
