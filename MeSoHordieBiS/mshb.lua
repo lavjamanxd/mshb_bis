@@ -35,8 +35,8 @@ MSHB.supportedPhases = {
     }
 }
 
-MSHB.inventorySlots = {"head", "neck", "shoulders", "back", "chest", "wrists", "mainHand", "offHand", "hands", "belt",
-                       "legs", "feet", "ring", "trinket", "ranged"}
+MSHB.inventorySlots = { "head", "neck", "shoulders", "back", "chest", "wrists", "mainHand", "offHand", "hands", "belt",
+    "legs", "feet", "ring", "trinket", "ranged" }
 
 MSHB.inventorySlotsLabels = {
     ["head"] = "Head",
@@ -239,16 +239,16 @@ function MSHB:append_spec(tooltip, itemId, class, spec, role, nth, group, slotID
 
 
     if spec == "all" then
-        tooltip:AddLine(prefix  .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
-                            "|Tinterface/icons/" .. classIcon .. ":0|t " .. self:to_pascal_case(class) .. " - " ..
-                            self:to_pascal_case(spec) .. " - " .. role ..
-                            self:get_extra_from_group(itemId, class, spec, role, nth, group))
+        tooltip:AddLine(prefix .. "|Tinterface/icons/" .. classIcon .. ":0|t " ..
+            "|Tinterface/icons/" .. classIcon .. ":0|t " .. self:to_pascal_case(class) .. " - " ..
+            self:to_pascal_case(spec) .. " - " .. role ..
+            self:get_extra_from_group(itemId, class, spec, role, nth, group))
         return
     end
 
     tooltip:AddLine(prefix .. "|Tinterface/icons/" .. classIcon .. ":0|t " .. "|T" .. specIcon ..
-                        ":0|t " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
-                        self:get_extra_from_group(itemId, class, spec, role, nth, group))
+        ":0|t " .. self:to_pascal_case(class) .. " - " .. self:to_pascal_case(spec) .. " - " .. role ..
+        self:get_extra_from_group(itemId, class, spec, role, nth, group))
 end
 
 function MSHB:has_key(tab, val)
@@ -368,51 +368,51 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
     local lines = {}
 
     local cacheKey = itemId .. MeSoHordieAddon.db.char.mode .. MeSoHordieAddon.db.char.phase .. class .. spec ..
-                         tostring(isPlayerLootMaster) .. tostring(forcedAllMode)
+        tostring(isPlayerLootMaster) .. tostring(forcedAllMode)
 
     if (MSHB.tooltipCache.key and MSHB.tooltipCache.key == cacheKey) then
         lines = MSHB.tooltipCache.result
         currentMode = MSHB.tooltipCache.mode
     else
-        local itemEquipLocation =  select(4, GetItemInfoInstant(itemId));
+        local itemEquipLocation = select(4, GetItemInfoInstant(itemId));
 
-        if itemEquipLocation == "" then
-            return
-        end
+        if itemEquipLocation ~= "" then
+            if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster and not forcedAllMode then
+                currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
+                for _, bisClass in ipairs(currentPhaseBiSClass) do
+                    if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
+                        local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
+                        if group then
+                            lines[#lines + 1] = { class, bisClass["spec"], bisClass["role"], index, group,
+                                itemEquipLocation }
+                        end
+                    end
+                end
+            end
 
-        if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster and not forcedAllMode then
-            currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-            for _, bisClass in ipairs(currentPhaseBiSClass) do
-                if bisClass["spec"] == spec:lower() or bisClass["spec"]:lower() == "all" then
+            if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster and not forcedAllMode then
+                currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
+                for index, bisClass in ipairs(currentPhaseBiSClass) do
                     local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
                     if group then
-                        lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group, itemEquipLocation}
+                        lines[#lines + 1] = { class, bisClass["spec"], bisClass["role"], index, group, itemEquipLocation }
+                    end
+                end
+            end
+
+            if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster or forcedAllMode then
+                currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
+                for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
+                    for _, s in ipairs(c) do
+                        local index, group = self:getIndexOfFromMultipleGroups(s["items"], itemId)
+                        if group then
+                            lines[#lines + 1] = { i:upper(), s["spec"], s["role"], index, group, itemEquipLocation }
+                        end
                     end
                 end
             end
         end
 
-        if MeSoHordieAddon.db.char.mode == "class" and not isPlayerLootMaster and not forcedAllMode then
-            currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
-            for index, bisClass in ipairs(currentPhaseBiSClass) do
-                local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
-                if group then
-                    lines[#lines + 1] = {class, bisClass["spec"], bisClass["role"], index, group, itemEquipLocation}
-                end
-            end
-        end
-
-        if MeSoHordieAddon.db.char.mode == "all" or isPlayerLootMaster or forcedAllMode then
-            currentMode = "(" .. self.supportedModes["all"]["name"] .. " mode)"
-            for i, c in pairs(msh_bis_addon_data["phases"]["phase" .. MeSoHordieAddon.db.char.phase]) do
-                for _, s in ipairs(c) do
-                    local index, group = self:getIndexOfFromMultipleGroups(s["items"], itemId)
-                    if group then
-                        lines[#lines + 1] = {i:upper(), s["spec"], s["role"], index, group, itemEquipLocation}
-                    end
-                end
-            end
-        end
 
         MSHB.tooltipCache.key = cacheKey
         table.sort(lines, function(k1, k2)
