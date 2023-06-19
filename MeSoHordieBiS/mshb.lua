@@ -375,6 +375,11 @@ function MSHB:append_tooltip(tooltip, forcedAllMode)
         currentMode = MSHB.tooltipCache.mode
     else
         local itemEquipLocation =  select(4, GetItemInfoInstant(itemId));
+
+        if itemEquipLocation == "" then
+            return
+        end
+
         if MeSoHordieAddon.db.char.mode == "spec" and not isPlayerLootMaster and not forcedAllMode then
             currentMode = "(" .. self.supportedModes[MeSoHordieAddon.db.char.mode]["name"] .. " mode)"
             for _, bisClass in ipairs(currentPhaseBiSClass) do
