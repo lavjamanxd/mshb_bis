@@ -1,11 +1,11 @@
 {
-    "name": "Hpala",
+    "name": "Healer3",
     "phase": 3,
     "links": {
-        "set": "https://eightyupgrades.com/set/cL9RyE7QhsTVD5SH11MtxC"
+        "set": "https://eightyupgrades.com/set/embr5GUdCY7uzBuD2G9qXy"
     },
     "character": {
-        "name": "Hpala",
+        "name": "Maraudin",
         "level": 80,
         "gameClass": "PALADIN",
         "race": "BLOODELF",
@@ -26,8 +26,8 @@
                     "id": 41401
                 },
                 {
-                    "name": "Brilliant Dragon's Eye",
-                    "id": 42148
+                    "name": "Nightmare Tear",
+                    "id": 49110
                 }
             ],
             "slot": "HEAD"
@@ -84,12 +84,16 @@
             "slot": "CHEST"
         },
         {
-            "name": "Girdle of the Frozen Reach",
-            "id": 47997,
+            "name": "Star-beaded Clutch",
+            "id": 45616,
             "gems": [
                 {
-                    "name": "Nightmare Tear",
-                    "id": 49110
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
+                },
+                {
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
                 },
                 {
                     "name": "Brilliant King's Amber",
@@ -168,19 +172,19 @@
             },
             "gems": [
                 {
-                    "name": "Luminous Ametrine",
-                    "id": 40151
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
                 },
                 {
-                    "name": "Luminous Ametrine",
-                    "id": 40151
+                    "name": "Brilliant King's Amber",
+                    "id": 40123
                 }
             ],
             "slot": "HANDS"
         },
         {
-            "name": "Starshine Circle",
-            "id": 45614,
+            "name": "Circle of the Darkmender",
+            "id": 47439,
             "gems": [
                 {
                     "name": "Brilliant King's Amber",
@@ -190,8 +194,8 @@
             "slot": "FINGER_1"
         },
         {
-            "name": "Circle of the Darkmender",
-            "id": 47439,
+            "name": "Starshine Circle",
+            "id": 45614,
             "gems": [
                 {
                     "name": "Brilliant King's Amber",
@@ -220,26 +224,20 @@
             },
             "gems": [
                 {
-                    "name": "Brilliant King's Amber",
-                    "id": 40123
+                    "name": "Brilliant Dragon's Eye",
+                    "id": 42148
                 }
             ],
             "slot": "BACK"
         },
         {
-            "name": "Mortalis",
-            "id": 47518,
+            "name": "Val'anyr, Hammer of Ancient Kings",
+            "id": 46017,
             "enchant": {
                 "name": "Enchant Weapon - Mighty Spellpower",
                 "id": 3834,
                 "spellId": 60714
             },
-            "gems": [
-                {
-                    "name": "Brilliant King's Amber",
-                    "id": 40123
-                }
-            ],
             "slot": "MAIN_HAND"
         },
         {
@@ -284,41 +282,42 @@
     ],
     "stats": {
         "agility": 112,
-        "arcaneDamage": 2518,
+        "arcaneDamage": 2494,
         "arcaneResist": 5,
-        "armor": 22004,
+        "armor": 20974,
         "attackPower": 556,
         "block": 5,
         "blockValue": 243,
         "blockValueBonus": 84,
-        "crit": 24.24,
-        "critRating": 864,
+        "crit": 23.15,
+        "critRating": 814,
         "defense": 400,
         "dodge": 5.36,
-        "fireDamage": 2518,
+        "feralAttackPower": 978,
+        "fireDamage": 2494,
         "fireResist": 5,
-        "frostDamage": 2518,
+        "frostDamage": 2494,
         "frostResist": 5,
-        "haste": 37.35,
-        "hasteRating": 942,
-        "healing": 2518,
-        "health": 19884,
-        "holyDamage": 2518,
-        "intellect": 1845,
+        "haste": 37.66,
+        "hasteRating": 950,
+        "healing": 2494,
+        "health": 20044,
+        "holyDamage": 2494,
+        "intellect": 1864,
         "mainHandSpeed": 1.8,
-        "mana": 31789,
+        "mana": 32074,
         "mp5": 55,
-        "natureDamage": 2518,
+        "natureDamage": 2494,
         "natureResist": 5,
         "parry": 5,
-        "shadowDamage": 2518,
+        "shadowDamage": 2494,
         "shadowResist": 5,
-        "spellCrit": 33.23,
-        "spellCritRating": 864,
-        "spellDamage": 2518,
-        "spellHaste": 28.73,
-        "spirit": 143,
-        "stamina": 1313,
+        "spellCrit": 32.25,
+        "spellCritRating": 814,
+        "spellDamage": 2494,
+        "spellHaste": 28.97,
+        "spirit": 198,
+        "stamina": 1329,
         "strength": 168
     },
     "exportOptions": {

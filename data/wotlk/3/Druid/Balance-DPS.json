@@ -1,11 +1,11 @@
 {
-    "name": "soulmojo soon",
+    "name": "balance",
     "phase": 3,
     "links": {
-        "set": "https://eightyupgrades.com/set/whG3fe28bdV7mtfqJPUmcw"
+        "set": "https://eightyupgrades.com/set/7qpaZRWPQNw23HUZsEeadL"
     },
     "character": {
-        "name": "soulmojo",
+        "name": "druid",
         "level": 80,
         "gameClass": "DRUID",
         "race": "TAUREN",
@@ -81,27 +81,24 @@
             "gems": [
                 null,
                 null,
-                null
+                {
+                    "name": "Rigid King's Amber",
+                    "id": 40125
+                }
             ],
             "slot": "LEGS"
         },
         {
-            "name": "Treads of the False Oracle",
-            "id": 45537,
+            "name": "Sandals of the Mourning Widow",
+            "id": 47454,
             "enchant": {
                 "name": "Enchant Boots - Tuskarr's Vitality",
                 "id": 3232,
                 "spellId": 47901
             },
             "gems": [
-                {
-                    "name": "Runed Scarlet Ruby",
-                    "id": 39998
-                },
-                {
-                    "name": "Purified Twilight Opal",
-                    "id": 40026
-                }
+                null,
+                null
             ],
             "slot": "FEET"
         },
@@ -149,7 +146,7 @@
         },
         {
             "name": "Reign of the Dead",
-            "id": 47316,
+            "id": 47477,
             "slot": "TRINKET_1"
         },
         {
@@ -176,11 +173,8 @@
             "slot": "MAIN_HAND"
         },
         {
-            "name": "Lightbane Focus",
-            "id": 48032,
-            "gems": [
-                null
-            ],
+            "name": "Talisman of Heedless Sins",
+            "id": 47437,
             "slot": "OFF_HAND"
         },
         {
@@ -196,55 +190,55 @@
             "stats": {
                 "spellDamage": 1,
                 "arcaneDamage": 1,
-                "critRating": 1,
+                "critRating": 1.1,
                 "hasteRating": 0.7,
-                "hitRating": 0.6,
+                "hitRating": 0.5,
                 "intellect": 0.2,
                 "mp5": 0.01,
                 "spirit": 0.1,
                 "metaSockets": 50,
-                "redSockets": 25,
-                "yellowSockets": 25,
-                "blueSockets": 20,
-                "prismaticSockets": 25,
+                "redSockets": 26,
+                "yellowSockets": 26,
+                "blueSockets": 23,
+                "prismaticSockets": 26,
                 "resilienceRating": 0.01,
-                "stamina": 0.05,
-                "armor": 0.02,
+                "stamina": 0.01,
+                "armor": 0.01,
                 "spellPen": 0.01
             }
         }
     ],
     "stats": {
         "agility": 88,
-        "arcaneDamage": 2518,
-        "armor": 3587,
+        "arcaneDamage": 2540,
+        "armor": 3590,
         "attackPower": 188,
-        "crit": 29.57,
-        "critRating": 966,
+        "crit": 29.31,
+        "critRating": 954,
         "defense": 400,
         "dodge": 7.45,
         "feralAttackPower": 982,
-        "fireDamage": 2518,
-        "frostDamage": 2518,
-        "haste": 24.07,
-        "hasteRating": 607,
-        "healing": 2518,
+        "fireDamage": 2540,
+        "frostDamage": 2540,
+        "haste": 22.6,
+        "hasteRating": 570,
+        "healing": 2540,
         "health": 20317,
-        "hit": 7.26,
-        "hitRating": 238,
-        "holyDamage": 2518,
-        "intellect": 1265,
+        "hit": 8.3,
+        "hitRating": 272,
+        "holyDamage": 2540,
+        "intellect": 1282,
         "mainHandSpeed": 1.8,
-        "mana": 22191,
-        "natureDamage": 2518,
+        "mana": 22446,
+        "natureDamage": 2540,
         "parry": 5,
-        "shadowDamage": 2518,
-        "spellCrit": 30.48,
-        "spellCritRating": 966,
-        "spellDamage": 2518,
-        "spellHaste": 18.51,
-        "spellHit": 9.07,
-        "spirit": 393,
+        "shadowDamage": 2540,
+        "spellCrit": 30.33,
+        "spellCritRating": 954,
+        "spellDamage": 2540,
+        "spellHaste": 17.38,
+        "spellHit": 10.37,
+        "spirit": 461,
         "stamina": 1271,
         "strength": 104
     },

@@ -1,11 +1,11 @@
 {
-    "name": "Joemighty",
+    "name": "fury",
     "phase": 3,
     "links": {
-        "set": "https://eightyupgrades.com/set/4H9ABkKZnrHhoxeq8LzWQ"
+        "set": "https://eightyupgrades.com/set/pCyGhSv3Mt9UcqWHzettAV"
     },
     "character": {
-        "name": "joemighty",
+        "name": "warrior",
         "level": 80,
         "gameClass": "WARRIOR",
         "race": "ORC",
@@ -22,24 +22,21 @@
             },
             "gems": [
                 {
-                    "name": "Destructive Skyflare Diamond",
-                    "id": 41307
+                    "name": "Relentless Earthsiege Diamond",
+                    "id": 41398
                 },
                 {
-                    "name": "Bold Dragon's Eye",
-                    "id": 42142
+                    "name": "Nightmare Tear",
+                    "id": 49110
                 }
             ],
             "slot": "HEAD"
         },
         {
-            "name": "The Executioner's Vice",
-            "id": 47458,
+            "name": "Charge of the Eredar",
+            "id": 47433,
             "gems": [
-                {
-                    "name": "Bold Dragon's Eye",
-                    "id": 42142
-                }
+                null
             ],
             "slot": "NECK"
         },
@@ -53,8 +50,8 @@
             },
             "gems": [
                 {
-                    "name": "Bold Dragon's Eye",
-                    "id": 42142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "SHOULDERS"
@@ -69,31 +66,36 @@
             },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "CHEST"
         },
         {
-            "name": "Bloodbath Girdle",
-            "id": 47429,
+            "name": "Waistguard of Deathly Dominion",
+            "id": 47472,
+            "enchant": {
+                "name": "Personal Electromagnetic Pulse Generator",
+                "id": 3599,
+                "itemId": 40776
+            },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "WAIST"
@@ -108,12 +110,12 @@
             },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "LEGS"
@@ -122,38 +124,38 @@
             "name": "Greaves of the Saronite Citadel",
             "id": 47473,
             "enchant": {
-                "name": "Enchant Boots - Icewalker",
-                "id": 3826,
-                "spellId": 60623
+                "name": "Nitro Boosts",
+                "id": 3606,
+                "itemId": 41118
             },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "FEET"
         },
         {
-            "name": "Boneshatter Vambraces",
-            "id": 47414,
+            "name": "Bracers of the Silent Massacre",
+            "id": 47442,
             "enchant": {
-                "name": "Fur Lining - Attack Power",
-                "id": 3756,
-                "itemId": 43097
+                "name": "Enchant Bracers - Greater Assault",
+                "id": 3845,
+                "spellId": 44575
             },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "WRISTS"
@@ -167,61 +169,40 @@
                 "spellId": 60668
             },
             "gems": [
-                {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
-                },
-                {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
-                },
-                {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
-                }
+                null,
+                null
             ],
             "slot": "HANDS"
         },
         {
-            "name": "Band of Callous Aggression",
-            "id": 47443,
+            "name": "Brann's Signet Ring",
+            "id": 45608,
             "enchant": {
                 "name": "Enchant Ring - Assault",
                 "id": 3839,
                 "spellId": 44645
             },
             "gems": [
-                {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
-                }
+                null
             ],
             "slot": "FINGER_1"
         },
         {
-            "name": "Planestalker Band",
-            "id": 48007,
-            "enchant": {
-                "name": "Enchant Ring - Assault",
-                "id": 3839,
-                "spellId": 44645
-            },
+            "name": "Band of Callous Aggression",
+            "id": 47443,
             "gems": [
-                {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
-                }
+                null
             ],
             "slot": "FINGER_2"
         },
         {
-            "name": "Vanquished Clutches of Yogg-Saron",
-            "id": 46312,
+            "name": "Death's Choice",
+            "id": 47464,
             "slot": "TRINKET_1"
         },
         {
-            "name": "Death's Choice",
-            "id": 47464,
+            "name": "Comet's Trail",
+            "id": 45609,
             "slot": "TRINKET_2"
         },
         {
@@ -234,15 +215,15 @@
             },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "BACK"
         },
         {
-            "name": "Hellion Glaive",
-            "id": 47491,
+            "name": "Dual-blade Butcher",
+            "id": 47446,
             "enchant": {
                 "name": "Enchant 2H Weapon - Massacre",
                 "id": 3827,
@@ -250,44 +231,41 @@
             },
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "MAIN_HAND"
         },
         {
-            "name": "Hellion Glaive",
-            "id": 47491,
+            "name": "Dual-blade Butcher",
+            "id": 47446,
             "gems": [
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 },
                 {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
+                    "name": "Fractured Cardinal Ruby",
+                    "id": 40117
                 }
             ],
             "slot": "OFF_HAND"
         },
         {
-            "name": "Widebarrel Flintlock",
-            "id": 48022,
+            "name": "Death's Head Crossbow",
+            "id": 47428,
             "enchant": {
                 "name": "Heartseeker Scope",
                 "id": 3608,
                 "itemId": 41167
             },
             "gems": [
-                {
-                    "name": "Inscribed Ametrine",
-                    "id": 40142
-                }
+                null
             ],
             "slot": "RANGED"
         }
@@ -316,43 +294,42 @@
         }
     ],
     "stats": {
-        "agility": 709,
-        "armor": 16478,
-        "armorPen": 36.5,
-        "armorPenRating": 511,
-        "attackPower": 5204,
+        "agility": 713,
+        "armor": 15346,
+        "armorPen": 70.64,
+        "armorPenRating": 989,
+        "attackPower": 4675,
         "block": 5,
-        "blockValueBonus": 821,
-        "crit": 47.62,
-        "critRating": 1519,
+        "blockValueBonus": 670,
+        "crit": 38.47,
+        "critRating": 1096,
         "defense": 400,
-        "dodge": 12.05,
-        "expertise": 34,
-        "expertiseRating": 279,
-        "feralAttackPower": 6350,
-        "haste": 1.52,
-        "hasteRating": 50,
-        "health": 27871,
-        "hit": 6.62,
-        "hitRating": 217,
-        "intellect": 43,
-        "mainHandSpeed": 3.5,
-        "mana": 365,
-        "offHandSpeed": 3.5,
+        "dodge": 12.1,
+        "expertise": 23,
+        "expertiseRating": 154,
+        "haste": 4.03,
+        "hasteRating": 132,
+        "health": 27541,
+        "hit": 4.7,
+        "hitRating": 154,
+        "intellect": 158,
+        "mainHandSpeed": 3.6,
+        "mana": 2090,
+        "offHandSpeed": 3.6,
         "parry": 5,
-        "rangedAttackPower": 5763,
-        "rangedCrit": 47.62,
-        "rangedCritRating": 1519,
-        "rangedHit": 6.62,
-        "rangedHitRating": 217,
+        "rangedAttackPower": 5238,
+        "rangedCrit": 38.47,
+        "rangedCritRating": 1096,
+        "rangedHit": 4.7,
+        "rangedHitRating": 154,
         "rangedSpeed": 2.8,
-        "spellCrit": 33.09,
-        "spellCritRating": 1519,
-        "spellHaste": 1.52,
-        "spellHit": 8.27,
-        "spirit": 71,
-        "stamina": 1993,
-        "strength": 1643
+        "spellCrit": 23.87,
+        "spellCritRating": 1096,
+        "spellHaste": 4.03,
+        "spellHit": 5.87,
+        "spirit": 81,
+        "stamina": 1960,
+        "strength": 1341
     },
     "exportOptions": {
         "buffs": false,

@@ -386,7 +386,7 @@ async function fetchWowggPure() {
                   i.name == itemName &&
                   (i.class == "Recipe" || i.slot != "Non-equippable") &&
                   i.quality != "Poor" &&
-                  i.quality != "Common"
+                  i.quality != "Common" && i.requiredLevel >= 70
               );
 
               for (const item of filteredItem) {

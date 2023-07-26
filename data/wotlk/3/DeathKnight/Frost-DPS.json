@@ -1,11 +1,11 @@
 {
-    "name": "Tpec",
+    "name": "Tpec Copy",
     "phase": 3,
     "links": {
-        "set": "https://eightyupgrades.com/set/4XfB6yEoAa65nSktGmgxZq"
+        "set": "https://eightyupgrades.com/set/2X9YhiNtBetsno2eteLqqt"
     },
     "character": {
-        "name": "Tpec",
+        "name": "death knight",
         "level": 80,
         "gameClass": "DEATHKNIGHT",
         "race": "TAUREN",
@@ -66,8 +66,9 @@
         },
         {
             "name": "Greaves of the Saronite Citadel",
-            "id": 47312,
+            "id": 47473,
             "gems": [
+                null,
                 null
             ],
             "slot": "FEET"
@@ -169,34 +170,34 @@
     ],
     "stats": {
         "agility": 224,
-        "armor": 15358,
+        "armor": 15437,
         "armorPen": 14.86,
         "armorPenRating": 208,
-        "attackPower": 3728,
-        "crit": 27.64,
-        "critRating": 958,
+        "attackPower": 3742,
+        "crit": 27.84,
+        "critRating": 967,
         "defense": 400,
         "dodge": 6.31,
         "expertise": 17,
-        "expertiseRating": 145,
+        "expertiseRating": 146,
         "haste": 9.16,
         "hasteRating": 231,
-        "health": 26307,
+        "health": 26457,
         "hit": 11.01,
         "hitRating": 361,
         "intellect": 31,
         "mainHandSpeed": 2.6,
         "mana": 185,
         "offHandSpeed": 2.6,
-        "parry": 13.49,
-        "parryRating": 384,
-        "spellCrit": 20.87,
-        "spellCritRating": 958,
+        "parry": 13.53,
+        "parryRating": 386,
+        "spellCrit": 21.06,
+        "spellCritRating": 967,
         "spellHaste": 7.04,
         "spellHit": 13.76,
         "spirit": 61,
-        "stamina": 1796,
-        "strength": 1538
+        "stamina": 1811,
+        "strength": 1545
     },
     "exportOptions": {
         "buffs": false,
