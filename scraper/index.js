@@ -344,6 +344,7 @@ var weirdItemMap = {
 };
 
 const heroicRegex = /(.*) \(H\)/;
+const normalRegex = /(.*) \(N\)/;
 
 async function fetchWowggPure() {
   const combosRequest = await fetch(
@@ -425,16 +426,21 @@ async function fetchWowggPure() {
           }
         }
 
+        // if (className == "Priest" && spec == "Shadow" && phase == "T10"){
+        //   debugger;
+        // }
+
         itemsOrdered = itemsOrdered.slice(0, 6);
 
         if (wowtbcGGMap[slot] && itemsOrdered.length > 0) {
           currentSpec.items[wowtbcGGMap[slot]] = itemsOrdered.map((item) => {
             const heroicMatch = heroicRegex.exec(item.name);
+            const normalMatch = normalRegex.exec(item.name);
 
             if (weirdItemMap[item.name]) {
               found = { itemId: weirdItemMap[item.name] };
             } else {
-              let itemName = heroicMatch ? heroicMatch[1] : item.name;
+              let itemName = heroicMatch ? heroicMatch[1] : normalMatch ? normalMatch[1] : item.name;
 
               const filteredItem = itemsDb.filter(
                 (i) =>
