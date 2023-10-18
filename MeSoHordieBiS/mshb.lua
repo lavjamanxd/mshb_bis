@@ -31,6 +31,14 @@ MSHB.supportedPhases = {
             year = 2023,
             month = 6,
             day = 20
+        },
+    },
+    [4] = {
+        name = "Phase 4 - ICC",
+        start = time {
+            year = 2023,
+            month = 10,
+            day = 12
         }
     }
 }

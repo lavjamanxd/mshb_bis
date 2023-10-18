@@ -17,9 +17,13 @@ var metadata = {
   45038: "Ulduar (25) - Bosses",
   46052: "Ulduar (10) - Algalon the Observer",
   46053: "Ulduar (25) - Algalon the Observer",
+  50274: "Icecrown Citadel (25) - Bosses",
+  50231: "Icecrown Citadel (25) - Festergut",
+  50226: "Icecrown Citadel (25) - Rotface",
+  49869: "Contained in Light's Vengeance"
 };
 
-const phases = ["Pre-Bis", "T7", "T8", "T9"];
+const phases = ["Pre-Bis", "T7", "T8", "T9", "T10"];
 const wowTbcggSlots = [
   "head",
   "neck",
@@ -235,6 +239,58 @@ const itemDependencyMap = {
     48491, 48492, 48493, 48494, 48495, 48543, 48544, 48545, 48546, 48547, 48548,
     48549, 48550, 48551, 48552,
   ],
+
+  // PHASE 4
+  // Normal tier
+  // death knight, druid, mage, rogue
+  52025: [
+    51125, 51126, 51127, 51128, 51129, 51130, 51131, 51132, 51133, 51134, 51135,
+    51136, 51137, 51138, 51139, 51140, 51141, 51142, 51143, 51144, 51145, 51146,
+    51147, 51148, 51149, 51155, 51156, 51157, 51158, 51159, 51185, 51186, 51187,
+    51188, 51189,
+  ],
+
+  // paladin, priest, warlock
+  52027: [
+    51175, 51170, 51176, 51165, 51171, 51177, 51166, 51172, 51178, 51167, 51173,
+    51179, 51168, 51174, 51180, 51169, 51205, 51181, 51160, 51206, 51182, 51161,
+    51207, 51183, 51162, 51208, 51184, 51163, 51209, 51164,
+  ],
+
+  // warrior, hunter, shaman
+  52026: [
+    51195, 51150, 51196, 51210, 51151, 51197, 51211, 51152, 51198, 51212, 51153,
+    51199, 51213, 51154, 51200, 51214, 51190, 51201, 51215, 51191, 51202, 51216,
+    51192, 51203, 51217, 51193, 51204, 51218, 51194, 51219,
+  ],
+
+  // Heroic tier
+  // death knight, druid, mage, rogue
+  52028: [
+    51295, 51306, 51300, 51296, 51280, 51307, 51301, 51297, 51281, 51308, 51302,
+    51298, 51282, 51309, 51303, 51299, 51283, 51304, 51310, 51284, 51290, 51311,
+    51250, 51291, 51312, 51251, 51292, 51313, 51252, 51293, 51314, 51253, 51294,
+    51305, 51254,
+  ],
+  // paladin, priest, warlock
+  52030: [
+    51265, 51263, 51274, 51275, 51233, 51259, 51260, 51270, 51267, 51230, 51256,
+    51276, 51261, 51266, 51272, 51255, 51231, 51277, 51262, 51271, 51268, 51232,
+    51258, 51278, 51264, 51273, 51269, 51257, 51234, 51279,
+  ],
+  // warrior, hunter, shaman
+  52029: [
+    51244, 51285, 51243, 51225, 51286, 51242, 51226, 51287, 51241, 51227, 51288,
+    51239, 51228, 51289, 51238, 51229, 51249, 51237, 51220, 51248, 51236, 51221,
+    51247, 51235, 51222, 51246, 51240, 51223, 51245, 51224,
+  ],
+
+  // shadowmourne
+  50274: [49623],
+  50231: [49623],
+  50226: [49623],
+  49888: [49623],
+  49869: [49623]
 };
 
 const wowtbcGGMap = {
@@ -295,7 +351,7 @@ async function fetchWowggPure() {
   );
 
   const combos = await combosRequest.json();
-  const result = { 0: {}, 1: {}, 2: {}, 3: {} };
+  const result = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} };
 
   for (const combo of combos.result.pageContext.sortedList) {
     console.log(combo);
@@ -362,7 +418,7 @@ async function fetchWowggPure() {
 
         for (const filteredItem of filteredItems) {
           if (!filteredItem.name) continue;
-          if (filteredItem[phase.toLocaleLowerCase()].bis) {
+          if (filteredItem[phase.toLocaleLowerCase()]?.bis) {
             itemsOrdered = [filteredItem, ...itemsOrdered];
           } else {
             itemsOrdered.push(filteredItem);
@@ -378,7 +434,6 @@ async function fetchWowggPure() {
             if (weirdItemMap[item.name]) {
               found = { itemId: weirdItemMap[item.name] };
             } else {
-
               let itemName = heroicMatch ? heroicMatch[1] : item.name;
 
               const filteredItem = itemsDb.filter(
@@ -386,7 +441,8 @@ async function fetchWowggPure() {
                   i.name == itemName &&
                   (i.class == "Recipe" || i.slot != "Non-equippable") &&
                   i.quality != "Poor" &&
-                  i.quality != "Common" && i.requiredLevel >= 70
+                  i.quality != "Common" &&
+                  i.requiredLevel >= 70
               );
 
               for (const item of filteredItem) {
@@ -439,97 +495,8 @@ async function fetchWowggPure() {
   return result;
 }
 
-async function processPhasesMSH() {
-  const mshResult = { 0: {}, 1: {}, 2: {}, 3: {} };
-
-  for (const phase of phases) {
-    var phaseIndex = phases.indexOf(phase);
-
-    const mshFolderPath = join("data", "wotlk", phaseIndex.toString());
-    if (fs.existsSync(mshFolderPath)) {
-      const classes = fs.readdirSync(mshFolderPath);
-      for (const className of Object.values(classes)) {
-        const classFolderPath = join(mshFolderPath, className);
-
-        const currentClass = {
-          class: className,
-          specs: [],
-        };
-
-        const setFiles = fs.readdirSync(classFolderPath);
-        for (const setFile of Object.values(setFiles)) {
-          const split = setFile.replace(".json", "").split("-");
-          const specName = split[0];
-          const role = split[1];
-
-          var currentSpec = {
-            class: className,
-            spec: specName,
-            role: role,
-            items: {},
-          };
-
-          const setData = JSON.parse(
-            fs.readFileSync(join(classFolderPath, setFile))
-          );
-
-          if (
-            setData["phase"] != phaseIndex ||
-            setData["character"]["gameClass"] != className.toUpperCase()
-          ) {
-            debugger;
-          }
-
-          for (const item of setData["items"]) {
-            const slot = eupgradesMap[item["slot"]];
-            if (slot) {
-              const currentSlot = [];
-              currentSlot.push([item["id"]]);
-              currentSpec.items[slot] = currentSlot;
-
-              const recipe = itemsDb.find(i=> i.name.includes(item["name"]) && i.class == "Recipe");
-              if (recipe){
-                itemDependencyMap[recipe.itemId] = [item["id"]];
-                metadata[recipe.itemId] = recipe.subclass;
-              }
-            }
-          }
-
-          for (const entry of Object.entries(currentSpec.items)) {
-            var items = entry[1];
-            for (const itemArray of items) {
-              for (const itemDependencyEntry of Object.entries(
-                itemDependencyMap
-              )) {
-                var found = false;
-                for (const depItem of itemDependencyEntry[1]) {
-                  if (depItem == itemArray[0]) {
-                    itemArray.push(+itemDependencyEntry[0]);
-                    found = true;
-                    break;
-                  }
-                }
-                if (found) break;
-              }
-            }
-          }
-
-          mergeSlots(currentSpec.items, "ring");
-          mergeSlots(currentSpec.items, "trinket");
-
-          currentClass.specs.push(currentSpec);
-        }
-
-        mshResult[phaseIndex][className] = currentClass;
-      }
-    }
-  }
-
-  return mshResult;
-}
-
 async function processPhasesWowTBCGG() {
-  const result = { 0: {}, 1: {}, 2: {}, 3: {} };
+  const result = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} };
 
   for (const phase of phases) {
     var phaseIndex = phases.indexOf(phase);
@@ -560,8 +527,10 @@ async function processPhasesWowTBCGG() {
           for (const itemObj of itemSlot[1]) {
             currentSpec.items[itemSlot[0]].push([itemObj.id]);
             metadata[itemObj.id] = itemObj.source;
-            const recipe = itemsDb.find(i=> i.name.includes(itemObj.name) && i.class == "Recipe");
-            if (recipe){
+            const recipe = itemsDb.find(
+              (i) => i.name.includes(itemObj.name) && i.class == "Recipe"
+            );
+            if (recipe) {
               itemDependencyMap[recipe.itemId] = [itemObj.id];
               metadata[recipe.itemId] = recipe.subclass;
             }
@@ -574,16 +543,11 @@ async function processPhasesWowTBCGG() {
             for (const itemDependencyEntry of Object.entries(
               itemDependencyMap
             )) {
-              var found = false;
               for (const depItem of itemDependencyEntry[1]) {
                 if (depItem == itemArray[0]) {
                   itemArray.push(+itemDependencyEntry[0]);
-                  found = true;
-                  break;
                 }
               }
-
-              if (found) break;
             }
           }
         }
@@ -600,6 +564,8 @@ async function processPhasesWowTBCGG() {
 function mergeSlots(items, slotName) {
   var first = items[`${slotName}1`];
   var second = items[`${slotName}2`];
+  if (!first || !second) return;
+
   var result = [];
   var max = Math.max(first.length, second.length);
   for (var i = 0; i < max; i++) {
@@ -628,92 +594,6 @@ async function getWowTBCData() {
   return await processPhasesWowTBCGG();
 }
 
-async function mergeSources(wowtbcData, guildData) {
-  const result = { 0: {}, 1: {}, 2: {}, 3: {} };
-
-  for (const phase of phases) {
-    var phaseIndex = phases.indexOf(phase);
-
-    for (const classObj of Object.values(guildData[phaseIndex])) {
-      const className = classObj["class"];
-      const currentClass = {
-        class: className,
-        specs: [],
-      };
-
-      for (const spec of classObj.specs) {
-        var currentSpec = {
-          class: className,
-          spec: spec.spec,
-          role: spec.role,
-          items: {},
-        };
-
-        for (const [slot, items] of Object.entries(spec.items)) {
-          const itemGroupArray = [];
-          itemGroupArray.push(items[0]);
-
-          if (slot == "ring" || slot == "trinket") {
-            itemGroupArray.push(items[1]);
-          }
-
-          currentSpec.items[slot] = itemGroupArray;
-        }
-
-        currentClass.specs.push(currentSpec);
-      }
-
-      result[phaseIndex][className] = currentClass;
-    }
-
-    for (const classObj of Object.values(wowtbcData[phaseIndex])) {
-      const className = classObj["class"];
-      const currentClass = result[phaseIndex][className] ?? {
-        class: className,
-        specs: [],
-      };
-
-      for (const spec of classObj.specs) {
-        const existingSpec = currentClass.specs.find(
-          (x) =>
-            x["class"] == spec["class"] &&
-            x.spec == spec.spec &&
-            x.role == spec.role
-        );
-
-        const currentSpec = existingSpec ?? {
-          class: className,
-          spec: spec.spec,
-          role: spec.role,
-          items: {},
-        };
-
-        for (const [slot, items] of Object.entries(spec.items)) {
-          const itemGroupArray = currentSpec.items[slot]
-            ? [...currentSpec.items[slot]]
-            : [];
-
-          for (const itemGroup of items) {
-            if (!itemGroupArray.find(ig => ig[0] == itemGroup[0])) {
-              itemGroupArray.push(itemGroup);
-            }
-          }
-
-          currentSpec.items[slot] = itemGroupArray.slice(0, 5);
-        }
-
-        if (!existingSpec) {
-          currentClass.specs.push(currentSpec);
-        }
-      }
-
-      result[phaseIndex][className] = currentClass;
-    }
-  }
-
-  return result;
-}
-
 async function main() {
   var now = new Date();
 
@@ -734,10 +614,7 @@ async function main() {
     phases: {},
   };
 
-  const wowTBCData = await getWowTBCData();
-  const guildData = await processPhasesMSH();
-
-  bisAddonData.phases = mergeSources(wowTBCData, guildData);
+  bisAddonData.phases = await getWowTBCData();
 
   engine.parseAndRender(bisListTemplate, bisAddonData).then((render) => {
     fs.writeFileSync(
@@ -752,6 +629,8 @@ async function main() {
       luamin.minify(render)
     );
   });
+
+  console.log("done");
 }
 
 main();

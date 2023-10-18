@@ -33,6 +33,10 @@
     "ItemRefTooltip",
     "InterfaceOptionsFrame_OpenToCategory",
     "INVSLOT_FIRST_EQUIPPED",
-    "INVSLOT_LAST_EQUIPPED"
+    "INVSLOT_LAST_EQUIPPED",
+    "Settings",
+    "GameFontDisableSmall",
+    "GameFontNormalSmall",
+    "AddonCompartmentFrame"
   ]
 }
