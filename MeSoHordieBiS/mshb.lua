@@ -40,6 +40,14 @@ MSHB.supportedPhases = {
             month = 10,
             day = 12
         }
+    },
+    [5] = {
+        name = "Phase 5 - RS",
+        start = time {
+            year = 2024,
+            month = 1,
+            day = 11
+        }
     }
 }
 

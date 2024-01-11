@@ -23,7 +23,7 @@ var metadata = {
   49869: "Contained in Light's Vengeance"
 };
 
-const phases = ["Pre-Bis", "T7", "T8", "T9", "T10"];
+const phases = ["Pre-Bis", "T7", "T8", "T9", "T10", "T10.5"];
 const wowTbcggSlots = [
   "head",
   "neck",
@@ -352,7 +352,7 @@ async function fetchWowggPure() {
   );
 
   const combos = await combosRequest.json();
-  const result = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} };
+  const result = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
 
   for (const combo of combos.result.pageContext.sortedList) {
     console.log(combo);
@@ -502,7 +502,7 @@ async function fetchWowggPure() {
 }
 
 async function processPhasesWowTBCGG() {
-  const result = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {} };
+  const result = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
 
   for (const phase of phases) {
     var phaseIndex = phases.indexOf(phase);
