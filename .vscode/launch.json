@@ -7,20 +7,11 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch MSH BiS Generator",
+            "name": "Launch SBL database generator",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/scraper/index.js"
         },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "SeventyUpgrades generator",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/seventyupgrades_generator/index.js"
-        }
     ]
 }

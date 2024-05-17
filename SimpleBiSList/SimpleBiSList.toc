@@ -1,0 +1,13 @@
+## Interface: 40400
+## Title: Simple BiS List
+## Author: Beckeeh
+## Version: 4.0.0
+## SavedVariablesPerCharacter: SBLDB
+
+embeds.xml
+
+data/bis_list.lua
+data/metadata.lua
+init.lua
+bis_browser.lua
+main.lua
