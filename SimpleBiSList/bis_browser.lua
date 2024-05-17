@@ -129,27 +129,27 @@ function SBL:ShowBiSWindow()
     frame.frame:SetScript("OnKeyDown", function(self, key)
         if key == "ESCAPE" then
             frame.frame:SetPropagateKeyboardInput(false)
-            self:CloseBiSWindow()
+            SBL:CloseBiSWindow()
         else
             frame.frame:SetPropagateKeyboardInput(true)
         end
 
         if key == "LSHIFT" then
             frame.frame:SetPropagateKeyboardInput(false)
-            self:InvalidateTooltip()
+            SBL:InvalidateTooltip()
         end
     end)
 
     frame.frame:SetScript("OnKeyUp", function(self, key)
         if key == "LSHIFT" then
-            self:InvalidateTooltip()
+            SBL:InvalidateTooltip()
         end
     end)
 
-    frame:SetTitle("SBL BiS Browser")
+    frame:SetTitle("Simple BiS List Browser")
     frame:SetCallback("OnClose", function(widget)
-        self.gui.isBiSBrowserOpen = false
-        self.aceGui:Release(widget)
+        SBL.gui.isBiSBrowserOpen = false
+        SBL.aceGui:Release(widget)
     end)
     frame:SetLayout("Flow")
 
@@ -170,10 +170,10 @@ function SBL:ShowBiSWindow()
 
     phaseSelectorDropDown:SetCallback("OnValueChanged", function(self, event, value)
         SBL.gui.state.phase = value
-        self:InvalidateClassSelector()
-        self:InvalidateSpecSelector()
-        self:InvalidateRoleSelector()
-        self:InvalidateItems()
+        SBL:InvalidateClassSelector()
+        SBL:InvalidateSpecSelector()
+        SBL:InvalidateRoleSelector()
+        SBL:InvalidateItems()
     end)
 
     local classSelectorDropDown = self.aceGui:Create("Dropdown")
@@ -183,9 +183,9 @@ function SBL:ShowBiSWindow()
 
     classSelectorDropDown:SetCallback("OnValueChanged", function(self, event, value)
         SBL.gui.state.class = value
-        self:InvalidateSpecSelector()
-        self:InvalidateRoleSelector()
-        self:InvalidateItems()
+        SBL:InvalidateSpecSelector()
+        SBL:InvalidateRoleSelector()
+        SBL:InvalidateItems()
     end)
 
     local specSelectorDropDown = self.aceGui:Create("Dropdown")
@@ -195,8 +195,8 @@ function SBL:ShowBiSWindow()
 
     specSelectorDropDown:SetCallback("OnValueChanged", function(self, event, value)
         SBL.gui.state.spec = value
-        self:InvalidateRoleSelector()
-        self:InvalidateItems()
+        SBL:InvalidateRoleSelector()
+        SBL:InvalidateItems()
     end)
 
     local roleSelectorDropDown = self.aceGui:Create("Dropdown")
@@ -206,7 +206,7 @@ function SBL:ShowBiSWindow()
 
     roleSelectorDropDown:SetCallback("OnValueChanged", function(self, event, value)
         SBL.gui.state.role = value
-        self:InvalidateItems()
+        SBL:InvalidateItems()
     end)
 
     local missingOnlyCheckBox = self.aceGui:Create("CheckBox")
@@ -217,7 +217,7 @@ function SBL:ShowBiSWindow()
     missingOnlyCheckBox:SetCallback("OnValueChanged", function(self, event, value)
         SBL.gui.state.missingOnly = value
         SBL.db.char.missingOnlyEnabled = value
-        self:InvalidateItems()
+        SBL:InvalidateItems()
     end)
 
     local scrollcontainer = self.aceGui:Create("SimpleGroup")

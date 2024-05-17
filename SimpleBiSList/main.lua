@@ -35,49 +35,17 @@ SBL.supportedPhases = {
     [0] = {
         name = "Pre-Raid",
         start = time {
-            year = 2022,
-            month = 9,
-            day = 26
+            year = 2024,
+            month = 5,
+            day = 20
         }
     },
     [1] = {
-        name = "Phase 1 - Naxx/OS/EoE/VoA",
-        start = time {
-            year = 2022,
-            month = 10,
-            day = 6
-        }
-    },
-    [2] = {
-        name = "Phase 2 - Ulduar",
-        start = time {
-            year = 2023,
-            month = 1,
-            day = 19
-        }
-    },
-    [3] = {
-        name = "Phase 3 - TotC/Onyxia",
-        start = time {
-            year = 2023,
-            month = 6,
-            day = 20
-        },
-    },
-    [4] = {
-        name = "Phase 4 - ICC",
-        start = time {
-            year = 2023,
-            month = 10,
-            day = 12
-        }
-    },
-    [5] = {
-        name = "Phase 5 - RS",
+        name = "Phase 1 - BoT/TotF/BD",
         start = time {
             year = 2024,
-            month = 1,
-            day = 11
+            month = 5,
+            day = 30
         }
     }
 }
@@ -402,7 +370,7 @@ function SBL:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New("SBLDB", {
         char = {
             mode = 'spec',
-            phase = self:getCurrentPhase(),
+            phase = self:calculateCurrentPhase(),
             showBisIndicator = true,
             missingOnlyEnabled = false,
         } ,
@@ -415,7 +383,9 @@ function SBL:OnInitialize()
 
     self.icon:Register("SimpleBiSListMM", sblmmLDB, self.db.profile.minimap)
 
-    self.db.char.phase = self:getCurrentPhase()
+    if not SBL:has_key(SBL.supportedPhases, self:GetCurrentPhase()) then
+        self.db.char.phase = self:calculateCurrentPhase()
+    end
 
     if self.db.char.showBisIndicator == nil then
         self.db.char.showBisIndicator = true
@@ -437,8 +407,8 @@ function SBL:OnEnable()
 
 end
 
-function SBL:getCurrentPhase()
-    local phaseResult = -1
+function SBL:calculateCurrentPhase()
+    local phaseResult = 0
     local now = time()
     for _, v in pairs(self.supportedPhases) do
         if v["start"] < now then
@@ -702,7 +672,7 @@ function SBL:append_tooltip(tooltip, forcedAllMode)
         if SBL.db.char.phase > 0 then
             phase = "Phase " .. SBL.db.char.phase;
         end
-        tooltip:AddLine("Me So Hordie BiS - " .. phase .. " " .. currentMode)
+        tooltip:AddLine("Simple BiS List - " .. phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
             self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5], v[6])
         end
@@ -791,4 +761,16 @@ function SBL:ShowIndicatorIfBiS(slotID, button, itemId, unit, inspect)
             button.sblIndicator:Show()
         end
     end
+end
+
+function SBL:modifyHyperLink(hyperLink, mods)
+    local splitLink = self:string_split(hyperLink, "|")
+    local splitItemLink = self:string_split(splitLink[2], ":")
+
+    for mod, value in ipairs(mods) do
+
+    end
+
+    splitLink[2] = table.concat(splitItemLink, ":")
+    return table.concat(splitLink, "\124");
 end
