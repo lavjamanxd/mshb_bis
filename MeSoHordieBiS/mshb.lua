@@ -193,7 +193,7 @@ function MSHB:predict_player(target, inspect)
     local predictedSpecSpentPoints = -1
     for i = 1, GetNumTalentTabs(inspect) do
         local activeSpec = GetActiveTalentGroup(inspect)
-        local name, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect, false, activeSpec)
+        local _, name, _, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect, false, activeSpec)
         if predictedSpecSpentPoints < pointsSpent then
             predictedSpec = name
             predictedSpecSpentPoints = pointsSpent
