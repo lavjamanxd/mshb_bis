@@ -146,7 +146,7 @@ function SBL:ShowBiSWindow()
         end
     end)
 
-    frame:SetTitle("Simple BiS List Browser")
+    frame:SetTitle("Simple BiS Browser")
     frame:SetCallback("OnClose", function(widget)
         SBL.gui.isBiSBrowserOpen = false
         SBL.aceGui:Release(widget)

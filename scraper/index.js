@@ -415,14 +415,14 @@ async function main() {
 
   engine.parseAndRender(bisListTemplate, bisAddonData).then((render) => {
     fs.writeFileSync(
-      join(appDir, "..", "SimpleBiSList", "data", "bis_list.lua"),
+      join(appDir, "..", "SimpleBiS", "data", "bis_list.lua"),
       luamin.minify(render)
     );
   });
 
   engine.parseAndRender(metadataTemplate, { metadata }).then((render) => {
     fs.writeFileSync(
-      join(appDir, "..", "SimpleBiSList", "data", "metadata.lua"),
+      join(appDir, "..", "SimpleBiS", "data", "metadata.lua"),
       luamin.minify(render)
     );
   });

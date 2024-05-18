@@ -51,7 +51,7 @@ SBL.supportedPhases = {
 }
 
 SBL.options = {
-    name = "Simple BiS List",
+    name = "Simple BiS",
     handler = SBL,
     type = "group",
     args = {
@@ -294,7 +294,7 @@ function SBL:SBLInputProcessorFunc(input)
     if input == "" then
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        print("Simple BiS List")
+        print("Simple BiS")
         print("Commands:")
         print("/sbl mode <mode>")
         print("/sbl phase <number>")
@@ -381,7 +381,7 @@ function SBL:OnInitialize()
         }
     })
 
-    self.icon:Register("SimpleBiSListMM", sblmmLDB, self.db.profile.minimap)
+    self.icon:Register("SimpleBiSMM", sblmmLDB, self.db.profile.minimap)
 
     if not SBL:has_key(SBL.supportedPhases, self:GetCurrentPhase()) then
         self.db.char.phase = self:calculateCurrentPhase()
@@ -672,7 +672,7 @@ function SBL:append_tooltip(tooltip, forcedAllMode)
         if SBL.db.char.phase > 0 then
             phase = "Phase " .. SBL.db.char.phase;
         end
-        tooltip:AddLine("Simple BiS List - " .. phase .. " " .. currentMode)
+        tooltip:AddLine("Simple BiS - " .. phase .. " " .. currentMode)
         for i, v in ipairs(lines) do
             self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5], v[6])
         end
