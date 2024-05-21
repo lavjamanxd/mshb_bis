@@ -408,7 +408,7 @@ function SBL:OnEnable()
 end
 
 function SBL:calculateCurrentPhase()
-    local phaseResult = 0
+    local phaseResult = -1
     local now = time()
     for _, v in pairs(self.supportedPhases) do
         if v["start"] < now then
