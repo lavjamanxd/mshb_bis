@@ -51,7 +51,7 @@ function SBL:RegisterItemWidgetLayout()
             end
             ident:SetWidth(32)
             ident:SetHeight(32)
-            ident.frame:SetPoint("RIGHT", icon.frame, "LEFT", 0, 0)
+            ident.frame:SetPoint("RIGHT", icon.frame, "LEFT", 0, -4)
             ident.frame:Show()
         end
     end)
