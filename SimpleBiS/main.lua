@@ -52,8 +52,8 @@ SBL.supportedPhases = {
         name = "Phase 3 - Firelands",
         start = time {
             year = 2024,
-            month = 10,
-            day = 31
+            month = 11,
+            day = 7
         }
     }
 }
