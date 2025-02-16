@@ -55,6 +55,14 @@ SBL.supportedPhases = {
             month = 11,
             day = 7
         }
+    },
+    [3] = {
+        name = "Phase 4 - Dragon Soul",
+        start = time {
+            year = 2025,
+            month = 2,
+            day = 18
+        }
     }
 }
 

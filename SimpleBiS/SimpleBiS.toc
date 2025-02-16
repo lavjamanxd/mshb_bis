@@ -1,7 +1,7 @@
 ## Interface: 40401
 ## Title: Simple BiS
 ## Author: Beckeeh
-## Version: 4.1.0
+## Version: 4.2.0
 ## SavedVariablesPerCharacter: SBLDB
 
 embeds.xml
