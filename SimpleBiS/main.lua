@@ -308,14 +308,13 @@ end
 
 function SBL:SBLInputProcessorFunc(input)
     if input == "" then
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
         print("Simple BiS")
         print("Commands:")
         print("/sbl mode <mode>")
         print("/sbl phase <number>")
         print("/sbl indicator")
         print("/sbl browser")
+        print("/sbl settings")
         print("/sbl version")
         return
     end
@@ -340,6 +339,10 @@ function SBL:SBLInputProcessorFunc(input)
 
     if (split[1] == "browser") then
         self:ShowBiSWindow()
+    end
+
+    if (split[1] == "settings") then
+        Settings.OpenToCategory("SBL")
     end
 end
 
