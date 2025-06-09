@@ -35,35 +35,19 @@ SBL.supportedPhases = {
     [0] = {
         name = "Pre-Raid",
         start = time {
-            year = 2024,
-            month = 5,
-            day = 20
+            year = 2025,
+            month = 7,
+            day = 21
         }
     },
     [1] = {
-        name = "Phase 1 - BoT/TotF/BD",
-        start = time {
-            year = 2024,
-            month = 5,
-            day = 30
-        }
-    },
-    [2] = {
-        name = "Phase 3 - Firelands",
-        start = time {
-            year = 2024,
-            month = 11,
-            day = 7
-        }
-    },
-    [3] = {
-        name = "Phase 4 - Dragon Soul",
+        name = "Phase 1 - MV/HoF/ToES",
         start = time {
             year = 2025,
-            month = 2,
-            day = 18
+            month = 8,
+            day = 3
         }
-    }
+    },
 }
 
 SBL.options = {
