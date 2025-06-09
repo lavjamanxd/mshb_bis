@@ -201,7 +201,7 @@ async function processPhasesWowTBCGG() {
 		const path = fs.readFileSync(wowtbcDataPath);
 		const data = JSON.parse(path);
 
-		for (const classDef of Object.values(data).slice(0, 1)) {
+		for (const classDef of Object.values(data)) {
 			const className = classDef.class;
 			result[phaseIndex][className] = {
 				class: className,
@@ -291,13 +291,13 @@ function mergeSlots(items, slotName) {
 }
 
 async function getWowTBCData() {
-	// const wowtbcData = await fetchWowggPure();
-	// for (const phase of Object.entries(wowtbcData)) {
-	// 	fs.writeFileSync(
-	// 		`phase_${phase[0]}.json`,
-	// 		JSON.stringify(phase[1], null, 2),
-	// 	);
-	// }
+	const wowtbcData = await fetchWowggPure();
+	for (const phase of Object.entries(wowtbcData)) {
+		fs.writeFileSync(
+			`phase_${phase[0]}.json`,
+			JSON.stringify(phase[1], null, 2),
+		);
+	}
 	return await processPhasesWowTBCGG();
 }
 
