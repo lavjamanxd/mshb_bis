@@ -35,6 +35,7 @@
         "ToggleCharacter",
         "ItemRefTooltip",
         "INVSLOT_FIRST_EQUIPPED",
-        "INVSLOT_LAST_EQUIPPED"
+        "INVSLOT_LAST_EQUIPPED",
+        "sbl_bis_addon_data"
     ]
 }

@@ -366,7 +366,7 @@ function SBL:AddItemSlotGroup(parent, itemSlot, itemGroups)
     slotGroup:SetTitle(SBL.inventorySlotsLabels[itemSlot])
     slotGroup:SetRelativeWidth(1.0)
 
-    if table.getn(gotItems) ~= 0 then
+    if #gotItems ~= 0 then
         if itemSlot == "trinket" or itemSlot == "ring" then
             if self:indexExists(gotItems, 1) and self:indexExists(gotItems, 2) then
                 slotGroup.border:SetBackdropBorderColor(0.35, 0.92, 0)
@@ -394,7 +394,7 @@ end
 
 function SBL:CharacterHasItem(itemId)
     local itemIdNumber = tonumber(itemId)
-    if IsEquippedItem(itemId) then
+    if C_Item.IsEquippedItem(itemId) then
         return true
     else
         for bagSlot = 0, NUM_BAG_SLOTS do
@@ -454,7 +454,7 @@ function SBL:AddItemWidget(parent, index, itemId, ident, itemSlot, highlighted)
             return
         end
 
-        local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = GetItemInfo(itemId)
+        local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = C_Item.GetItemInfo(itemId)
         if ChatFrameEditBox and ChatFrameEditBox:IsVisible() then
             ChatFrameEditBox:Insert(sLink)
         else

@@ -366,7 +366,7 @@ function SBL:OnAddonLoaded(event, addon)
 end
 
 function SBL:LazyHook(addon, hookFunc)
-    if IsAddOnLoaded(addon) then
+    if C_AddOns.IsAddOnLoaded(addon) then
         hookFunc()
     else
         self.lazyHooks[addon] = hookFunc
@@ -454,17 +454,9 @@ end
 
 function SBL:predict_player(target, inspect)
     local _, englishClass, classIndex = UnitClass(target)
-    local predictedSpec = ""
-    local predictedSpecSpentPoints = -1
-    for i = 1, GetNumTalentTabs(inspect) do
-        local activeSpec = GetActiveTalentGroup(inspect)
-        local _, name, _, texture, pointsSpent, fileName = GetTalentTabInfo(i, inspect, false, activeSpec)
-        if predictedSpecSpentPoints < pointsSpent then
-            predictedSpec = name
-            predictedSpecSpentPoints = pointsSpent
-        end
-    end
-    return englishClass, predictedSpec
+    local specId = C_SpecializationInfo.GetSpecialization(inspect)
+    local _, specName = C_SpecializationInfo.GetSpecializationInfo(specId);
+    return englishClass, specName
 end
 
 function SBL:player_is_master_looter()
@@ -638,7 +630,7 @@ function SBL:append_tooltip(tooltip, forcedAllMode)
         lines = SBL.tooltipCache.result
         currentMode = SBL.tooltipCache.mode
     else
-        local itemEquipLocation = select(4, GetItemInfoInstant(itemId));
+        local itemEquipLocation = select(4, C_Item.GetItemInfoInstant(itemId));
 
         if itemEquipLocation ~= "" then
             if SBL.db.char.mode == "spec" and not isPlayerLootMaster and not forcedAllMode then
