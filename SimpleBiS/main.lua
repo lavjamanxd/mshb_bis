@@ -440,7 +440,7 @@ function SBL:to_pascal_case(input)
 end
 
 function SBL:predict_player(target, inspect)
-    local _, englishClass, classIndex = UnitClass(target)
+    local _, englishClass, _ = UnitClass(target)
     local specId = C_SpecializationInfo.GetSpecialization(inspect)
     local _, specName = C_SpecializationInfo.GetSpecializationInfo(specId);
     return englishClass, specName
@@ -460,10 +460,6 @@ function SBL:get_extra_from_group(itemId, class, spec, role, nth, group)
         return ""
     end
 
-    if self:has_value_nested(group, "34664") and itemId ~= group[1][1] then
-        return " |Tinterface/icons/spell_nature_elementalshields.blp:0|t"
-    end
-
     return ""
 end
 
@@ -475,9 +471,9 @@ function SBL:append_spec(tooltip, itemId, class, spec, role, nth, group, slotID)
         classIcon = "spell_deathknight_classicon.blp"
     end
 
-    if class == "DRUID" and spec == "feral combat" and role == "DPS" then
-        specIcon = self.spec_icon_table[class .. '_' .. spec:lower() .. "_cat"]
-    end
+    -- if class == "DRUID" and spec == "feral combat" and role == "DPS" then
+    --     specIcon = self.spec_icon_table[class .. '_' .. spec:lower() .. "_cat"]
+    -- end
 
     local prefix = tostring(nth) .. ". ";
 
@@ -495,7 +491,7 @@ function SBL:append_spec(tooltip, itemId, class, spec, role, nth, group, slotID)
 end
 
 function SBL:has_key(tab, val)
-    for index, value in pairs(tab) do
+    for index, _ in pairs(tab) do
         if index == val then
             return true
         end
@@ -505,7 +501,7 @@ function SBL:has_key(tab, val)
 end
 
 function SBL:has_value(tab, val)
-    for index, value in ipairs(tab) do
+    for _, value in ipairs(tab) do
         if value == val then
             return true
         end
@@ -515,15 +511,18 @@ function SBL:has_value(tab, val)
 end
 
 function SBL:has_value_nested(tab, val)
-    for index, value in pairs(tab) do
+    for _, value in pairs(tab) do
         if (type(value) == "table") then
+            if value.id and value.id == val then
+                return tab
+            end
             local result = self:has_value_nested(value, val)
             if result then
-                return true
+                return tab
             end
         else
             if value == val then
-                return true
+                return tab
             end
         end
     end
@@ -532,15 +531,15 @@ function SBL:has_value_nested(tab, val)
 end
 
 function SBL:get_table_which_contains(tab, val)
-    for index, value in pairs(tab) do
+    for _, value in pairs(tab) do
         if (type(value) == "table") then
             local result = self:has_value_nested(value, val)
             if result then
-                return value
+                return tab
             end
         else
-            if value == val then
-                return true
+            if value.id == val then
+                return tab
             end
         end
     end
@@ -550,11 +549,11 @@ end
 
 function SBL:get_tables_which_contains(tab, val)
     local result = {}
-    for index, value in pairs(tab) do
+    for _, value in pairs(tab) do
         if (type(value) == "table") then
             local hasValue = self:has_value_nested(value, val)
             if hasValue then
-                table.insert(result, value)
+                table.insert(result, hasValue)
             end
         end
     end
@@ -564,11 +563,9 @@ end
 
 function SBL:indexOf(tab, val)
     local counter = 1
-    for index, value in pairs(tab) do
-        for _, g in ipairs(value) do
-            if g == val then
-                return counter
-            end
+    for _, value in pairs(tab) do
+        if value.id == val then
+            return counter
         end
         counter = counter + 1;
     end
@@ -578,14 +575,15 @@ end
 
 function SBL:getIndexOfFromMultipleGroups(groups, itemId)
     local group
-    local bisSlots = self:get_tables_which_contains(groups, itemId)
+    local id = tonumber(itemId)
+    local bisSlots = self:get_tables_which_contains(groups, id)
     local betterIndex = 1000
     for z, o in ipairs(bisSlots) do
-        local index = self:indexOf(o, itemId)
+        local index = self:indexOf(o, id)
         if index and index < betterIndex then
-            betterIndex = index
-            group = o
-        end
+           betterIndex = index
+           group = o
+       end
     end
     return betterIndex, group
 end
@@ -635,7 +633,7 @@ function SBL:append_tooltip(tooltip, forcedAllMode)
 
             if SBL.db.char.mode == "class" and not isPlayerLootMaster and not forcedAllMode then
                 currentMode = "(" .. self.supportedModes[SBL.db.char.mode]["name"] .. " mode)"
-                for index, bisClass in ipairs(currentPhaseBiSClass) do
+                for _, bisClass in ipairs(currentPhaseBiSClass) do
                     local index, group = self:getIndexOfFromMultipleGroups(bisClass["items"], itemId)
                     if group then
                         lines[#lines + 1] = { class, bisClass["spec"], bisClass["role"], index, group, itemEquipLocation }
@@ -671,7 +669,7 @@ function SBL:append_tooltip(tooltip, forcedAllMode)
             phase = "Phase " .. SBL.db.char.phase;
         end
         tooltip:AddLine("Simple BiS - " .. phase .. " " .. currentMode)
-        for i, v in ipairs(lines) do
+        for _, v in ipairs(lines) do
             self:append_spec(tooltip, itemId, v[1], v[2], v[3], v[4], v[5], v[6])
         end
     end

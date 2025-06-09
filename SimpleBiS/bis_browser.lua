@@ -326,7 +326,7 @@ function SBL:AddItemSlotGroups(parent, phase, class, spec, role, missingOnly)
 end
 
 function SBL:indexExists(table, indexToLookup)
-    for index, element in ipairs(table) do
+    for _, element in ipairs(table) do
         if element == indexToLookup then
             return true
         end
@@ -339,13 +339,12 @@ function SBL:AddItemSlotGroup(parent, itemSlot, itemGroups)
         return
     end
 
+    local items = itemGroups[itemSlot]
     local gotItems = {}
 
-    for index, itemGroup in ipairs(itemGroups[itemSlot]) do
-        for _, item in ipairs(itemGroup) do
-            if self:CharacterHasItem(item) then
-                table.insert(gotItems, index);
-            end
+    for index, item in ipairs(items) do
+        if self:CharacterHasItem(item.id) then
+            table.insert(gotItems, index);
         end
     end
 
@@ -384,10 +383,12 @@ function SBL:AddItemSlotGroup(parent, itemSlot, itemGroups)
         slotGroup.border:SetBackdropBorderColor(0.4, 0.4, 0.4)
     end
 
-    for index, group in ipairs(itemGroups[itemSlot]) do
-        for yindex, item in ipairs(group) do
-            local ident = yindex ~= 1
-            self:AddItemWidget(slotGroup, index, item, ident, itemSlot, self:indexExists(gotItems, index))
+    for index, item in ipairs(items) do
+        self:AddItemWidget(slotGroup, index, item.id, false, itemSlot, self:indexExists(gotItems, index))
+        if item.deps ~= nil then
+            for _, depItem in ipairs(item.deps) do
+                self:AddItemWidget(slotGroup, index, depItem, true, itemSlot, self:indexExists(gotItems, index))
+            end
         end
     end
 end
@@ -454,7 +455,7 @@ function SBL:AddItemWidget(parent, index, itemId, ident, itemSlot, highlighted)
             return
         end
 
-        local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = C_Item.GetItemInfo(itemId)
+        local _, sLink, _, _, _, _, _, _ = C_Item.GetItemInfo(itemId)
         if ChatFrameEditBox and ChatFrameEditBox:IsVisible() then
             ChatFrameEditBox:Insert(sLink)
         else
