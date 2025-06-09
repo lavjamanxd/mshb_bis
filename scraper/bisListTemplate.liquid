@@ -4,7 +4,7 @@ sbl_bis_addon_data = {
         {%- for phase in phases %}
         ["phase{{ phase[0] }}"]= {
         {%- for classGroup in phase[1] %}
-            ["{{ classGroup[0]  | downcase }}"] = {
+            ["{{ classGroup[0] | downcase }}"] = {
             {%- for spec in classGroup[1].specs %}
                 {
                     ["spec"] = "{{ spec.spec | downcase }}",
@@ -12,13 +12,28 @@ sbl_bis_addon_data = {
                     ["items"] = {
                     {%- for itemslot in spec.items %}
                         ["{{ itemslot[0] }}"] = {
-                            {%- for itemGroup in itemslot[1] -%}
+                            {%- for item in itemslot[1] %}
                                 {
-                                {%- for itemId in itemGroup -%}
-                                    "{{ itemId }}",
-                                {%- endfor -%}
+                                    id = {{ item.id }},
+                                {%- if item.dependencies %}
+                                    deps = {
+                                        {% for dependency in item.dependencies -%}
+                                            {{ dependency }},
+                                        {% endfor -%}
+                                    },
+                                {%- endif %}
+                                {%- if item.gems %}
+                                    gems = {
+                                        {% for gem in item.gems -%}
+                                            {{ gem }},
+                                        {% endfor -%}
+                                    },
+                                {%- endif %}
+                                {%- if item.enchant %}
+                                    ench = {{ item.enchant }},
+                                {%- endif %}
                                 },
-                            {%- endfor -%}
+                            {%- endfor %}
                         },
                     {%- endfor -%}
                     }

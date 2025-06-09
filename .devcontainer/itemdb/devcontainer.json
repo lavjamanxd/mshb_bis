@@ -1,0 +1,37 @@
+{
+    "name": "itemdb",
+    "dockerComposeFile": "compose.yml",
+    "service": "devenv",
+    "workspaceFolder": "/workspace",
+    "overrideCommand": true,
+    "updateRemoteUserUID": true,
+    "remoteUser": "bun",
+    "containerUser": "bun",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "oven.bun-vscode@prerelease",
+                "biomejs.biome@prerelease"
+            ],
+            "settings": {
+                "telemetry.telemetryLevel": "off",
+                "editor.defaultFormatter": "biomejs.biome",
+                "typescript.preferences.importModuleSpecifier": "non-relative",
+                "typescript.preferences.importModuleSpecifierEnding": "minimal",
+                "biome.lsp.bin": "/workspace/node_modules/@biomejs/cli-linux-x64-musl/biome",
+                "[typescript]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[json]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[jsonc]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[javascript]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                }
+            }
+        }
+    }
+}

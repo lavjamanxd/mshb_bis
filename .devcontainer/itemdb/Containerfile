@@ -1,0 +1,5 @@
+FROM oven/bun:canary-alpine
+
+RUN apk update && \
+    apk add git bash && \
+    apk cache clean

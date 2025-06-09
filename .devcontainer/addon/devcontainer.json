@@ -1,0 +1,19 @@
+{
+    "image": "frolvlad/alpine-glibc",
+    "name": "addon",
+    "workspaceMount": "source=${localWorkspaceFolder}/SimpleBiS,target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+    "overrideCommand": true,
+    "updateRemoteUserUID": true,
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ketho.wow-api"
+            ],
+            "settings": {
+                "telemetry.telemetryLevel": "off",
+                "extensions.verifySignature": false
+            }
+        }
+    }
+}

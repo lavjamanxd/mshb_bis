@@ -1,0 +1,16 @@
+{
+  "name": "itemdb",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0-beta.6",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "mariadb": "^3.4.2"
+  }
+}

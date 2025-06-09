@@ -1,0 +1,26 @@
+services:
+    devenv:
+        build:
+            context: .
+            dockerfile: Containerfile
+        volumes:
+            - "../../itemdb:/workspace/"
+        working_dir: /workspace/
+        command: sleep infinity
+
+    db:
+        image: mariadb
+        restart: always
+        volumes:
+            - ../../itemdb/database:/docker-entrypoint-initdb.d
+        environment:
+            MARIADB_ROOT_PASSWORD: itemdb
+            MARIADB_USER: user
+            MARIADB_PASSWORD: password
+            MARIADB_DATABASE: wow
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+        - 8080:8080

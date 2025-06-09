@@ -1,157 +1,172 @@
 [
-    {
-        "class": "Mage",
-        "spec": "Fire",
-        "role": "DPS"
-    },
-    {
-        "class": "Mage",
-        "spec": "Arcane",
-        "role": "DPS"
-    },
-    {
-        "class": "Mage",
-        "spec": "Frost",
-        "role": "DPS"
-    },
-    {
-        "class": "Death Knight",
-        "spec": "Unholy",
-        "role": "DPS"
-    },
-    {
-        "class": "Death Knight",
-        "spec": "Frost",
-        "role": "DPS"
-    },
-    {
-        "class": "Death Knight",
-        "spec": "Blood Tank",
-        "role": "Tank"
-    },
-    {
-        "class": "Shaman",
-        "spec": "Elemental",
-        "role": "DPS"
-    },
-    {
-        "class": "Shaman",
-        "spec": "Enhancement",
-        "role": "DPS"
-    },
-    {
-        "class": "Shaman",
-        "spec": "Restoration",
-        "role": "Heal"
-    },
-    {
-        "class": "Hunter",
-        "spec": "Survival",
-        "role": "DPS"
-    },
-    {
-        "class": "Hunter",
-        "spec": "Marksmanship",
-        "role": "DPS"
-    },
-    {
-        "class": "Hunter",
-        "spec": "Beast Mastery",
-        "role": "DPS"
-    },
-    {
-        "class": "Warrior",
-        "spec": "Arms",
-        "role": "DPS"
-    },
-    {
-        "class": "Warrior",
-        "spec": "Fury",
-        "role": "DPS"
-    },
-    {
-        "class": "Warrior",
-        "spec": "Protection",
-        "role": "Tank"
-    },
-    {
-        "class": "Warlock",
-        "spec": "Demonology",
-        "role": "DPS"
-    },
-    {
-        "class": "Warlock",
-        "spec": "Affliction",
-        "role": "DPS"
-    },
-    {
-        "class": "Warlock",
-        "spec": "Destruction",
-        "role": "DPS"
-    },
-    {
-        "class": "Rogue",
-        "spec": "Combat",
-        "role": "DPS"
-    },
-    {
-        "class": "Rogue",
-        "spec": "Subtlety",
-        "role": "DPS"
-    },
-    {
-        "class": "Rogue",
-        "spec": "Assassination",
-        "role": "DPS"
-    },
-    {
-        "class": "Priest",
-        "spec": "Shadow",
-        "role": "DPS"
-    },
-    {
-        "class": "Priest",
-        "spec": "Holy",
-        "role": "Heal"
-    },
-    {
-        "class": "Priest",
-        "spec": "Discipline",
-        "role": "Heal"
-    },
-    {
-        "class": "Druid",
-        "spec": "Balance",
-        "role": "DPS"
-    },
-    {
-        "class": "Druid",
-        "spec": "Feral DPS",
-        "role": "DPS"
-    },
-    {
-        "class": "Druid",
-        "spec": "Feral Tank",
-        "role": "Tank"
-    },
-    {
-        "class": "Druid",
-        "spec": "Restoration",
-        "role": "Heal"
-    },
-    {
-        "class": "Paladin",
-        "spec": "Retribution",
-        "role": "DPS"
-    },
-    {
-        "class": "Paladin",
-        "spec": "Holy",
-        "role": "Heal"
-    },
-    {
-        "class": "Paladin",
-        "spec": "Protection",
-        "role": "Tank"
-    }
+	{
+		"class": "Mage",
+		"spec": "Fire",
+		"role": "DPS"
+	},
+	{
+		"class": "Mage",
+		"spec": "Arcane",
+		"role": "DPS"
+	},
+	{
+		"class": "Mage",
+		"spec": "Frost",
+		"role": "DPS"
+	},
+	{
+		"class": "Death Knight",
+		"spec": "Unholy",
+		"role": "DPS"
+	},
+	{
+		"class": "Death Knight",
+		"spec": "Frost",
+		"role": "DPS"
+	},
+	{
+		"class": "Death Knight",
+		"spec": "Blood Tank",
+		"role": "Tank"
+	},
+	{
+		"class": "Shaman",
+		"spec": "Elemental",
+		"role": "DPS"
+	},
+	{
+		"class": "Shaman",
+		"spec": "Enhancement",
+		"role": "DPS"
+	},
+	{
+		"class": "Shaman",
+		"spec": "Restoration",
+		"role": "Heal"
+	},
+	{
+		"class": "Hunter",
+		"spec": "Survival",
+		"role": "DPS"
+	},
+	{
+		"class": "Hunter",
+		"spec": "Marksmanship",
+		"role": "DPS"
+	},
+	{
+		"class": "Hunter",
+		"spec": "Beast Mastery",
+		"role": "DPS"
+	},
+	{
+		"class": "Warrior",
+		"spec": "Arms",
+		"role": "DPS"
+	},
+	{
+		"class": "Warrior",
+		"spec": "Fury",
+		"role": "DPS"
+	},
+	{
+		"class": "Warrior",
+		"spec": "Protection",
+		"role": "Tank"
+	},
+	{
+		"class": "Warlock",
+		"spec": "Demonology",
+		"role": "DPS"
+	},
+	{
+		"class": "Warlock",
+		"spec": "Affliction",
+		"role": "DPS"
+	},
+	{
+		"class": "Warlock",
+		"spec": "Destruction",
+		"role": "DPS"
+	},
+	{
+		"class": "Rogue",
+		"spec": "Combat",
+		"role": "DPS"
+	},
+	{
+		"class": "Rogue",
+		"spec": "Subtlety",
+		"role": "DPS"
+	},
+	{
+		"class": "Rogue",
+		"spec": "Assassination",
+		"role": "DPS"
+	},
+	{
+		"class": "Priest",
+		"spec": "Shadow",
+		"role": "DPS"
+	},
+	{
+		"class": "Priest",
+		"spec": "Holy",
+		"role": "Heal"
+	},
+	{
+		"class": "Priest",
+		"spec": "Discipline",
+		"role": "Heal"
+	},
+	{
+		"class": "Druid",
+		"spec": "Balance",
+		"role": "DPS"
+	},
+	{
+		"class": "Druid",
+		"spec": "Feral",
+		"role": "DPS"
+	},
+	{
+		"class": "Druid",
+		"spec": "Guardian",
+		"role": "Tank"
+	},
+	{
+		"class": "Druid",
+		"spec": "Restoration",
+		"role": "Heal"
+	},
+	{
+		"class": "Paladin",
+		"spec": "Retribution",
+		"role": "DPS"
+	},
+	{
+		"class": "Paladin",
+		"spec": "Holy",
+		"role": "Heal"
+	},
+	{
+		"class": "Paladin",
+		"spec": "Protection",
+		"role": "Tank"
+	},
+	{
+		"class": "Monk",
+		"spec": "Brewmaster",
+		"role": "Tank"
+	},
+	{
+		"class": "Monk",
+		"spec": "Mistweaver",
+		"role": "Heal"
+	},
+	{
+		"class": "Monk",
+		"spec": "Windwalker",
+		"role": "DPS"
+	}
 ]
