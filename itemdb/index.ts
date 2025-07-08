@@ -9,6 +9,8 @@ type ItemDefition = {
 	quality: number;
 	slot: number;
 	requiredLevel: number;
+	itemSet: number;
+	allowableClass: number;
 	ilvl: number;
 };
 
@@ -36,6 +38,7 @@ async function main() {
 		if (conn) conn.end();
 	}
 	fs.writeFileSync(`item_db.json`, JSON.stringify(items, null, 2));
+	console.log(`Wrote ${items.length} items to item_db.json`);
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: database row
@@ -45,9 +48,11 @@ function getItemDefinitionFromTemplate(itemTemplate: any): ItemDefition {
 		name: itemTemplate.name,
 		class: itemTemplate.class,
 		subclass: itemTemplate.subclass,
-		quality: itemTemplate.quality,
+		quality: itemTemplate.Quality,
 		slot: itemTemplate.InventoryType,
 		requiredLevel: itemTemplate.RequiredLevel,
+		allowableClass: itemTemplate.AllowableClass,
+		itemSet: itemTemplate.itemset,
 		ilvl: itemTemplate.ItemLevel,
 	};
 }

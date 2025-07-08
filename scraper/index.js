@@ -30,6 +30,21 @@ const itemDependencyMap = {
 	//[1234]: [1234,1235]
 };
 
+const itemSets = {
+	T14: [
+		1131, 1143, 1129, 1133, 1123, 1135, 1139, 1141, 1130, 1144, 1132, 1126,
+		1128, 1125, 1136, 1124, 1138, 1145, 1137, 1140, 1134, 1127, 1142,
+	],
+};
+
+const slotNameToIdMap = {
+	helm: [1],
+	shoulders: [3],
+	chest: [5, 20],
+	gauntlets: [7],
+	leggings: [10],
+};
+
 const wowtbcGGMap = {
 	head: "head",
 	neck: "neck",
@@ -301,7 +316,52 @@ async function getWowTBCData() {
 	return await processPhasesWowTBCGG();
 }
 
+function fillItemSetDependencies() {
+	for (const phase of Object.keys(itemSets)) {
+		const sets = itemSets[phase];
+		// itemsDb.find(x=> x.itemSet)
+		const itemsGroupedByIlvl = Object.groupBy(
+			itemsDb.filter((i) => sets.includes(i.itemSet)),
+			({ ilvl }) => ilvl,
+		);
+		const ilvls = Object.keys(itemsGroupedByIlvl).map((i) => +i);
+		const tokensGroupedByIlvl = Object.groupBy(
+			itemsDb.filter(
+				(i) =>
+					i.class === 15 &&
+					i.subclass === 0 &&
+					i.quality === 4 &&
+					ilvls.includes(i.ilvl),
+			),
+			({ ilvl }) => ilvl,
+		);
+
+		for (const ilvl of ilvls) {
+			// [token] = [item1,item2,item3]
+			const tokens = tokensGroupedByIlvl[ilvl];
+			const items = itemsGroupedByIlvl[ilvl];
+			for (const token of tokens) {
+				const slotName = token.name.split(" ")[0].toLocaleLowerCase();
+				const slotIds = slotNameToIdMap[slotName];
+
+				if (!slotIds) {
+					debugger;
+				}
+
+				const itemsForToken = items.filter(
+					(i) =>
+						i.class === 4 &&
+						slotIds.includes(i.slot) &&
+						token.allowableClass & i.allowableClass,
+				);
+				itemDependencyMap[token.id] = itemsForToken.map((i) => i.id);
+			}
+		}
+	}
+}
+
 async function main() {
+	fillItemSetDependencies();
 	const now = new Date();
 	const bisListTemplate = fs.readFileSync("bisListTemplate.liquid", "utf8");
 	const metadataTemplate = fs.readFileSync("metadataTemplate.liquid", "utf8");
@@ -318,13 +378,12 @@ async function main() {
 		bisListTemplate,
 		bisAddonData,
 	);
-	fs.writeFileSync("bis_list_unminified.lua", bisListRender);
-	fs.writeFileSync("bis_list.lua", luamin.minify(bisListRender));
+	fs.writeFileSync("/addondata/bis_list.lua", luamin.minify(bisListRender));
 
 	const metadataRender = await engine.parseAndRender(metadataTemplate, {
 		metadata,
 	});
-	fs.writeFileSync("metadata.lua", luamin.minify(metadataRender));
+	fs.writeFileSync("/addondata/metadata.lua", luamin.minify(metadataRender));
 
 	console.log("done");
 }

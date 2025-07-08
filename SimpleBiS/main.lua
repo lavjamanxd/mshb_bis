@@ -44,8 +44,8 @@ SBL.supportedPhases = {
         name = "Phase 1 - MV/HoF/ToES",
         start = time {
             year = 2025,
-            month = 8,
-            day = 3
+            month = 7,
+            day = 31
         }
     },
 }
@@ -414,7 +414,7 @@ function SBL:OnEnable()
 end
 
 function SBL:calculateCurrentPhase()
-    local phaseResult = -1
+    local phaseResult = 0
     local now = time()
     for _, v in pairs(self.supportedPhases) do
         if v["start"] < now then

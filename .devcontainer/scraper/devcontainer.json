@@ -3,6 +3,10 @@
     "name": "scraper",
     "workspaceMount": "source=${localWorkspaceFolder}/scraper,target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localWorkspaceFolder}/SimpleBiS/data,target=/addondata,type=bind",
+        "source=${localWorkspaceFolder}/itemdb/item_db.json,target=/workspace/item_db.json,type=bind"
+    ],
     "overrideCommand": true,
     "updateRemoteUserUID": true,
     "remoteUser": "bun",
