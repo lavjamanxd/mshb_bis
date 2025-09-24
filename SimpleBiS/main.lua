@@ -447,7 +447,7 @@ function SBL:predict_player(target, inspect)
 end
 
 function SBL:player_is_master_looter()
-    local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
+    local lootmethod, masterlooterPartyID, masterlooterRaidID = C_PartyInfo.GetLootMethod()
     if lootmethod == "master" and (masterlooterPartyID == 0 or masterlooterRaidID == 0) then
         return true
     end
