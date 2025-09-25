@@ -389,7 +389,7 @@ function SBL:OnInitialize()
 
     self.icon:Register("SimpleBiSMM", sblmmLDB, self.db.profile.minimap)
 
-    if not SBL:has_key(SBL.supportedPhases, self:GetCurrentPhase()) then
+    if self.db.char.phase == nil or not SBL:has_key(SBL.supportedPhases, self:GetCurrentPhase()) then
         self.db.char.phase = self:calculateCurrentPhase()
     end
 
@@ -414,14 +414,14 @@ function SBL:OnEnable()
 end
 
 function SBL:calculateCurrentPhase()
-    local phaseResult = 0
+    local phaseResult = -1
     local now = time()
     for _, v in pairs(self.supportedPhases) do
         if v["start"] < now then
             phaseResult = phaseResult + 1
         end
     end
-    return phaseResult
+    return math.max(0, phaseResult)
 end
 
 function SBL:pconcat(tab, joinChar)
