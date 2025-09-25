@@ -10,18 +10,18 @@ const itemsDb = JSON.parse(fs.readFileSync("item_db.json"));
 var metadata = {};
 
 const recipeSubclass = {
-	[0]: "Book",
-	[1]: "Leatherworking",
-	[2]: "Tailoring",
-	[3]: "Engineering",
-	[4]: "Blacksmithing",
-	[5]: "Cooking",
-	[6]: "Alchemy",
-	[7]: "First Aid",
-	[8]: "Enchanting",
-	[9]: "Fishing",
-	[10]: "Jewelcrafting",
-	[11]: "Inscription",
+	0: "Book",
+	1: "Leatherworking",
+	2: "Tailoring",
+	3: "Engineering",
+	4: "Blacksmithing",
+	5: "Cooking",
+	6: "Alchemy",
+	7: "First Aid",
+	8: "Enchanting",
+	9: "Fishing",
+	10: "Jewelcrafting",
+	11: "Inscription",
 };
 
 const phases = ["Pre-Bis", "T14" /*"T15", "T16"*/];
